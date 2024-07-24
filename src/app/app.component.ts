@@ -173,19 +173,23 @@ export class AppComponent implements OnInit {
     this.desktop.send('deeplink-ready');
 
     // Notify user if service worker update is available
-    this.updates.available.subscribe((event) => {
-      console.log(`SW update available. Current: ${event.current.hash}. New: ${event.available.hash}`);
-      this.notifications.sendInfo(
-        'An update was installed in the background and will be applied on next launch. <a href="#" (click)="applySwUpdate()">Apply immediately</a>',
-        { length: 10000 }
-      );
+    this.updates.versionUpdates.subscribe((event) => {
+      if (event.type === 'VERSION_READY') {
+        console.log(`SW update available. Current: ${event.currentVersion.hash}. New: ${event.latestVersion.hash}`);
+        this.notifications.sendInfo(
+          'An update was installed in the background and will be applied on next launch. <a href="#" (click)="applySwUpdate()">Apply immediately</a>',
+          { length: 10000 }
+        );
+      }
     });
 
+    /* DEPRECATED
     // Notify user after service worker was updated
     this.updates.activated.subscribe((event) => {
       console.log(`SW update successful. Current: ${event.current.hash}`);
       this.notifications.sendSuccess('Nault was updated successfully.');
     });
+    */
 
     // Check how long the wallet has been inactive, and lock it if it's been too long
     setInterval(() => {
