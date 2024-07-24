@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import Nano from 'hw-app-nano';
-import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import TransportUSB from '@ledgerhq/hw-transport-webusb';
 import TransportHID from '@ledgerhq/hw-transport-webhid';
 import TransportBLE from '@ledgerhq/hw-transport-web-ble';
@@ -48,7 +47,6 @@ export class LedgerService {
 
   waitTimeout = 30000;
   pollInterval = 5000;
-  u2fPollInterval = 30000;
 
   pollingLedger = false;
 
@@ -62,14 +60,13 @@ export class LedgerService {
   isDesktop = environment.desktop;
   queryingDesktopLedger = false;
 
-  supportsU2F = false;
   supportsWebHID = false;
   supportsWebUSB = false;
   supportsBluetooth = false;
   supportsUSB = false;
 
-  transportMode: 'U2F' | 'USB' | 'HID' | 'Bluetooth' = 'U2F';
-  DynamicTransport: typeof TransportUSB | typeof TransportHID | typeof TransportBLE = TransportU2F;
+  transportMode: 'USB' | 'HID' | 'Bluetooth';
+  DynamicTransport: typeof TransportUSB | typeof TransportHID | typeof TransportBLE;
 
   ledgerStatus$: Subject<{ status: string, statusText: string }> = new Subject();
   desktopMessage$ = new Subject();
@@ -125,12 +122,11 @@ export class LedgerService {
    */
   async checkBrowserSupport() {
     await Promise.all([
-      TransportU2F.isSupported().then(supported => this.supportsU2F = supported),
       TransportHID.isSupported().then(supported => this.supportsWebHID = supported),
       TransportUSB.isSupported().then(supported => this.supportsWebUSB = supported),
       TransportBLE.isSupported().then(supported => this.supportsBluetooth = supported),
     ]);
-    this.supportsUSB = this.supportsU2F || this.supportsWebHID || this.supportsWebUSB;
+    this.supportsUSB = this.supportsWebHID || this.supportsWebUSB;
   }
 
   /**
@@ -141,14 +137,10 @@ export class LedgerService {
       // Prefer WebUSB
       this.transportMode = 'USB';
       this.DynamicTransport = TransportUSB;
-    } else if (this.supportsWebHID) {
+    } else (this.supportsWebHID) {
       // Fallback to WebHID
       this.transportMode = 'HID';
       this.DynamicTransport = TransportHID;
-    } else {
-      // Legacy browsers
-      this.transportMode = 'U2F';
-      this.DynamicTransport = TransportU2F;
     }
   }
 
@@ -478,7 +470,7 @@ export class LedgerService {
       if (!this.pollingLedger) return;
       await this.checkLedgerStatus();
       this.pollLedgerStatus();
-    }, this.transportMode === 'U2F' ? this.u2fPollInterval : this.pollInterval);
+    }, this.pollInterval);
   }
 
   async checkLedgerStatus() {

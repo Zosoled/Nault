@@ -37,7 +37,6 @@
               "blakejs",
               "nanocurrency-web",
               "bignumber.js",
-              "u2f-api",
               "create-hash",
               "randombytes",
               "pbkdf2",
