@@ -137,7 +137,7 @@ export class LedgerService {
       // Prefer WebUSB
       this.transportMode = 'USB';
       this.DynamicTransport = TransportUSB;
-    } else (this.supportsWebHID) {
+    } else {
       // Fallback to WebHID
       this.transportMode = 'HID';
       this.DynamicTransport = TransportHID;

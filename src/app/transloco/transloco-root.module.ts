@@ -3,8 +3,9 @@ import {
   TranslocoLoader,
   TRANSLOCO_CONFIG,
   translocoConfig,
-  TranslocoModule
-} from '@ngneat/transloco';
+  TranslocoModule,
+  TRANSLOCO_TRANSPILER
+} from '@jsverse/transloco';
 import { Injectable, NgModule } from '@angular/core';
 import { environment } from '../../environments/environment';
 

@@ -9,16 +9,16 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2022",
+    "target": "ES2017",
     "typeRoots": [
       "node_modules/@types",
       "./src/typings"
     ],
     "lib": [
-      "es2022",
-      "dom"
+      "ES2020",
+      "DOM"
     ],
-    "module": "es2022",
+    "module": "ES2020",
     "baseUrl": "./",
     "paths": {
       "stream": ["../node_modules/readable-stream/readable.js"]

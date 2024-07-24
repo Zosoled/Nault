@@ -70,6 +70,7 @@ import { KeygeneratorComponent } from './components/keygenerator/keygenerator.co
 import { NanoTransactionMobileComponent } from './components/helpers/nano-transaction-mobile/nano-transaction-mobile.component';
 import { TranslocoRootModule } from './transloco/transloco-root.module';
 import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
+import { TranslocoRootModule as TranslocoRootModule_alias } from './transloco-root.module';
 
 @NgModule({
   declarations: [
@@ -123,6 +124,7 @@ import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
     NgbModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.desktop }),
     TranslocoRootModule,
+    TranslocoRootModule_alias,
   ],
   providers: [
     UtilService,
