@@ -12,9 +12,9 @@ import { SwUpdate } from '@angular/service-worker';
 import { RepresentativeService } from './services/representative.service';
 import { NodeService } from './services/node.service';
 import { DesktopService, LedgerService } from './services';
-import { environment } from 'environments/environment';
+import { environment } from '../environments/environment';
 import { DeeplinkService } from './services/deeplink.service';
-import { TranslocoService } from '@ngneat/transloco';
+import { TranslocoService } from '@jsverse/transloco';
 
 
 @Component({

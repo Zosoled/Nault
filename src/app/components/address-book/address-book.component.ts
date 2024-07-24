@@ -1,17 +1,17 @@
-import {AfterViewInit, Component, OnInit, OnDestroy} from '@angular/core';
-import {AddressBookService} from '../../services/address-book.service';
-import {WalletService} from '../../services/wallet.service';
-import {NotificationService} from '../../services/notification.service';
-import {ModalService} from '../../services/modal.service';
-import {UtilService} from '../../services/util.service';
+import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
+import { AddressBookService } from '../../services/address-book.service';
+import { WalletService } from '../../services/wallet.service';
+import { NotificationService } from '../../services/notification.service';
+import { ModalService } from '../../services/modal.service';
+import { UtilService } from '../../services/util.service';
 import { QrModalService } from '../../services/qr-modal.service';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import * as QRCode from 'qrcode';
-import {BigNumber} from 'bignumber.js';
-import {ApiService} from '../../services/api.service';
-import {PriceService} from '../../services/price.service';
-import {AppSettingsService} from '../../services/app-settings.service';
-import {TranslocoService} from '@ngneat/transloco';
+import { BigNumber } from 'bignumber.js';
+import { ApiService } from '../../services/api.service';
+import { PriceService } from '../../services/price.service';
+import { AppSettingsService } from '../../services/app-settings.service';
+import { TranslocoService } from '@jsverse/transloco';
 
 export interface BalanceAccount {
   balance: BigNumber;
