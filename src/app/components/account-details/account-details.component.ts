@@ -839,7 +839,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const fiatAmount = this.util.nano.rawToMnano(rawAmount)
     .times(this.price.price.lastPrice)
     .times(precision)
-    .floor().div(precision).toNumber();
+    .decimalPlaces(0, 3).dividedBy(precision).toNumber();
 
     this.amountFiat = fiatAmount;
   }
@@ -852,7 +852,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
     if (!this.util.string.isNumeric(this.amountFiat)) return;
     const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
-    const nanoVal = this.util.nano.rawToNano(rawAmount).floor();
+    const nanoVal = this.util.nano.rawToNano(rawAmount).decimalPlaces(0, 3);
     const nanoAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
 
     this.amount = nanoAmount.toNumber();
@@ -918,7 +918,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   setMaxAmount() {
     this.amountRaw = this.account.balance ? new BigNumber(this.account.balance).mod(this.nano) : new BigNumber(0);
-    const nanoVal = this.util.nano.rawToNano(this.account.balance).floor();
+    const nanoVal = this.util.nano.rawToNano(this.account.balance).decimalPlaces(0, 3);
     const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
     this.amount = maxAmount.toNumber();
     this.syncFiatPrice();
@@ -1017,7 +1017,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     const nanoAmount = this.rawAmount.div(this.nano);
 
-    if (this.amount < 0 || rawAmount.lessThan(0)) return this.notifications.sendWarning(`Amount is invalid`);
+    if (this.amount < 0 || rawAmount.isLessThan(0)) return this.notifications.sendWarning(`Amount is invalid`);
     if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notifications.sendError(`From account does not have enough XNO`);
 
     // Determine a proper raw amount to show in the UI, if a decimal was entered
