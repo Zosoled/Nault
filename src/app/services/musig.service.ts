@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {UtilService} from './util.service';
+import { UtilService } from './util.service';
 import { NotificationService } from './notification.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';

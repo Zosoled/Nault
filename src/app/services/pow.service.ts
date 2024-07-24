@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import {AppSettingsService} from './app-settings.service';
-import {ApiService} from './api.service';
-import {NotificationService} from './notification.service';
+import { AppSettingsService } from './app-settings.service';
+import { ApiService } from './api.service';
+import { NotificationService } from './notification.service';
 import { PoWSource } from './app-settings.service';
 import Worker from 'worker-loader!./../../assets/lib/cpupow.js';
-import {UtilService} from './util.service';
-import {BehaviorSubject} from 'rxjs';
+import { UtilService } from './util.service';
+import { BehaviorSubject } from 'rxjs';
 
 const mod = window['Module'];
 export const baseThreshold = 'fffffff800000000'; // threshold since v21 epoch update

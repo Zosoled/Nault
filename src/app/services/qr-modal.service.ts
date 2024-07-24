@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { QrModalComponent, QRType } from '../components/qr-modal/qr-modal.component';
 
 @Injectable({

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {PowService, baseThreshold, workState} from './pow.service';
-import {NotificationService} from './notification.service';
-import {UtilService} from './util.service';
+import { PowService, baseThreshold, workState } from './pow.service';
+import { NotificationService } from './notification.service';
+import { UtilService } from './util.service';
 
 @Injectable()
 export class WorkPoolService {
