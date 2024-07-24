@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Subject, timer} from 'rxjs';
-import {debounce} from 'rxjs/operators';
-import {Router} from '@angular/router';
+import { Subject, timer } from 'rxjs';
+import { debounce } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import {
   AppSettingsService,
   LedgerService,

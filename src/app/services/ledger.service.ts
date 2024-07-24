@@ -5,11 +5,11 @@ import TransportUSB from '@ledgerhq/hw-transport-webusb';
 import TransportHID from '@ledgerhq/hw-transport-webhid';
 import TransportBLE from '@ledgerhq/hw-transport-web-ble';
 import Transport from '@ledgerhq/hw-transport';
-import {Subject} from 'rxjs';
-import {ApiService} from './api.service';
-import {NotificationService} from './notification.service';
+import { Subject } from 'rxjs';
+import { ApiService } from './api.service';
+import { NotificationService } from './notification.service';
 import { environment } from '../../environments/environment';
-import {DesktopService} from './desktop.service';
+import { DesktopService } from './desktop.service';
 import { AppSettingsService } from './app-settings.service';
 
 export const STATUS_CODES = {

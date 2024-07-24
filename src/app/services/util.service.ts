@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as blake from 'blakejs';
-import {BigNumber} from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 import * as nanocurrency from 'nanocurrency';
 
 const nacl = window['nacl'];
