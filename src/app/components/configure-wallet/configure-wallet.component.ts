@@ -5,6 +5,7 @@ import * as bip39 from 'bip39';
 import {LedgerService, LedgerStatus} from '../../services/ledger.service';
 import { QrModalService } from '../../services/qr-modal.service';
 import {UtilService} from '../../services/util.service';
+import * as nanocurrency from 'nanocurrency';
 import { wallet } from 'nanocurrency-web';
 import { TranslocoService } from '@ngneat/transloco';
 

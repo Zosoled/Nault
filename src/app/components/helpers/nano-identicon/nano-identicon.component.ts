@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, HostBinding, ViewChild } from '@angular/core';
+// @ts-ignore
 import { createIcon } from '../../../../assets/lib/nanoidenticons.min.js';
 
 @Component({

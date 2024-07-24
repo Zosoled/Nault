@@ -136,8 +136,8 @@ export class PowService {
     this.powAlert$.next(false); // extra safety to ensure the alert is always reset
 
     let powSource = this.appSettings.settings.powSource;
-    const multiplierSource: Number = this.appSettings.settings.multiplierSource;
-    let localMultiplier: Number = 1;
+    const multiplierSource: number = this.appSettings.settings.multiplierSource;
+    let localMultiplier: number = 1;
 
     if (powSource === 'best') {
       powSource = this.determineBestPoWMethod();
@@ -275,8 +275,7 @@ export class PowService {
         newThreshold + ' using CPU workers for hash: ', hash);
       workerList = [];
       for (let i = 0; i < workerCount; i++) {
-        // const worker = new Worker()
-        const worker = new (Worker as any)();
+        const worker = new Worker(new URL('../../assets/lib/cpupow.js', import.meta.url));
         worker.postMessage({
           blockHash: hash,
           workerIndex: i,

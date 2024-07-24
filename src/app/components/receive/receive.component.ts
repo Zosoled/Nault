@@ -240,7 +240,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
     // Determine fiat value of the amount
     const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice)
-      .times(precision).floor().div(precision).toNumber();
+      .times(precision).decimalPlaces(0, 3).dividedBy(precision).toNumber();
 
     this.amountFiat = fiatAmount.toString();
     this.changeQRAmount(rawAmount.toFixed());
@@ -254,7 +254,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       return;
     }
     const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
-    const nanoVal = this.util.nano.rawToNano(rawAmount).floor();
+    const nanoVal = this.util.nano.rawToNano(rawAmount).decimalPlaces(0, 3);
     const rawRounded = this.util.nano.nanoToRaw(nanoVal);
     const nanoAmount = this.util.nano.rawToMnano(rawRounded);
 

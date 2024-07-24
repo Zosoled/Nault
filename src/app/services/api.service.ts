@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {HttpHeaders} from '@angular/common/http';
-import {NodeService} from './node.service';
-import {AppSettingsService} from './app-settings.service';
+import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
+import { NodeService } from './node.service';
+import { AppSettingsService } from './app-settings.service';
 import { TxType } from './util.service';
 
 @Injectable()

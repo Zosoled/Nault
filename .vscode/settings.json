@@ -1,6 +1,6 @@
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
+    "source.fixAll": "explicit"
   },
   "tslint.autoFixOnSave": true,
   "i18n-ally.localesPaths": "src/assets/i18n",
