@@ -54,6 +54,8 @@ export class ConfigureWalletComponent implements OnInit {
   importSeedBip39MnemonicPasswordModel = '';
   walletPasswordModel = '';
   walletPasswordConfirmModel = '';
+  validatePassword = false;
+  validatePasswordConfirm = false;
   validIndex = true;
   indexMax = INDEX_MAX;
 
@@ -311,11 +313,11 @@ export class ConfigureWalletComponent implements OnInit {
   }
 
   saveWalletPassword() {
-    if (this.walletPasswordConfirmModel !== this.walletPasswordModel) {
-      return this.notifications.sendError(`Password confirmation does not match, try again!`);
-    }
     if (this.walletPasswordModel.length < 6) {
-      return this.notifications.sendWarning(`Password length must be at least 6`);
+      return this.notifications.sendWarning(this.translocoService.translate('configure-wallet.set-wallet-password.errors.password-must-be-at-least-x-characters-long', { minCharacters: 6 }));
+    }
+    if (this.walletPasswordConfirmModel !== this.walletPasswordModel) {
+      return this.notifications.sendError(this.translocoService.translate('configure-wallet.set-wallet-password.errors.passwords-do-not-match'));
     }
     this.newPassword = this.walletPasswordModel;
     this.walletPasswordModel = '';

@@ -498,13 +498,12 @@
     <br>
     <div uk-grid>
       <div class="uk-width-1-2@m">
-        <input type="password" class="uk-input" [(ngModel)]="walletPasswordModel" placeholder="New Wallet Password">
-        <!-- <password-strength-meter *ngIf="walletPasswordModel.length > 0" [password]="walletPasswordModel" [enableFeedback]="true" [minPasswordLength]="6"></password-strength-meter> -->
-        <span class="password-helper" *ngIf="walletPasswordModel.length > 0 && walletPasswordModel.length < 6">{{ 'configure-wallet.set-wallet-password.errors.password-must-be-at-least-x-characters-long' | transloco: { minCharacters: 6 } }}</span>
-        <span class="password-helper" *ngIf="walletPasswordConfirmModel.length >= 6 && walletPasswordModel !== walletPasswordConfirmModel">{{ 'configure-wallet.set-wallet-password.errors.passwords-do-not-match' | transloco }}</span>
+        <input type="password" minlength="6" class="uk-input form-control" [(ngModel)]="walletPasswordModel" placeholder="New Wallet Password" (input)="validatePassword=false;" (focusout)="validatePassword=true;">
+        <span class="password-helper" *ngIf="validatePassword && walletPasswordModel.length > 0 && walletPasswordModel.length < 6">{{ 'configure-wallet.set-wallet-password.errors.password-must-be-at-least-x-characters-long' | transloco: { minCharacters: 6 } }}</span>
       </div>
       <div class="uk-width-1-2@m">
-        <input type="password" class="uk-input" (keyup.enter)="saveWalletPassword()" [(ngModel)]="walletPasswordConfirmModel" placeholder="Confirm Wallet Password">
+        <input type="password" minlength="6" class="uk-input form-control" [(ngModel)]="walletPasswordConfirmModel" placeholder="Confirm Wallet Password" [disabled]="(walletPasswordModel.length < 6 && walletPasswordConfirmModel.length == 0)" (keyup.enter)="saveWalletPassword()" (input)="validatePasswordConfirm=false;" (focusout)="validatePasswordConfirm=walletPasswordConfirmModel.length>0;">
+        <span class="password-helper" *ngIf="(validatePasswordConfirm || walletPasswordModel.length <= walletPasswordConfirmModel.length) && walletPasswordModel !== walletPasswordConfirmModel">{{ 'configure-wallet.set-wallet-password.errors.passwords-do-not-match' | transloco }}</span>
       </div>
     </div>
   </div>
