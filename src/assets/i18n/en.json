@@ -47,6 +47,8 @@
     "unable-to-delete-account": "Unable to delete account: {{ error }}",
     "wallet-is-locked": "Wallet is locked",
     "wallet-is-not-configured": "Wallet is not configured",
+    "wallet-unlocked": "Wallet unlocked",
+    "wrong-password": "Wrong password. Please try again.",
     "you-can-only-track-up-to-x-accounts-at-a-time": "You can only track up to {{ accounts }} accounts at a time.",
     "you-dont-have-any-accounts-yet": {
       "1": "You don't have any accounts yet,",
@@ -342,6 +344,7 @@
     "successfully-copied-to-clipboard": "Successfully copied to clipboard!",
     "uncemented-blocks": "Uncemented Blocks",
     "unknown": "Unknown",
+    "unlock": "Unlock",
     "view-details": "View Details",
     "view-on-network-explorer": "View on Network Explorer",
     "yes": "Yes"
