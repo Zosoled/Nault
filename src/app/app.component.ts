@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild, Renderer2 } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
 import { WalletService } from './services/wallet.service';
 import { AddressBookService } from './services/address-book.service';
 import { AppSettingsService } from './services/app-settings.service';
@@ -14,7 +15,6 @@ import { NodeService } from './services/node.service';
 import { DesktopService, LedgerService } from './services';
 import { environment } from '../environments/environment';
 import { DeeplinkService } from './services/deeplink.service';
-import { TranslocoService } from '@jsverse/transloco';
 
 
 @Component({
@@ -25,23 +25,23 @@ import { TranslocoService } from '@jsverse/transloco';
 export class AppComponent implements OnInit {
 
   constructor(
-    public walletService: WalletService,
     private addressBook: AddressBookService,
-    public settings: AppSettingsService,
     private websocket: WebsocketService,
     private notifications: NotificationService,
-    public nodeService: NodeService,
     private representative: RepresentativeService,
     private router: Router,
-    public updates: SwUpdate,
     private workPool: WorkPoolService,
-    public price: PriceService,
     private util: UtilService,
     private desktop: DesktopService,
     private ledger: LedgerService,
     private renderer: Renderer2,
     private deeplinkService: DeeplinkService,
-    private translate: TranslocoService) {
+    private translate: TranslocoService,
+    public walletService: WalletService,
+    public settings: AppSettingsService,
+    public nodeService: NodeService,
+    public updates: SwUpdate,
+    public price: PriceService) {
       router.events.subscribe(() => {
         this.closeNav();
       });
