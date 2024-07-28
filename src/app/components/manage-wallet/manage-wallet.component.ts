@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {WalletService} from '../../services/wallet.service';
-import {NotificationService} from '../../services/notification.service';
-import {ApiService} from '../../services/api.service';
-import {UtilService} from '../../services/util.service';
-import {AppSettingsService} from '../../services/app-settings.service';
+import { TranslocoService } from '@jsverse/transloco'
+import { WalletService } from '../../services/wallet.service';
+import { NotificationService } from '../../services/notification.service';
+import { ApiService } from '../../services/api.service';
+import { UtilService } from '../../services/util.service';
+import { AppSettingsService } from '../../services/app-settings.service';
 import * as QRCode from 'qrcode';
 import * as bip from 'bip39';
-import {formatDate} from '@angular/common';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-manage-wallet',
@@ -20,6 +21,8 @@ export class ManageWalletComponent implements OnInit {
 
   newPassword = '';
   confirmPassword = '';
+  validateNewPassword = false;
+  validateconfirmPassword = false;
 
   showQRExport = false;
   QRExportUrl = '';
@@ -45,9 +48,11 @@ export class ManageWalletComponent implements OnInit {
   constructor(
     public walletService: WalletService,
     public notifications: NotificationService,
+    public settings: AppSettingsService,
     private api: ApiService,
     private util: UtilService,
-    public settings: AppSettingsService) { }
+    private translocoService: TranslocoService
+  ) { }
 
   async ngOnInit() {
     this.wallet = this.walletService.wallet;
@@ -67,11 +72,11 @@ export class ManageWalletComponent implements OnInit {
   }
 
   async changePassword() {
-    if (this.newPassword !== this.confirmPassword) {
-      return this.notifications.sendError(`Passwords do not match`);
+    if (this.newPassword.length < 6) {
+      return this.notifications.sendError(this.translocoService.translate('configure-wallet.set-wallet-password.errors.password-must-be-at-least-x-characters-long', { minCharacters: 6 }));
     }
-    if (this.newPassword.length < 1) {
-      return this.notifications.sendError(`Password cannot be empty`);
+    if (this.newPassword !== this.confirmPassword) {
+      return this.notifications.sendError(this.translocoService.translate('configure-wallet.set-wallet-password.errors.passwords-do-not-match'));
     }
     if (this.walletService.isLocked()) {
       const wasUnlocked = await this.walletService.requestWalletUnlock();

@@ -1,9 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import {WalletService} from '../../services/wallet.service';
-import {NotificationService} from '../../services/notification.service';
-import {LedgerService, LedgerStatus} from '../../services/ledger.service';
-import {AppSettingsService} from '../../services/app-settings.service';
-import {PowService} from '../../services/pow.service';
+import { TranslocoService } from '@jsverse/transloco'
+import { WalletService } from '../../services/wallet.service';
+import { NotificationService } from '../../services/notification.service';
+import { LedgerService, LedgerStatus } from '../../services/ledger.service';
+import { AppSettingsService } from '../../services/app-settings.service';
+import { PowService } from '../../services/pow.service';
 
 @Component({
   selector: 'app-wallet-widget',
@@ -20,17 +21,20 @@ export class WalletWidgetComponent implements OnInit {
   powAlert = false;
 
   unlockPassword = '';
+  validatePassword = false;
 
   modal: any = null;
   mayAttemptUnlock = true;
   timeoutIdAllowingUnlock: any = null;
 
   constructor(
-    public walletService: WalletService,
     private notificationService: NotificationService,
+    private powService: PowService,
+    private translocoService: TranslocoService,
+    public walletService: WalletService,
     public ledgerService: LedgerService,
     public settings: AppSettingsService,
-    private powService: PowService) { }
+  ) { }
 
   @ViewChild('passwordInput') passwordInput: ElementRef;
 
@@ -133,12 +137,8 @@ export class WalletWidgetComponent implements OnInit {
     const unlocked = await this.walletService.unlockWallet(this.unlockPassword);
 
     if (unlocked) {
-      this.notificationService.sendSuccess(`Wallet unlocked`);
+      this.notificationService.sendSuccess(this.translocoService.translate('accounts.wallet-unlocked'));
       this.modal.hide();
-      if (this.unlockPassword.length < 6) {
-        // eslint-disable-next-line max-len
-        this.notificationService.sendWarning(`You are using an insecure password and encouraged to change it from settings > manage wallet`);
-      }
 
       if (this.timeoutIdAllowingUnlock !== null) {
         clearTimeout(this.timeoutIdAllowingUnlock);
@@ -147,7 +147,7 @@ export class WalletWidgetComponent implements OnInit {
 
       this.allowUnlock({ focusInputElement: false });
     } else {
-      this.notificationService.sendError(`Incorrect password, please try again!`);
+      this.notificationService.sendError(this.translocoService.translate('accounts.wrong-password'));
     }
   }
 
