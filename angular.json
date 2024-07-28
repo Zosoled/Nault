@@ -27,6 +27,7 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
+              "semver",
               "qrcode",
               "bip39",
               "@zxing/library",
