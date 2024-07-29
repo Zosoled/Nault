@@ -45,7 +45,7 @@
 		"the-account-at-this-index-is-already-loaded": "The account at this index is already loaded",
 		"unable-to-add-new-account": "Unable to add new account: {{ error }}",
 		"unable-to-delete-account": "Unable to delete account: {{ error }}",
-		"wallet-is-locked": "Wallet is locked",
+		"wallet-locked": "Wallet locked",
 		"wallet-is-not-configured": "Wallet is not configured",
 		"wallet-unlocked": "Wallet unlocked",
 		"wrong-password": "Wrong password. Please try again.",
