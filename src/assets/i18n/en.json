@@ -368,7 +368,8 @@
 		"requested-amount": "Requested Amount",
 		"select-an-account-to-view-qr-code": "Select an account to view QR code",
 		"successfully-received-nano": "Successfully received nano!",
-		"there-was-a-problem-receiving-the-transaction-try-manually": "There was a problem receiving the transaction, try manually!"
+		"there-was-a-problem-receiving-the-transaction-try-manually": "There was a problem receiving the transaction, try manually!",
+		"unable-to-find-receiving-account": "Unable to find receiving account in wallet"
 	},
 	"representative-search": {
 		"representative-list-results": "Representative List Results"

@@ -734,7 +734,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       // Check for deleting an entry in the address book
       if (this.addressBookEntry) {
         this.addressBook.deleteAddress(this.accountID);
-        this.notifications.sendSuccess(`Successfully removed address book entry!`);
+        this.notifications.sendSuccess(this.translocoService.translate('address-book.successfully-deleted-address-book-entry'));
         this.addressBookEntry = null;
       }
 
@@ -819,7 +819,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   copied() {
     this.notifications.removeNotification('success-copied');
-    this.notifications.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
+    this.notifications.sendSuccess(this.translocoService.translate('general.successfully-copied-to-clipboard'), { identifier: 'success-copied' });
   }
 
   // Remote signing methods
