@@ -259,7 +259,7 @@ export class ConfigureAppComponent implements OnInit {
     const settings = this.appSettings.settings;
 
     const matchingLanguage = this.languages.find(language => language.id === settings.language);
-    this.selectedLanguage = matchingLanguage.id || this.languages[0].id;
+    this.selectedLanguage = matchingLanguage?.id || this.languages[0].id;
 
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
