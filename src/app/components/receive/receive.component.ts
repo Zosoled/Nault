@@ -1,5 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChildActivationEnd, Router } from '@angular/router';
+import * as QRCode from 'qrcode';
+import BigNumber from 'bignumber.js';
+import { TranslocoService } from '@jsverse/transloco';
 import { WalletService, WalletAccount } from '../../services/wallet.service';
 import { NotificationService } from '../../services/notification.service';
 import { AddressBookService } from '../../services/address-book.service';
@@ -11,9 +14,6 @@ import { AppSettingsService } from '../../services/app-settings.service';
 import { NanoBlockService } from '../../services/nano-block.service';
 import { PriceService } from '../../services/price.service';
 import { WebsocketService } from '../../services/websocket.service';
-import * as QRCode from 'qrcode';
-import BigNumber from 'bignumber.js';
-import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-receive',
@@ -166,7 +166,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
                 ),
                 destinationAddressBookName: (
                     this.addressBook.getAccountName(pendingBlock.account)
-                  || this.getAccountLabel(pendingBlock.account, 'Account')
+                  || this.getAccountLabel(pendingBlock.account, this.translocoService.translate('general.account'))
                 ),
                 isReceivable: true,
                 local_time_string: '',
@@ -284,7 +284,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   onSelectedAccountChange(accountID) {
     this.selectedAccountAddressBookName = (
         this.addressBook.getAccountName(accountID)
-      || this.getAccountLabel(accountID, 'Account')
+      || this.getAccountLabel(accountID, this.translocoService.translate('general.account'))
     );
 
     this.changeQRAccount(accountID);
@@ -345,7 +345,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id === receivableBlock.destination);
     if (!walletAccount) {
-      throw new Error(`Unable to find receiving account in wallet`);
+      throw new Error(this.translocoService.translate('receive.unable-to-find-receiving-account'));
     }
 
     if (this.walletService.isLocked()) {
@@ -364,13 +364,13 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       receivableBlock.received = true;
       this.mobileTransactionMenuModal.hide();
       this.notificationService.removeNotification('success-receive');
-      this.notificationService.sendSuccess(`Successfully received nano!`, { identifier: 'success-receive' });
+      this.notificationService.sendSuccess(this.translocoService.translate('receive.successfully-received-nano'), { identifier: 'success-receive' });
       // pending has been processed, can be removed from the list
       // list also updated with reloadBalances but not if called too fast
       this.walletService.removePendingBlock(receivableBlock.hash);
     } else {
       if (!this.walletService.isLedgerWallet()) {
-        this.notificationService.sendError(`There was a problem receiving the transaction, try manually!`, {length: 10000});
+        this.notificationService.sendError(this.translocoService.translate('receive.there-was-a-problem-receiving-the-transaction-try-manually'), {length: 10000});
       }
     }
 
@@ -380,7 +380,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   copied() {
     this.notificationService.removeNotification('success-copied');
-    this.notificationService.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
+    this.notificationService.sendSuccess(this.translocoService.translate('general.successfully-copied-to-clipboard'), { identifier: 'success-copied' });
   }
 
   copiedAccountAddress() {
