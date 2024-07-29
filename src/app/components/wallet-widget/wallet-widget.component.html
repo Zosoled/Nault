@@ -43,7 +43,7 @@
       <span uk-icon="icon: lock; ratio: 1.2;" class="uk-text-top"></span>
     </div>
     <div class="status-labels">
-      <div class="label primary half-muted">Wallet Locked</div>
+      <div class="label primary half-muted">{{ 'accounts.wallet-locked' | transloco }}</div>
     </div>
   </div>
   <div class="nav-status-row half-muted interactable" (click)="lockWallet()" *ngIf="!walletService.isLocked()">
