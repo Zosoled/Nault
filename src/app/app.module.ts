@@ -68,9 +68,8 @@ import { environment } from '../environments/environment';
 import { MultisigComponent } from './components/multisig/multisig.component';
 import { KeygeneratorComponent } from './components/keygenerator/keygenerator.component';
 import { NanoTransactionMobileComponent } from './components/helpers/nano-transaction-mobile/nano-transaction-mobile.component';
-import { TranslocoRootModule } from './transloco/transloco-root.module';
 import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
-import { TranslocoRootModule as TranslocoRootModule_alias } from './transloco-root.module';
+import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
   declarations: [
@@ -124,7 +123,6 @@ import { TranslocoRootModule as TranslocoRootModule_alias } from './transloco-ro
     NgbModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.desktop }),
     TranslocoRootModule,
-    TranslocoRootModule_alias,
   ],
   providers: [
     UtilService,
