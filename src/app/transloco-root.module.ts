@@ -11,8 +11,9 @@ import { environment } from '../environments/environment';
           availableLangs: [
             { id: 'en', label: 'English' },
             { id: 'de', label: 'Deutsch' },
+            { id: 'es', label: 'Español' },
             { id: 'fr', label: 'Français' },
-            { id: 'pt-br', label: 'Portuguese (Brazil)' }
+            { id: 'pt-br', label: 'Português (Brasil)' }
           ],
           defaultLang: 'en',
           fallbackLang: 'en',
