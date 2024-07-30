@@ -300,19 +300,20 @@
 	"general": {
 		"account": "Compte",
 		"accounts": "Comptes",
-		"actions": {
-			"ready-to-receive": "Ready to receive",
-			"received": "Received",
-			"rep-change": "Rep. Change",
-			"sent": "Sent",
-			"unknown-action": "Unknown Action"
-		},
+		"actions": "Actions",
 		"address-book": "Répertoire d'adresses",
 		"amount": "Quantité",
 		"app-settings": "Paramêtres de l'application",
 		"avoid": "Éviter",
 		"balance": "Solde",
 		"block": "Bloquer",
+		"blockactions": {
+			"ready-to-receive": "Ready to receive",
+			"received": "Received",
+			"rep-change": "Rep. Change",
+			"sent": "Sent",
+			"unknown-action": "Unknown Action"
+		},
 		"cancel": "Annuler",
 		"copy": "Copier",
 		"copy-to-clipboard": "Copier dans le presse-papiers",
