@@ -1,0 +1,441 @@
+{
+	"account-details": {
+		"account-details": "Detalles de la cuenta",
+		"address-book-name-leave-blank-to-remove": "Nombre de la libreta de direcciones (Dejar en blanco para eliminar)",
+		"advanced-options": "Opciones avanzadas",
+		"awaiting-confirmation": "Esperando confirmación",
+		"block-signing": "Firma de bloque",
+		"confirmed-blocks": "Bloques confirmados",
+		"copy-recipients-address": "Copiar dirección del destinatario",
+		"copy-representatives-address": "Copiar dirección del representante",
+		"copy-senders-address": "Copiar dirección del remitente",
+		"copy-transaction-id": "Copiar ID de transacción",
+		"donate-to-representative": "Donar al representante",
+		"enable-remote-signing-multisig": "Habilitar firma remota / Multifirma",
+		"external-address": "Dirección externa",
+		"loading-incoming-transactions": "Cargando transacciones entrantes...",
+		"loading-transactions": "Cargando transacciones...",
+		"network-explorer": "Explorador de red",
+		"no-label-set": "Sin etiqueta establecida",
+		"no-transactions": "Sin transacciones",
+		"send-funds-back": "Devolver fondos",
+		"this-change-has-not-yet-been-confirmed-by-the-network": "Este cambio aún no ha sido confirmado por la red",
+		"this-transaction-has-not-yet-been-confirmed-by-the-network": "Esta transacción aún no ha sido confirmada por la red",
+		"transactions": "Transacciones",
+		"view-transaction-details": "Ver detalles de la transacción"
+	},
+	"accounts": {
+		"account-address-confirmed-on-ledger": "Dirección de cuenta confirmada en Ledger",
+		"account-address-denied-if-it-is-wrong-do-not-use-the-wallet": "Dirección de cuenta denegada - ¡si es incorrecta, no use la billetera!",
+		"add-new-account": "Agregar nueva cuenta",
+		"advanced-mode": "Modo avanzado",
+		"confirm-address-on-ledger": "Confirmar dirección en Ledger",
+		"confirming-account-address-on-ledger-device": "Confirmando dirección de cuenta en dispositivo Ledger...",
+		"hide-account": "Ocultar cuenta",
+		"invalid-account-index-must-be-positive-number": "Índice de cuenta inválido - debe ser un número positivo",
+		"ledger-device-must-be-ready": "El dispositivo Ledger debe estar listo",
+		"missing-accounts": {
+			"1": "¿Faltan cuentas?",
+			"2-link": "Agregar nueva cuenta",
+			"3": "para importar una dirección utilizada previamente."
+		},
+		"simple-mode": "Modo simple",
+		"successfully-created-new-account": "Se creó exitosamente la nueva cuenta {{ account }}",
+		"successfully-removed-account": "Se eliminó exitosamente la cuenta {{ account }}",
+		"the-account-at-this-index-is-already-loaded": "La cuenta en este índice ya está cargada",
+		"unable-to-add-new-account": "No se pudo agregar nueva cuenta: {{ error }}",
+		"unable-to-delete-account": "No se pudo eliminar la cuenta: {{ error }}",
+		"wallet-locked": "Billetera bloqueada",
+		"wallet-is-not-configured": "La billetera no está configurada",
+		"wallet-unlocked": "Billetera desbloqueada",
+		"wrong-password": "Contraseña incorrecta. Por favor, inténtelo de nuevo.",
+		"you-can-only-track-up-to-x-accounts-at-a-time": "Solo puede rastrear hasta {{ accounts }} cuentas a la vez.",
+		"you-dont-have-any-accounts-yet": {
+			"1": "Aún no tienes ninguna cuenta,",
+			"2-link": "haz clic aquí para crear una",
+			"3": "."
+		}
+	},
+	"address-book": {
+		"a-notification-will-be-shown-whenever-the-address-has-a-new": "Se mostrará una notificación cada vez que la dirección tenga una nueva transacción entrante, envíe o reciba fondos, o cambie su representante.",
+		"account-address-copied-to-clipboard": "¡Dirección de cuenta copiada al portapapeles!",
+		"account-and-name-are-required": "Se requieren cuenta y nombre",
+		"account-id-is-not-a-valid-account": "El ID de cuenta no es una cuenta válida",
+		"add-new-entry": "Agregar nueva entrada",
+		"address-book-entry-saved-successfully": "¡Entrada de la libreta de direcciones guardada exitosamente!",
+		"address-book-export": "Exportar libreta de direcciones",
+		"address-book-export-downloaded": "¡Exportación de la libreta de direcciones descargada!",
+		"address-book-import": "Importar libreta de direcciones",
+		"address-book-too-large-for-a-qr-code": "Libreta de direcciones demasiado grande para un código QR.",
+		"back-to-address-book": "Volver a la libreta de direcciones",
+		"bad-import-data-make-sure-you-selected-a-nault-address-book": "Datos de importación incorrectos, asegúrese de haber seleccionado una exportación de la libreta de direcciones de Nault",
+		"edit-entry": "Editar entrada",
+		"exchange-deposit-address-main-trading-account-etc": "Dirección de depósito de exchange, cuenta principal de trading, etc.",
+		"export-address-book": "Exportar libreta de direcciones",
+		"export-all-address-book-entries-to-a-file-or-qr-code-url": "Exportar todas las entradas de la libreta de direcciones a un archivo o código QR/URL.",
+		"export-as-file": "Exportar como archivo",
+		"if-you-need-a-qr-use-fewer-entries-or-shorter-aliases": "Si necesita un QR, use menos entradas o alias más cortos.",
+		"import-address-book": "Importar libreta de direcciones",
+		"import-address-book-entries-from-a-file": "Importar entradas de la libreta de direcciones desde un archivo.",
+		"import-export": "Importar / Exportar",
+		"note-exported-address-book-will-not-be-encrypted-by-your-wal": "Nota: La libreta de direcciones exportada NO será cifrada por la contraseña de su billetera.",
+		"reload-balances": "Recargar saldos",
+		"scan-the-qr-code-on-any-device-to-import-your-address-book": "¡Escanee el código QR en cualquier dispositivo para importar su libreta de direcciones!",
+		"show-total-tracked-balance": "Mostrar saldo total rastreado",
+		"successfully-deleted-address-book-entry": "Se eliminó exitosamente la entrada de la libreta de direcciones",
+		"the-balance-will-be-displayed-in-the-address-book": "El saldo se mostrará en la libreta de direcciones.",
+		"this-name-is-already-in-use-please-use-a-unique-name": "¡Este nombre ya está en uso! Por favor, use un nombre único",
+		"this-name-is-reserved-for-wallet-accounts-without-a-label": "Este nombre está reservado para cuentas de billetera sin etiqueta",
+		"this-name-is-reserved-for-decentralized-aliases": "Los nombres que comienzan con @ están reservados para alias descentralizados",
+		"track-balance": "Rastrear saldo",
+		"track-transactions": "Rastrear transacciones",
+		"unable-to-delete-entry": "No se pudo eliminar la entrada: {{ message }}",
+		"unable-to-parse-import-data-make-sure-you-selected-the-right": "No se pueden analizar los datos de importación, ¡asegúrese de haber seleccionado el archivo correcto!",
+		"unable-to-save-entry": "No se pudo guardar la entrada: {{ message }}",
+		"updated-address-book-order": "¡Orden de la libreta de direcciones actualizado!",
+		"you-can-also-import-your-address-book-by-using-the-url-below": "También puede importar su libreta de direcciones usando la URL a continuación o descargarla como un archivo.",
+		"you-can-only-track-the-balance-of-maximum-20-addresses": "Solo puede rastrear el saldo de un máximo de 20 direcciones",
+		"you-can-still-import-your-address-book-by-using-the-url": "Aún puede importar su libreta de direcciones usando la URL a continuación o descargarla como un archivo.",
+		"you-can-use-the-address-book-to-store": {
+			"1": "Puede usar la libreta de direcciones para almacenar una etiqueta para sus propias cuentas o para acceder fácilmente a otras direcciones en toda la aplicación.",
+			"2": "También es posible rastrear el saldo y/o las transacciones de cualquier dirección, conocido como \"solo visualización\"."
+		},
+		"you-do-not-have-any-address-book-entries-saved-yet": {
+			"1": "Aún no tienes ninguna entrada guardada en la libreta de direcciones,",
+			"2-link": "haz clic aquí para crear una",
+			"3": "."
+		}
+	},
+	"change-rep-widget": {
+		"acceptable-representative": "Representante aceptable",
+		"bad-representative": "Mal representante",
+		"checking-status": "Verificando estado...",
+		"good-representative": "Buen representante",
+		"health": "Salud",
+		"it-is-highly-advised-to-switch-to-a-different-representative": "Se recomienda encarecidamente cambiar a un representante diferente, para mejorar la seguridad y descentralización de la red nano.",
+		"receive-a-transaction-to-configure": "Recibir una transacción para configurar",
+		"rep-represents-you": "{{ name }} te representa en el protocolo de consenso de nano votando en tu nombre.",
+		"representative-change-required": "Cambio de representante requerido",
+		"representative-for-account": "Representante para {{ account }}",
+		"representative-none": "Ninguno",
+		"switching-to-a-different-representative-could-improve": "Cambiar a un representante diferente podría mejorar la seguridad y descentralización de la red nano.",
+		"this-representative-has-a-high-voting-weight": "Este representante tiene un alto peso de votación (más del {{ percent }}%).",
+		"this-representative-has-a-very-high-voting-weight": "Este representante tiene un peso de votación muy alto (más del {{ percent }}%).",
+		"this-representative-has-announced-plans-to-permanently-shutdown": "Este representante ha anunciado planes para cerrar permanentemente.",
+		"this-representative-has-been-offline-for-the-past-days": "Este representante ha estado fuera de línea durante los últimos {{ days }} días.",
+		"this-representative-is-marked-as-avoid": "Este representante está marcado como \"evitar\" en el libro de representantes.",
+		"this-representative-is-marked-as-nf": "Este representante fue creado por la Fundación Nano y debe evitarse para aumentar la descentralización.",
+		"this-representative-is-often-offline": "Este representante está a menudo fuera de línea ({{ percent }}% de tiempo activo)",
+		"this-representative-is-sometimes-offline": "Este representante está a veces fuera de línea ({{ percent }}% de tiempo activo).",
+		"unknown-rep": "Representante desconocido",
+		"unknown-status": "Estado desconocido",
+		"we-could-not-determine-status-of-this-representative": "No pudimos determinar el estado de este representante.",
+		"we-found-no-issues-with-uptime-or-weight": "No encontramos problemas con el tiempo de actividad o la distribución de peso de su representante actual.",
+		"you-can-change-representative-at-any-time": "Puede cambiar de representante en cualquier momento haciendo clic en su nombre arriba.",
+		"you-have-marked-this-representative-as-trusted": "Has marcado este representante como confiable, lo que significa que su estado permanecerá como \"Bueno\" incluso en caso de problemas graves con el tiempo de actividad o la distribución de peso."
+	},
+	"configure-app": {
+		"advanced-options": "Opciones avanzadas",
+		"allow-external-requests": "Permitir solicitudes externas",
+		"api-server": "Servidor API",
+		"app-display-settings-successfully-updated": "¡Configuración de visualización de la aplicación actualizada exitosamente!",
+		"app-wallet-settings-successfully-updated": "¡Configuración de la billetera de la aplicación actualizada exitosamente!",
+		"are-you-sure": "¿Estás seguro?",
+		"authorization": "Autorización",
+		"change-if-your-wallet-should-be-locked-automatically-after": "Cambiar si su billetera debe bloquearse automáticamente después de no haber interactuado con ella durante cierto período de tiempo",
+		"change-the-currency-pair-used-when-showing-fiat-values": "Cambiar el par de divisas utilizado al mostrar valores en moneda fiat en la aplicación. Seleccione Ninguno para ocultar pares fiat.",
+		"change-where-your-wallet-is-stored-if-you-select-none-your": "Cambiar dónde se almacena su billetera. Si selecciona ninguno, su billetera se reinicia cada vez que recarga.",
+		"change-which-server-is-used-to-communicate-with-the-nano": "Cambiar qué servidor se utiliza para comunicarse con la red nano",
+		"clear-all-data": {
+			"1": "Está a punto de eliminar todos los datos almacenados en Nault, lo que incluye todos los datos almacenados localmente sobre su billetera configurada actualmente, todas las entradas de sus libretas de direcciones y representantes, y cualquier otro dato en caché. Todas las configuraciones se restablecerán a los valores predeterminados.",
+			"successfully-deleted-locally-stored-data-and-reset-the": "¡Se eliminaron exitosamente los datos almacenados localmente y se restablecieron las configuraciones!"
+		},
+		"clear-work-cache": "Limpiar caché de trabajo",
+		"click-to-refresh": "Haga clic para actualizar",
+		"component": {
+			"wallet-storage": "Almacenamiento de billetera"
+		},
+		"configure-nault": "Configurar Nault",
+		"cpu-worker-support-not-available-set-pow-to-best": "Soporte de trabajador CPU no disponible, establezca PoW en Mejor",
+		"currencies": {
+			"none": "Ninguna"
+		},
+		"custom-api-server-has-an-invalid-address": "El servidor API personalizado tiene una dirección inválida.",
+		"custom-update-server-has-an-invalid-address": "El servidor de actualización personalizado tiene una dirección inválida.",
+		"decentralized-aliases": "Alias descentralizados",
+		"decentralized-aliases-options": {
+			"disabled": "Deshabilitado",
+			"enabled": "Habilitado - Permitir solicitudes externas a dominios de alias"
+		},
+		"decentralized-aliases-require-external-requests": "Los alias descentralizados requieren solicitudes externas a dominios de alias. Cuando intentes buscar la dirección de @madeline@example.com, el dominio example.com puede registrar tu dirección IP.",
+		"default-representative": "Representante predeterminado",
+		"default-representative-is-not-a-valid-account": "El representante predeterminado no es una cuenta válida",
+		"delete-all-data": "Eliminar TODOS los datos",
+		"delete-wallet-data": "Eliminar datos de la billetera",
+		"display-settings": "Configuración de visualización",
+		"fiat-currency": "Moneda FIAT",
+		"for-example-using-basic-auth": "Por ejemplo, usando autenticación básica: Basic xyz",
+		"identicon-options": {
+			"1-hour": "1 hora",
+			"1-minute": "1 minuto",
+			"nanoidenticons-by-keerifox": "Nanoidenticons (por keerifox)",
+			"natricon-by-appditto": "Natricon (por Appditto)",
+			"never": "Nunca",
+			"none": "Ninguno",
+			"x-hours": "{{ hours }} horas",
+			"x-minutes": "{{ minutes }} minutos"
+		},
+		"identicons": "Identicones",
+		"if-automatically-receiving-incoming-transactions-with-the": "Si se reciben automáticamente las transacciones entrantes con la cantidad más grande primero o cronológicamente desde el tiempo registrado. Manual te permitirá elegir tus propias transacciones desde la pantalla de recepción.",
+		"language": "Idioma",
+		"leave-blank-to-accept-transactions-of-any-amount": "Dejar en blanco para aceptar transacciones de cualquier cantidad",
+		"leave-blank-to-use-a-recommended-one": "Dejar en blanco para usar uno recomendado",
+		"lock-after-inactivity": "Bloquear después de inactividad",
+		"min-receive-amount": "Cantidad mínima de recepción",
+		"minimum-nano-amount-to-receive-transactions-below-this": "Cantidad mínima de XNO para recibir. Las transacciones por debajo de esta cantidad serán ignoradas por la billetera tanto para recibir como en la lista de transacciones. Establezca en blanco o 0 para aceptar todas las transacciones.",
+		"multiplier-options": {
+			"default-1x-or-1-64x": "Predeterminado (1x o 1/64x)"
+		},
+		"night-mode": "Modo nocturno",
+		"night-mode-options": {
+			"disabled": "Deshabilitado",
+			"enabled": "Habilitado"
+		},
+		"node-stats": "Estadísticas del nodo",
+		"note-since-this-server-only-notifies-about-new-transactions": "Nota: Dado que este servidor solo notifica sobre nuevas transacciones, la mayoría de las funciones de la billetera funcionan bien sin él.",
+		"optional-increased-work-for-transaction-priority-during": "Trabajo aumentado opcional para prioridad de transacción durante la saturación de la red. Anula las dificultades predeterminadas de ENVÍO 1x y RECEPCIÓN 1/64x.",
+		"pending-options": {
+			"automatic-largest-amount-first": "Automático - Cantidad más grande primero",
+			"automatic-oldest-transaction-first": "Automático - Transacción más antigua primero",
+			"manual": "Manual"
+		},
+		"pow-multiplier": "Multiplicador de PoW",
+		"pow-options": {
+			"best-option-available": "Mejor opción disponible",
+			"client-side-cpu-slowest": "Del lado del cliente - CPU (Más lento)",
+			"client-side-gpu-webgl": "Del lado del cliente - GPU/WebGL",
+			"external-custom-server": "Externo - Servidor personalizado",
+			"external-selected-server": "Externo - Servidor seleccionado"
+		},
+		"pow-source": "Fuente de PoW",
+		"random-server": "Servidor aleatorio",
+		"receive-method": "Método de recepción",
+		"save-settings-to-update": "Guardar configuración para actualizar",
+		"server-configuration": "Configuración del servidor",
+		"server-settings": "Configuración del servidor",
+		"server-settings-successfully-updated": "¡Configuración del servidor actualizada exitosamente!",
+		"storage-options": {
+			"browser-local-storage": "Almacenamiento local del navegador",
+			"none": "Ninguno"
+		},
+		"successfully-cleared-the-work-cache": "¡Se limpió exitosamente el caché de trabajo!",
+		"successfully-deleted-all-wallet-data": "¡Se eliminaron exitosamente todos los datos de la billetera!",
+		"successfully-updated": "¡Actualizado exitosamente!",
+		"switched-back-to-browser-local-storage-for-the-wallet-data": "Se volvió al \"Almacenamiento local del navegador\" para los datos de la billetera. Use el botón nuevamente si desea guardar otras configuraciones.",
+		"this-has-to-be-a-valid-authorization-header": "Esto debe ser un encabezado de Autorización válido.",
+		"this-has-to-be-a-valid-rpc": {
+			"1": "Esto tiene que ser un",
+			"2-link-rpc": "punto final RPC de nano",
+			"3": "válido o una API compatible con él."
+		},
+		"this-has-to-be-a-valid-websocket": {
+			"1": "Esto tiene que ser un",
+			"2-link-websocket": "WebSocket de Nodo Nano",
+			"3": "válido o una API de WebSocket compatible con él."
+		},
+		"this-has-to-be-a-valid-work": {
+			"1": "Esto tiene que ser un",
+			"3": "válido o una API compatible con él. Si tu servidor en localhost no funciona, intenta la aplicación de escritorio en su lugar.",
+			"2-link-work": "Servidor de Trabajo Nano"
+		},
+		"this-representative-will-be-used-for-any-new-account": "Este representante se utilizará para cualquier nueva cuenta",
+		"this-server-is-used-for-rpc-communication-with-the-nano-node": "Este servidor se utiliza para la comunicación RPC con el nodo nano",
+		"this-server-is-used-to-notify-the-wallet-in-real-time-when": "Este servidor se utiliza para notificar a la billetera en tiempo real cuando llegan nuevas transacciones",
+		"this-will-delete-all-data-related-to-your-wallet-your-seed-a": "Esto eliminará todos los datos relacionados con tu billetera (Tu semilla y cuentas)",
+		"this-will-delete-all-locally-cached-proof-of-work-values": "Esto eliminará todos los valores de Prueba de Trabajo almacenados en caché localmente",
+		"this-will-delete-all-stored-data-and-reset-app-settings-incl": "Esto eliminará TODOS los datos almacenados y restablecerá la configuración de la aplicación, incluyendo tu billetera, libreta de direcciones y más",
+		"update-display-settings": "Actualizar configuración de visualización",
+		"update-server-settings": "Actualizar configuración del servidor",
+		"update-wallet-settings": "Actualizar configuración de la billetera",
+		"use-if-the-api-requires-authentication": "Usar si la API requiere autenticación",
+		"wallet-settings": "Configuración de la billetera",
+		"webgl-support-not-available-set-pow-to-best": "Soporte WebGL no disponible, establece PoW en Mejor",
+		"websocket-server": "Servidor WebSocket",
+		"work-server": "Servidor de trabajo",
+		"you-are-about-to-delete-all-locally-cached-proof-of-work": "Estás a punto de eliminar todos los valores de Prueba de Trabajo almacenados en caché localmente.",
+		"you-are-about-to-delete-all-locally-stored-data-about-your": "Estás a punto de eliminar todos los datos almacenados localmente sobre tu billetera configurada actualmente.",
+		"you-are-about-to-disable-storage-of-all-wallet-data-which": "Estás a punto de deshabilitar el almacenamiento de todos los datos de la billetera, lo que significa que no habrá ninguna billetera configurada la próxima vez que uses Nault."
+	},
+	"configure-wallet": {
+		"new-wallet": {
+			"copy-secret-recovery-mnemonic": "Copiar frase mnemotécnica de recuperación secreta",
+			"copy-secret-recovery-seed": "Copiar semilla de recuperación secreta",
+			"create-wallet": "Crear billetera",
+			"i-have-securely-stored-recovery-phrases": "He almacenado de forma segura la semilla de recuperación secreta y/o la frase mnemotécnica",
+			"please-take-some-time-to-write-down-recovery-phrases": "Por favor, tómate un momento para respaldar la semilla de recuperación secreta y/o la frase mnemotécnica, para poder acceder a esta billetera en el futuro.",
+			"recovery-phrases-alert": {
+				"1": {
+					"1": "Asegúrate de anotar tu semilla y/o frase mnemotécnica o guardarla en un lugar seguro, y ",
+					"2-strong": "nunca la compartas con nadie",
+					"3": "!"
+				},
+				"2": "Es la clave maestra de todas tus cuentas y la única forma de recuperar tus fondos en caso de emergencia."
+			},
+			"recovery-phrases-for-new-wallet": "Frases de recuperación para la nueva billetera",
+			"secret-recovery-mnemonic": "Frase mnemotécnica de recuperación secreta",
+			"secret-recovery-seed": "Semilla de recuperación secreta",
+			"successfully-copied-secret-recovery-mnemonic": "¡Frase mnemotécnica de recuperación secreta copiada exitosamente al portapapeles!",
+			"successfully-copied-secret-recovery-seed": "¡Semilla de recuperación secreta copiada exitosamente al portapapeles!"
+		},
+		"set-wallet-password": {
+			"choose-a-wallet-password-that-will-be-used-to-unlock-this-application": "Elige una contraseña para la billetera que se utilizará para desbloquear esta aplicación.",
+			"errors": {
+				"password-must-be-at-least-x-characters-long": "La contraseña debe tener al menos {{ minCharacters }} caracteres",
+				"passwords-do-not-match": "¡Las contraseñas no coinciden!"
+			},
+			"for-the-safety-of-your-funds-use-a-secure-password": "Por la seguridad de tus fondos, utiliza una contraseña segura.",
+			"set-wallet-password": "Establecer contraseña de la billetera",
+			"while-the-application-is-locked-the-secret-recovery-phrase-will-be-encrypted": "Mientras la aplicación esté bloqueada, la frase de recuperación secreta estará cifrada, lo que impide enviar/recibir fondos y administrar cuentas."
+		}
+	},
+	"general": {
+		"account": "Cuenta",
+		"accounts": "Cuentas",
+		"actions": "Acciones",
+		"address": "Dirección",
+		"address-book": "Libreta de direcciones",
+		"amount": "Cantidad",
+		"app-settings": "Configuración de la aplicación",
+		"avoid": "Evitar",
+		"balance": "Saldo",
+		"block": "Bloque",
+		"block-count": "Recuento de bloques",
+		"blockactions": {
+			"ready-to-receive": "Listo para recibir",
+			"received": "Recibido",
+			"rep-change": "Cambio de representante",
+			"sent": "Enviado",
+			"unknown-action": "Acción desconocida"
+		},
+		"cancel": "Cancelar",
+		"copy": "Copiar",
+		"copy-to-clipboard": "Copiar al portapapeles",
+		"date": "Fecha",
+		"edit": "Editar",
+		"loading": "Cargando...",
+		"name": "Nombre",
+		"network": "Red",
+		"new": "Nuevo",
+		"no": "No",
+		"node-version": "Versión del nodo",
+		"optional": "opcional",
+		"peers-stake-required": "Participación requerida de pares",
+		"peers-stake-total": "Participación total de pares",
+		"receive": "Recibir",
+		"reload": "Recargar",
+		"representative": "Representante",
+		"representatives": "Representantes",
+		"save": "Guardar",
+		"scan-qr-code": "Escanear código QR",
+		"send": "Enviar",
+		"server": "Servidor",
+		"settings": "Configuración",
+		"show-more": "Mostrar más",
+		"show-qr-code": "Mostrar código QR",
+		"successfully-copied-to-clipboard": "¡Copiado exitosamente al portapapeles!",
+		"uncemented-blocks": "Bloques no cementados",
+		"unknown": "Desconocido",
+		"unlock": "Desbloquear",
+		"view-details": "Ver detalles",
+		"view-on-network-explorer": "Ver en el explorador de red",
+		"wallet-must-be-unlocked": "La billetera debe estar desbloqueada",
+		"yes": "Sí"
+	},
+	"receive": {
+		"all-accounts": "Todas las cuentas",
+		"amount-of-x": "Cantidad de {{ currency }}",
+		"copied": "¡Copiado!",
+		"copy-address": "Copiar dirección",
+		"incoming-transactions": "Transacciones entrantes",
+		"minimum-receive-is-set-to": {
+			"1": "La recepción mínima está establecida en",
+			"2": ", las transacciones por debajo de esta cantidad se ocultarán."
+		},
+		"nano-received": "Nano recibido",
+		"receive-nano": "Recibir Nano",
+		"received": "¡Recibido!",
+		"receiving": "Recibiendo...",
+		"requested-amount": "Cantidad solicitada",
+		"select-an-account-to-view-qr-code": "Selecciona una cuenta para ver el código QR",
+		"successfully-received-nano": "¡Nano recibido exitosamente!",
+		"there-was-a-problem-receiving-the-transaction-try-manually": "Hubo un problema al recibir la transacción, ¡intenta manualmente!",
+		"unable-to-find-receiving-account": "No se pudo encontrar la cuenta receptora en la billetera"
+	},
+	"representative-search": {
+		"representative-list-results": "Resultados de la lista de representantes"
+	},
+	"reset-wallet": {
+		"before-continuing-make-sure-you-have-saved-the-nano-seed": "Antes de continuar, asegúrate de haber guardado la semilla de recuperación secreta y/o la frase mnemotécnica de tu billetera actual.",
+		"you-will-not-be-able-to-recover-the-funds-without-a-backup": "NO PODRÁS RECUPERAR LOS FONDOS sin una copia de seguridad de tu billetera configurada actualmente."
+	},
+	"welcome": {
+		"a-secure-open-source-wallet-for-nano": "Una billetera segura y de código abierto para nano",
+		"advanced-security-features": {
+			"1": "Soporte para billeteras hardware Ledger Nano S / Nano X",
+			"2": "Capacidad para crear direcciones multi-firma donde se requieren múltiples claves privadas para acceder y transferir los fondos",
+			"3": "Capacidad para firmar transacciones de forma remota, permitiéndote realizar transacciones de forma segura sin que tus claves secretas salgan de tu dispositivo offline",
+			"nault-includes": "Nault incluye varias opciones para mayor seguridad:",
+			"title": "Características de seguridad avanzadas"
+		},
+		"any-device-anywhere": {
+			"1": "Nault es una aplicación web que se puede usar en la mayoría de los dispositivos de escritorio y portátiles.",
+			"2": {
+				"1": "También puedes usar la aplicación de escritorio para Windows, Linux o Mac. Está disponible para descargar",
+				"2-link-github-releases": "desde la página de lanzamientos de GitHub",
+				"3": "."
+			},
+			"3": {
+				"1": "Todo el código es de código abierto y",
+				"2-link-github": "está disponible en GitHub",
+				"3": "."
+			},
+			"title": "Cualquier dispositivo, en cualquier lugar"
+		},
+		"any-node-always-available": {
+			"1": {
+				"1": "Incluso si el dominio oficial",
+				"2-link-nault": "nault.cc",
+				"3": "se volviera inaccesible, aún podrías usar la",
+				"4-link-github-releases": "aplicación de escritorio",
+				"5": "o",
+				"6-link-github-web-app": "alojar la aplicación web tú mismo",
+				"7": "."
+			},
+			"2": {
+				"1": "En Nault no hay una única fuente de verdad. Toda la información es proporcionada por el servidor que está configurado en la configuración de la aplicación. Eso también significa que no hay un único punto de falla – puedes elegir cualquier",
+				"2-link-nano-node": "nodo nano",
+				"3": "público o autohospedado como servidor."
+			},
+			"title": "Cualquier nodo, siempre disponible"
+		},
+		"configure-wallet": "Configurar billetera",
+		"learn-more": "Aprender más",
+		"secure-the-nano-network": {
+			"1": {
+				"1": "Nano utiliza",
+				"2-link-orv": "consenso ORV",
+				"3": ", que permite a los usuarios controlar cuánto poder de voto tienen los representantes en la red."
+			},
+			"2": "Nault verificará automáticamente el estado de tus representantes y proporcionará recomendaciones para garantizar la seguridad y la resistencia a la censura para todos los participantes de la red.",
+			"title": "Asegura la red Nano"
+		},
+		"view-my-accounts": "Ver mis cuentas",
+		"welcome-back-it-looks-like-your-wallet-is-already-configured": "¡Bienvenido de vuelta! Parece que tu billetera ya está configurada.",
+		"your-keys-your-coins": {
+			"1": "Eres el único responsable de la seguridad de tus fondos.",
+			"2": "Las claves secretas que usas en Nault se almacenan temporalmente en tu dispositivo, cifradas por la contraseña que elijas.",
+			"3": "Nunca se envían datos sensibles a través de internet.",
+			"title": "Tus claves, tus monedas"
+		}
+	}
+}
