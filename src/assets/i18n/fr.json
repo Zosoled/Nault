@@ -308,12 +308,13 @@
 		"avoid": "Éviter",
 		"balance": "Solde",
 		"block": "Bloquer",
+		"block-count": "Nombre de blocs",
 		"blockactions": {
-			"ready-to-receive": "Ready to receive",
-			"received": "Received",
-			"rep-change": "Rep. Change",
-			"sent": "Sent",
-			"unknown-action": "Unknown Action"
+			"ready-to-receive": "Prêt à recevoir",
+			"received": "Reçu",
+			"rep-change": "Changement de représentant",
+			"sent": "Envoyé",
+			"unknown-action": "Action inconnue"
 		},
 		"cancel": "Annuler",
 		"copy": "Copier",
