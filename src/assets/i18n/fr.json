@@ -127,6 +127,7 @@
 		"this-representative-is-marked-as-nf": "Ce représentant a été crée par a Fondation Nano et devrait être évité afin de favoriser la décentralisation.",
 		"this-representative-is-often-offline": "Ce représentant est souvent hors-ligne ({{ percent }} % de fonctionnement)",
 		"this-representative-is-sometimes-offline": "Ce représentant est parfois hors-ligne ({{ percent }} % de fonctionnement).",
+		"unknown-rep": "Représentant inconnu",
 		"unknown-status": "État inconnu",
 		"we-could-not-determine-status-of-this-representative": "Nous n'avons pas pu déterminer l'état de ce représentant.",
 		"we-found-no-issues-with-uptime-or-weight": "Nous n'avons pas trouvé de problème de fonctionnement ou de poids à votre représentant actuel.",
