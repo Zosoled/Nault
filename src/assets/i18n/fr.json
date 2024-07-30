@@ -24,6 +24,88 @@
 		"transactions": "Transactions",
 		"view-transaction-details": "Voir les détails de transaction"
 	},
+	"accounts": {
+		"account-address-confirmed-on-ledger": "Adresse du compte confirmée sur Ledger",
+		"account-address-denied-if-it-is-wrong-do-not-use-the-wallet": "Adresse du compte refusée - si elle est incorrecte, n'utilisez pas le portefeuille !",
+		"add-new-account": "Ajouter un nouveau compte",
+		"advanced-mode": "Mode avancé",
+		"confirm-address-on-ledger": "Confirmer l'adresse sur Ledger",
+		"confirming-account-address-on-ledger-device": "Confirmation de l'adresse du compte sur l'appareil Ledger...",
+		"hide-account": "Masquer le compte",
+		"invalid-account-index-must-be-positive-number": "Index de compte invalide - doit être un nombre positif",
+		"ledger-device-must-be-ready": "L'appareil Ledger doit être prêt",
+		"missing-accounts": {
+			"1": "Comptes manquants ?",
+			"3": "pour importer une adresse précédemment utilisée.",
+			"2-link": "Ajouter un nouveau compte"
+		},
+		"simple-mode": "Mode simple",
+		"successfully-created-new-account": "Nouveau compte {{ account }} créé avec succès",
+		"successfully-removed-account": "Compte {{ account }} supprimé avec succès",
+		"the-account-at-this-index-is-already-loaded": "Le compte à cet index est déjà chargé",
+		"unable-to-add-new-account": "Impossible d'ajouter un nouveau compte : {{ error }}",
+		"unable-to-delete-account": "Impossible de supprimer le compte : {{ error }}",
+		"wallet-locked": "Portefeuille verrouillé",
+		"wallet-is-not-configured": "Le portefeuille n'est pas configuré",
+		"wallet-unlocked": "Portefeuille déverrouillé",
+		"wrong-password": "Mot de passe incorrect. Veuillez réessayer.",
+		"you-can-only-track-up-to-x-accounts-at-a-time": "Vous ne pouvez suivre que {{ accounts }} comptes à la fois.",
+		"you-dont-have-any-accounts-yet": {
+			"1": "Vous n'avez pas encore de comptes,",
+			"3": ".",
+			"2-link": "cliquez ici pour en créer un"
+		}
+	},
+	"address-book": {
+		"a-notification-will-be-shown-whenever-the-address-has-a-new": "Une notification sera affichée chaque fois que l'adresse aura une nouvelle transaction entrante, enverra ou recevra des fonds, ou changera de représentant.",
+		"account-address-copied-to-clipboard": "Adresse du compte copiée dans le presse-papiers !",
+		"account-and-name-are-required": "Le compte et le nom sont requis",
+		"account-id-is-not-a-valid-account": "L'ID du compte n'est pas un compte valide",
+		"add-new-entry": "Ajouter une nouvelle entrée",
+		"address-book-entry-saved-successfully": "Entrée du carnet d'adresses enregistrée avec succès !",
+		"address-book-export": "Exportation du carnet d'adresses",
+		"address-book-export-downloaded": "Exportation du carnet d'adresses téléchargée !",
+		"address-book-import": "Importation du carnet d'adresses",
+		"address-book-too-large-for-a-qr-code": "Carnet d'adresses trop volumineux pour un code QR.",
+		"back-to-address-book": "Retour au carnet d'adresses",
+		"bad-import-data-make-sure-you-selected-a-nault-address-book": "Données d'importation incorrectes, assurez-vous d'avoir sélectionné une exportation de carnet d'adresses Nault",
+		"edit-entry": "Modifier l'entrée",
+		"exchange-deposit-address-main-trading-account-etc": "Adresse de dépôt d'échange, compte de trading principal, etc.",
+		"export-address-book": "Exporter le carnet d'adresses",
+		"export-all-address-book-entries-to-a-file-or-qr-code-url": "Exporter toutes les entrées du carnet d'adresses vers un fichier ou un code QR/URL.",
+		"export-as-file": "Exporter comme fichier",
+		"if-you-need-a-qr-use-fewer-entries-or-shorter-aliases": "Si vous avez besoin d'un QR, utilisez moins d'entrées ou des alias plus courts.",
+		"import-address-book": "Importer le carnet d'adresses",
+		"import-address-book-entries-from-a-file": "Importer les entrées du carnet d'adresses à partir d'un fichier.",
+		"import-export": "Importer / Exporter",
+		"note-exported-address-book-will-not-be-encrypted-by-your-wal": "Note : Le carnet d'adresses exporté ne sera PAS crypté par le mot de passe de votre portefeuille.",
+		"reload-balances": "Recharger les soldes",
+		"scan-the-qr-code-on-any-device-to-import-your-address-book": "Scannez le code QR sur n'importe quel appareil pour importer votre carnet d'adresses !",
+		"show-total-tracked-balance": "Afficher le solde total suivi",
+		"successfully-deleted-address-book-entry": "Entrée du carnet d'adresses supprimée avec succès",
+		"the-balance-will-be-displayed-in-the-address-book": "Le solde sera affiché dans le carnet d'adresses.",
+		"this-name-is-already-in-use-please-use-a-unique-name": "Ce nom est déjà utilisé ! Veuillez utiliser un nom unique",
+		"this-name-is-reserved-for-wallet-accounts-without-a-label": "Ce nom est réservé aux comptes de portefeuille sans étiquette",
+		"this-name-is-reserved-for-decentralized-aliases": "Les noms commençant par @ sont réservés aux alias décentralisés",
+		"track-balance": "Suivre le solde",
+		"track-transactions": "Suivre les transactions",
+		"unable-to-delete-entry": "Impossible de supprimer l'entrée : {{ message }}",
+		"unable-to-parse-import-data-make-sure-you-selected-the-right": "Impossible d'analyser les données d'importation, assurez-vous d'avoir sélectionné le bon fichier !",
+		"unable-to-save-entry": "Impossible d'enregistrer l'entrée : {{ message }}",
+		"updated-address-book-order": "Ordre du carnet d'adresses mis à jour !",
+		"you-can-also-import-your-address-book-by-using-the-url-below": "Vous pouvez également importer votre carnet d'adresses en utilisant l'URL ci-dessous ou le télécharger sous forme de fichier.",
+		"you-can-only-track-the-balance-of-maximum-20-addresses": "Vous ne pouvez suivre le solde que de 20 adresses maximum",
+		"you-can-still-import-your-address-book-by-using-the-url": "Vous pouvez toujours importer votre carnet d'adresses en utilisant l'URL ci-dessous ou le télécharger sous forme de fichier.",
+		"you-can-use-the-address-book-to-store": {
+			"1": "Vous pouvez utiliser le carnet d'adresses pour stocker une étiquette pour vos propres comptes ou pour un accès facile à d'autres adresses dans l'application.",
+			"2": "Il est également possible de suivre le solde et/ou les transactions de n'importe quelle adresse, connu sous le nom de \"watch-only\"."
+		},
+		"you-do-not-have-any-address-book-entries-saved-yet": {
+			"1": "Vous n'avez pas encore d'entrées enregistrées dans le carnet d'adresses,",
+			"3": ".",
+			"2-link": "cliquez ici pour en créer une"
+		}
+	},
 	"change-rep-widget": {
 		"acceptable-representative": "Représentant acceptable",
 		"bad-representative": "Mauvais représentant",
@@ -52,6 +134,46 @@
 		"you-have-marked-this-representative-as-trusted": "Vous avez marqué ce représentant comme étant de confiance, son état restera \"Good\" même en cas de problèmes avec son fonctionnement ou son poids."
 	},
 	"configure-app": {
+		"advanced-options": "Options avancées",
+		"allow-external-requests": "Autoriser les requêtes externes",
+		"api-server": "Serveur API",
+		"app-display-settings-successfully-updated": "Paramètres d'affichage de l'application mis à jour avec succès !",
+		"app-wallet-settings-successfully-updated": "Paramètres du portefeuille de l'application mis à jour avec succès !",
+		"are-you-sure": "Êtes-vous sûr ?",
+		"authorization": "Autorisation",
+		"change-if-your-wallet-should-be-locked-automatically-after": "Modifiez si votre portefeuille doit être verrouillé automatiquement après une certaine période d'inactivité",
+		"change-the-currency-pair-used-when-showing-fiat-values": "Modifiez la paire de devises utilisée pour afficher les valeurs fiat dans l'application. Sélectionnez Aucune pour masquer les paires fiat.",
+		"change-where-your-wallet-is-stored-if-you-select-none-your": "Modifiez l'endroit où votre portefeuille est stocké. Si vous sélectionnez aucun, votre portefeuille est réinitialisé à chaque rechargement.",
+		"change-which-server-is-used-to-communicate-with-the-nano": "Modifiez le serveur utilisé pour communiquer avec le réseau nano",
+		"clear-all-data": {
+			"1": "Vous êtes sur le point de supprimer toutes les données stockées dans Nault, ce qui inclut toutes les données stockées localement sur votre portefeuille actuellement configuré, toutes les entrées de vos carnets d'adresses et de représentants, ainsi que toutes les autres données en cache. Tous les paramètres seront réinitialisés aux valeurs par défaut.",
+			"successfully-deleted-locally-stored-data-and-reset-the": "Les données stockées localement ont été supprimées avec succès et les paramètres ont été réinitialisés !"
+		},
+		"clear-work-cache": "Effacer le cache de travail",
+		"click-to-refresh": "Cliquer pour actualiser",
+		"component": {
+			"wallet-storage": "Stockage du portefeuille"
+		},
+		"configure-nault": "Configurer Nault",
+		"cpu-worker-support-not-available-set-pow-to-best": "Support du worker CPU non disponible, définissez PoW sur Meilleur",
+		"currencies": {
+			"none": "Aucune"
+		},
+		"custom-api-server-has-an-invalid-address": "Le serveur API personnalisé a une adresse invalide.",
+		"custom-update-server-has-an-invalid-address": "Le serveur de mise à jour personnalisé a une adresse invalide.",
+		"decentralized-aliases": "Alias décentralisés",
+		"decentralized-aliases-options": {
+			"disabled": "Désactivé",
+			"enabled": "Activé - Autoriser les requêtes externes vers les domaines d'alias"
+		},
+		"decentralized-aliases-require-external-requests": "Les alias décentralisés nécessitent des requêtes externes vers les domaines d'alias. Lorsque vous essayez de rechercher l'adresse de @madeline@example.com, le domaine example.com peut enregistrer votre adresse IP.",
+		"default-representative": "Représentant par défaut",
+		"default-representative-is-not-a-valid-account": "Le représentant par défaut n'est pas un compte valide",
+		"delete-all-data": "Supprimer TOUTES les données",
+		"delete-wallet-data": "Supprimer les données du portefeuille",
+		"display-settings": "Paramètres d'affichage",
+		"fiat-currency": "Devise FIAT",
+		"for-example-using-basic-auth": "Par exemple, en utilisant l'authentification de base : Basic xyz",
 		"identicon-options": {
 			"1-hour": "1 Heure",
 			"1-minute": "1 Minute",
@@ -63,11 +185,116 @@
 			"x-minutes": "{{ minutes }} Minutes"
 		},
 		"identicons": "Identicônes",
+		"if-automatically-receiving-incoming-transactions-with-the": "Si la réception automatique des transactions entrantes se fait avec le montant le plus élevé en premier ou chronologiquement à partir du temps enregistré. Manuel vous permettra de choisir vos propres transactions depuis l'écran de réception.",
 		"language": "Langue",
+		"leave-blank-to-accept-transactions-of-any-amount": "Laissez vide pour accepter les transactions de n'importe quel montant",
+		"leave-blank-to-use-a-recommended-one": "Laissez vide pour utiliser un recommandé",
+		"lock-after-inactivity": "Verrouiller après inactivité",
+		"min-receive-amount": "Montant min. de réception",
+		"minimum-nano-amount-to-receive-transactions-below-this": "Montant minimum de XNO à recevoir. Les transactions en dessous de ce montant seront ignorées par le portefeuille pour la réception et dans la liste des transactions. Laissez vide ou à 0 pour accepter toutes les transactions.",
+		"multiplier-options": {
+			"default-1x-or-1-64x": "Par défaut (1x ou 1/64x)"
+		},
 		"night-mode": "Mode Nuit",
 		"night-mode-options": {
 			"disabled": "Désactivé",
 			"enabled": "Activé"
+		},
+		"node-stats": "Statistiques du nœud",
+		"note-since-this-server-only-notifies-about-new-transactions": "Note : Comme ce serveur ne notifie que les nouvelles transactions, la plupart des fonctions du portefeuille fonctionnent bien sans lui.",
+		"optional-increased-work-for-transaction-priority-during": "Travail optionnel augmenté pour la priorité des transactions pendant la saturation du réseau. Remplace à la fois les difficultés par défaut SEND 1x et RECEIVE 1/64x.",
+		"pending-options": {
+			"automatic-largest-amount-first": "Automatique - Montant le plus élevé en premier",
+			"automatic-oldest-transaction-first": "Automatique - Transaction la plus ancienne en premier",
+			"manual": "Manuel"
+		},
+		"pow-multiplier": "Multiplicateur PoW",
+		"pow-options": {
+			"best-option-available": "Meilleure option disponible",
+			"client-side-cpu-slowest": "Côté client - CPU (le plus lent)",
+			"client-side-gpu-webgl": "Côté client - GPU/WebGL",
+			"external-custom-server": "Externe - Serveur personnalisé",
+			"external-selected-server": "Externe - Serveur sélectionné"
+		},
+		"pow-source": "Source PoW",
+		"random-server": "Serveur aléatoire",
+		"receive-method": "Méthode de réception",
+		"save-settings-to-update": "Enregistrer les paramètres pour mettre à jour",
+		"server-configuration": "Configuration du serveur",
+		"server-settings": "Paramètres du serveur",
+		"server-settings-successfully-updated": "Paramètres du serveur mis à jour avec succès !",
+		"storage-options": {
+			"browser-local-storage": "Stockage local du navigateur",
+			"none": "Aucun"
+		},
+		"successfully-cleared-the-work-cache": "Le cache de travail a été effacé avec succès !",
+		"successfully-deleted-all-wallet-data": "Toutes les données du portefeuille ont été supprimées avec succès !",
+		"successfully-updated": "Mis à jour avec succès !",
+		"switched-back-to-browser-local-storage-for-the-wallet-data": "Retour au \"Stockage local du navigateur\" pour les données du portefeuille. Utilisez à nouveau le bouton si vous voulez enregistrer d'autres paramètres.",
+		"this-has-to-be-a-valid-authorization-header": "Ceci doit être un en-tête d'autorisation valide.",
+		"this-has-to-be-a-valid-rpc": {
+			"1": "Ceci doit être un",
+			"3": "ou une API compatible avec celui-ci.",
+			"2-link-rpc": "point de terminaison RPC nano valide"
+		},
+		"this-has-to-be-a-valid-websocket": {
+			"1": "Ceci doit être un",
+			"3": "ou une API WebSocket compatible avec celui-ci.",
+			"2-link-websocket": "WebSocket de nœud Nano valide"
+		},
+		"this-has-to-be-a-valid-work": {
+			"1": "Ceci doit être un",
+			"3": "ou une API compatible avec celui-ci. Si votre serveur sur localhost ne fonctionne pas, essayez plutôt l'application de bureau.",
+			"2-link-work": "point de terminaison de serveur de travail Nano valide"
+		},
+		"this-representative-will-be-used-for-any-new-account": "Ce représentant sera utilisé pour tout nouveau compte",
+		"this-server-is-used-for-rpc-communication-with-the-nano-node": "Ce serveur est utilisé pour la communication RPC avec le nœud nano",
+		"this-server-is-used-to-notify-the-wallet-in-real-time-when": "Ce serveur est utilisé pour notifier le portefeuille en temps réel lorsque de nouvelles transactions arrivent",
+		"this-will-delete-all-data-related-to-your-wallet-your-seed-a": "Cela supprimera toutes les données liées à votre portefeuille (votre seed et vos comptes)",
+		"this-will-delete-all-locally-cached-proof-of-work-values": "Cela supprimera toutes les valeurs de preuve de travail mises en cache localement",
+		"this-will-delete-all-stored-data-and-reset-app-settings-incl": "Cela supprimera TOUTES les données stockées et réinitialisera les paramètres de l'application, y compris votre portefeuille, carnet d'adresses et plus encore",
+		"update-display-settings": "Mettre à jour les paramètres d'affichage",
+		"update-server-settings": "Mettre à jour les paramètres du serveur",
+		"update-wallet-settings": "Mettre à jour les paramètres du portefeuille",
+		"use-if-the-api-requires-authentication": "Utilisez si l'API nécessite une authentification",
+		"wallet-settings": "Paramètres du portefeuille",
+		"webgl-support-not-available-set-pow-to-best": "Support WebGL non disponible, définissez PoW sur Meilleur",
+		"websocket-server": "Serveur WebSocket",
+		"work-server": "Serveur de travail",
+		"you-are-about-to-delete-all-locally-cached-proof-of-work": "Vous êtes sur le point de supprimer toutes les valeurs de preuve de travail mises en cache localement.",
+		"you-are-about-to-delete-all-locally-stored-data-about-your": "Vous êtes sur le point de supprimer toutes les données stockées localement concernant votre portefeuille actuellement configuré.",
+		"you-are-about-to-disable-storage-of-all-wallet-data-which": "Vous êtes sur le point de désactiver le stockage de toutes les données du portefeuille, ce qui signifie qu'il n'y aura pas de portefeuille configuré la prochaine fois que vous utiliserez Nault."
+	},
+	"configure-wallet": {
+		"new-wallet": {
+			"copy-secret-recovery-mnemonic": "Copier la phrase mnémonique de récupération secrète",
+			"copy-secret-recovery-seed": "Copier la seed de récupération secrète",
+			"create-wallet": "Créer un portefeuille",
+			"i-have-securely-stored-recovery-phrases": "J'ai stocké en toute sécurité la seed de récupération secrète et/ou la phrase mnémonique",
+			"please-take-some-time-to-write-down-recovery-phrases": "Veuillez prendre le temps de sauvegarder la seed de récupération secrète et/ou la phrase mnémonique, afin de pouvoir accéder à ce portefeuille à l'avenir.",
+			"recovery-phrases-alert": {
+				"1": {
+					"1": "Assurez-vous de noter votre seed et/ou phrase mnémonique ou de les sauvegarder dans un endroit sûr, et ",
+					"3": " !",
+					"2-strong": "ne les partagez jamais avec personne"
+				},
+				"2": "C'est la clé maîtresse de tous vos comptes, et le seul moyen de récupérer vos fonds en cas d'urgence."
+			},
+			"recovery-phrases-for-new-wallet": "Phrases de récupération pour le nouveau portefeuille",
+			"secret-recovery-mnemonic": "Phrase mnémonique de récupération secrète",
+			"secret-recovery-seed": "Seed de récupération secrète",
+			"successfully-copied-secret-recovery-mnemonic": "Phrase mnémonique de récupération secrète copiée avec succès dans le presse-papiers !",
+			"successfully-copied-secret-recovery-seed": "Seed de récupération secrète copiée avec succès dans le presse-papiers !"
+		},
+		"set-wallet-password": {
+			"choose-a-wallet-password-that-will-be-used-to-unlock-this-application": "Choisissez un mot de passe de portefeuille qui sera utilisé pour déverrouiller cette application.",
+			"errors": {
+				"password-must-be-at-least-x-characters-long": "Le mot de passe doit comporter au moins {{ minCharacters }} caractères",
+				"passwords-do-not-match": "Les mots de passe ne correspondent pas !"
+			},
+			"for-the-safety-of-your-funds-use-a-secure-password": "Pour la sécurité de vos fonds, utilisez un mot de passe sécurisé.",
+			"set-wallet-password": "Définir le mot de passe du portefeuille",
+			"while-the-application-is-locked-the-secret-recovery-phrase-will-be-encrypted": "Lorsque l'application est verrouillée, la phrase de récupération secrète sera cryptée, ce qui empêche l'envoi/la réception de fonds et la gestion des comptes."
 		}
 	},
 	"general": {
@@ -83,14 +310,23 @@
 		"address-book": "Répertoire d'adresses",
 		"amount": "Quantité",
 		"app-settings": "Paramêtres de l'application",
+		"avoid": "Éviter",
 		"balance": "Solde",
 		"block": "Bloquer",
 		"cancel": "Annuler",
 		"copy": "Copier",
+		"copy-to-clipboard": "Copier dans le presse-papiers",
 		"date": "Date",
 		"edit": "Modifier",
 		"loading": "Chargement…",
+		"name": "Nom",
+		"network": "Réseau",
 		"new": "Nouveau",
+		"no": "Non",
+		"node-version": "Version du nœud",
+		"optional": "optionnel",
+		"peers-stake-required": "Enjeu requis des pairs",
+		"peers-stake-total": "Enjeu total des pairs",
 		"receive": "Recevoir",
 		"reload": "Recharger",
 		"representative": "Représentant",
@@ -98,10 +334,104 @@
 		"save": "Sauvegarder",
 		"scan-qr-code": "Scanner un code QR",
 		"send": "Envoyer",
+		"server": "Serveur",
 		"settings": "Paramêtres",
 		"show-more": "Voir plus",
 		"show-qr-code": "Voir le code QR",
+		"successfully-copied-to-clipboard": "Copié avec succès dans le presse-papiers !",
+		"uncemented-blocks": "Blocs non cimentés",
 		"unknown": "Inconnu",
-		"view-details": "Voir les détails"
+		"unlock": "Déverrouiller",
+		"view-details": "Voir les détails",
+		"view-on-network-explorer": "Voir sur l'explorateur de réseau",
+		"wallet-must-be-unlocked": "Le portefeuille doit être déverrouillé",
+		"yes": "Oui"
+	},
+	"receive": {
+		"all-accounts": "Tous les comptes",
+		"amount-of-x": "Montant de {{ currency }}",
+		"copied": "Copié !",
+		"copy-address": "Copier l'adresse",
+		"incoming-transactions": "Transactions entrantes",
+		"minimum-receive-is-set-to": {
+			"1": "Le montant minimum de réception est fixé à",
+			"2": ", les transactions en dessous de ce montant seront masquées."
+		},
+		"nano-received": "Nano reçu",
+		"receive-nano": "Recevoir du Nano",
+		"received": "Reçu !",
+		"receiving": "Réception en cours...",
+		"requested-amount": "Montant demandé",
+		"select-an-account-to-view-qr-code": "Sélectionnez un compte pour voir le code QR",
+		"successfully-received-nano": "Nano reçu avec succès !",
+		"there-was-a-problem-receiving-the-transaction-try-manually": "Il y a eu un problème lors de la réception de la transaction, essayez manuellement !",
+		"unable-to-find-receiving-account": "Impossible de trouver le compte de réception dans le portefeuille"
+	},
+	"representative-search": {
+		"representative-list-results": "Résultats de la liste des représentants"
+	},
+	"reset-wallet": {
+		"before-continuing-make-sure-you-have-saved-the-nano-seed": "Avant de continuer, assurez-vous d'avoir sauvegardé la seed de récupération secrète et/ou la phrase mnémonique de votre portefeuille actuel.",
+		"you-will-not-be-able-to-recover-the-funds-without-a-backup": "VOUS NE POURREZ PAS RÉCUPÉRER LES FONDS sans une sauvegarde de votre portefeuille actuellement configuré."
+	},
+	"welcome": {
+		"a-secure-open-source-wallet-for-nano": "Un portefeuille sécurisé et open source pour nano",
+		"advanced-security-features": {
+			"1": "Prise en charge des portefeuilles matériels Ledger Nano S / Nano X",
+			"2": "Possibilité de créer des adresses multi-signatures où plusieurs clés privées sont nécessaires pour accéder et transférer les fonds",
+			"3": "Capacité à signer des transactions à distance, vous permettant d'effectuer des transactions en toute sécurité sans jamais laisser vos clés secrètes quitter votre appareil hors ligne",
+			"nault-includes": "Nault inclut plusieurs options pour une sécurité renforcée :",
+			"title": "Fonctionnalités de sécurité avancées"
+		},
+		"any-device-anywhere": {
+			"1": "Nault est une application web qui peut être utilisée sur la plupart des appareils de bureau et portables.",
+			"2": {
+				"1": "Vous pouvez également utiliser l'application de bureau pour Windows, Linux ou Mac. Elle est disponible en téléchargement",
+				"3": ".",
+				"2-link-github-releases": "depuis la page des versions GitHub"
+			},
+			"3": {
+				"1": "Tout le code est open source et",
+				"3": ".",
+				"2-link-github": "disponible sur GitHub"
+			},
+			"title": "N'importe quel appareil, n'importe où"
+		},
+		"any-node-always-available": {
+			"1": {
+				"1": "Même si le domaine officiel",
+				"3": "devenait inaccessible, vous pourriez toujours utiliser l'",
+				"5": "ou",
+				"7": ".",
+				"2-link-nault": "nault.cc",
+				"4-link-github-releases": "application de bureau",
+				"6-link-github-web-app": "héberger l'application web vous-même"
+			},
+			"2": {
+				"1": "Dans Nault, il n'y a pas de source unique de vérité. Toutes les informations sont fournies par le serveur défini dans les paramètres de l'application. Cela signifie également qu'il n'y a pas de point de défaillance unique - vous pouvez choisir n'importe quel",
+				"3": "public ou auto-hébergé comme serveur.",
+				"2-link-nano-node": "nœud nano"
+			},
+			"title": "N'importe quel nœud, toujours disponible"
+		},
+		"configure-wallet": "Configurer le portefeuille",
+		"learn-more": "En savoir plus",
+		"secure-the-nano-network": {
+			"1": {
+				"1": "Nano utilise le",
+				"3": ", qui permet aux utilisateurs de contrôler le pouvoir de vote des représentants sur le réseau.",
+				"2-link-orv": "consensus ORV"
+			},
+			"2": "Nault vérifiera automatiquement le statut de vos représentants et fournira des recommandations pour assurer la sécurité et la résistance à la censure pour tous les participants du réseau.",
+			"title": "Sécuriser le réseau Nano"
+		},
+		"view-my-accounts": "Voir mes comptes",
+		"welcome-back-it-looks-like-your-wallet-is-already-configured": "Bienvenue ! Il semble que votre portefeuille soit déjà configuré.",
+		"your-keys-your-coins": {
+			"1": "Vous êtes seul responsable de la sécurité de vos fonds.",
+			"2": "Les clés secrètes que vous utilisez dans Nault sont temporairement stockées sur votre appareil, cryptées par le mot de passe que vous choisissez.",
+			"3": "Aucune donnée sensible n'est jamais envoyée sur Internet.",
+			"title": "Vos clés, vos pièces"
+		}
 	}
 }
