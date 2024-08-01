@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { BaseApiAccount, WalletApiAccount, WalletService } from './wallet.service';
 import BigNumber from 'bignumber.js';
+import { BaseApiAccount, WalletApiAccount, WalletService } from './wallet.service';
 import { ApiService } from './api.service';
 import { UtilService } from './util.service';
 import { NinjaService } from './ninja.service';
@@ -20,7 +20,7 @@ export interface RepresentativeStatus {
   warn: boolean;
   known: boolean;
   daysSinceLastVoted: number;
-  uptime: number;
+  uptime: string;
   score: number;
 }
 
@@ -131,6 +131,7 @@ export class RepresentativeService {
 
     // Now, loop through each representative and determine some details about it
     for (const representative of representatives) {
+      console.log('representative: ' + JSON.stringify(representative, null, 4))
       const repOnline = onlineReps.indexOf(representative.account) !== -1;
       const knownRep = this.getRepresentative(representative.account);
       const knownRepNinja = await this.ninja.getAccount(representative.account);
@@ -200,8 +201,6 @@ export class RepresentativeService {
         label = knownRepNinja.alias;
       }
 
-      const uptimeIntervalDays = 7;
-
       if (knownRepNinja && !repStatus.trusted) {
         if (knownRepNinja.closing === true) {
           status = 'alert';
@@ -210,52 +209,20 @@ export class RepresentativeService {
           repStatus.changeRequired = true;
         }
 
-        let uptimeIntervalValue = knownRepNinja.uptime_over.week;
-
-        // temporary fix for knownRepNinja.uptime_over.week always returning 0
-        // uptimeIntervalValue = knownRepNinja.uptime_over.month;
-        // uptimeIntervalDays = 30;
-        // /temporary fix
-
-        // consider uptime value at least 1/<interval days> of daily uptime
-        uptimeIntervalValue = Math.max(
-          uptimeIntervalValue,
-          (knownRepNinja.uptime_over.day / uptimeIntervalDays)
-        );
-
-        if (repOnline === true) {
-          // consider uptime value at least 1% if the rep is currently online
-          uptimeIntervalValue = Math.max(uptimeIntervalValue, 1);
-        }
-
-        repStatus.uptime = uptimeIntervalValue;
+        repStatus.uptime = knownRepNinja.uptime;
         repStatus.score = knownRepNinja.score;
 
-        const msSinceLastVoted = knownRepNinja.lastVoted ? ( Date.now() - new Date(knownRepNinja.lastVoted).getTime() ) : 0;
-        repStatus.daysSinceLastVoted = Math.floor(msSinceLastVoted / 86400000);
-        if (uptimeIntervalValue === 0) {
-          // display a minimum of <interval days> if the uptime value is 0%
-          repStatus.daysSinceLastVoted = Math.max(repStatus.daysSinceLastVoted, uptimeIntervalDays);
-        }
-
-        if (uptimeIntervalValue < 50) {
+        if (repStatus.uptime !== 'good') {
           status = 'alert';
           repStatus.veryLowUptime = true;
           repStatus.warn = true;
           repStatus.changeRequired = true;
-        } else if (uptimeIntervalValue < 60) {
-          if (status !== 'alert') {
-            status = 'warn';
-          }
-          repStatus.lowUptime = true;
-          repStatus.warn = true;
         }
       } else if (knownRepNinja === false) {
         // does not exist (404)
         status = 'alert';
-        repStatus.uptime = 0;
+        repStatus.uptime = 'bad';
         repStatus.veryLowUptime = true;
-        repStatus.daysSinceLastVoted = uptimeIntervalDays;
         repStatus.warn = true;
         repStatus.changeRequired = true;
       } else {
@@ -269,7 +236,7 @@ export class RepresentativeService {
         statusText: status,
         label: label,
         status: repStatus,
-        donationAddress: knownRepNinja?.donation?.account,
+        donationAddress: knownRepNinja?.donation_address,
       };
 
       const fullRep = { ...representative, ...additionalData };
