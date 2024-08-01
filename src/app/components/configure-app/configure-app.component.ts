@@ -1,4 +1,6 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { TranslocoService } from '@jsverse/transloco';
 import { WalletService } from '../../services/wallet.service';
 import { NotificationService } from '../../services/notification.service';
 import { AppSettingsService } from '../../services/app-settings.service';
@@ -10,11 +12,9 @@ import { ApiService } from '../../services/api.service';
 import { WebsocketService } from '../../services/websocket.service';
 import { NodeService } from '../../services/node.service';
 import { UtilService } from '../../services/util.service';
-import { BehaviorSubject } from 'rxjs';
 import { RepresentativeService } from '../../services/representative.service';
 import { NinjaService } from '../../services/ninja.service';
 import { QrModalService } from '../../services/qr-modal.service';
-import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-configure-app',
