@@ -3,31 +3,40 @@ import { HttpClient } from '@angular/common/http';
 import { NotificationService } from './notification.service';
 import { UtilService } from './util.service';
 
+interface Representative {
+  rep_address: string,
+  donation_address: string,
+  weight: number,
+  weight_nano: number,
+  delegators: string
+  uptime: string,
+  synced: number,
+  website: string,
+  location: string,
+  latitude: string,
+  longitude: string,
+  alias: string,
+  username: string,
+  score: number,
+  version: string,
+  protocol: number,
+  database: string
+}
+
 @Injectable()
 export class NinjaService {
 
-  // URL to MyNanoNinja-compatible representative health check API
+  // URL to representative health check API
   // set to empty string to disable
-  ninjaUrl = '';
+  nanoToUrl = 'https://rpc.nano.to';
+
+  // Static JSON list of recommended reps curated by NanoCharts.info
+  nanoChartsUrl = 'https://nanocharts.info/data/representatives-recommended.json'
 
   // null - loading, false - offline, true - online
   status = null;
 
   constructor(private http: HttpClient, private notifications: NotificationService, private util: UtilService) { }
-
-  private async request(action): Promise<any> {
-    if (this.ninjaUrl === '') {
-      return Promise.resolve(null);
-    }
-
-    return await this.http.get(this.ninjaUrl + action).toPromise()
-      .then(res => {
-        return res;
-      })
-      .catch(err => {
-        return;
-      });
-  }
 
   private randomizeByScore(replist: any) {
 
@@ -54,7 +63,13 @@ export class NinjaService {
   }
 
   async recommended(): Promise<any> {
-    return await this.request('accounts/verified');
+    if (this.nanoToUrl === '') {
+      return Promise.resolve(null);
+    }
+
+    this.http.post(this.nanoToUrl, { "action": "reps" } ).subscribe(res => {
+      return res;
+    })
   }
 
   async recommendedRandomized(): Promise<any> {
@@ -76,24 +91,16 @@ export class NinjaService {
   // false, if the representative never voted as part of nano consensus
   // null, if the representative state is unknown (any other error)
   async getAccount(account: string): Promise<any> {
-    if (this.ninjaUrl === '') {
+    if (this.nanoToUrl === '') {
       return Promise.resolve(null);
     }
 
     const REQUEST_TIMEOUT_MS = 10000;
 
     const successPromise =
-      this.http.get(this.ninjaUrl + 'accounts/' + account).toPromise()
-        .then(res => {
-          return res;
-        })
-        .catch(err => {
-          if (err.status === 404) {
-            return false;
-          }
-
-          return null;
-        });
+      this.http.post(this.nanoToUrl, { "action": "rep_info", "account": account }).subscribe(res => {
+        return res
+      })
 
     const timeoutPromise =
       new Promise(resolve => {
