@@ -212,7 +212,7 @@ export class RepresentativeService {
         repStatus.uptime = knownRepNinja.uptime;
         repStatus.score = knownRepNinja.score;
 
-        if (repStatus.uptime !== 'good') {
+        if (repStatus.uptime && repStatus.uptime !== 'good') {
           status = 'alert';
           repStatus.veryLowUptime = true;
           repStatus.warn = true;
