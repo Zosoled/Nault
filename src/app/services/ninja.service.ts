@@ -28,10 +28,11 @@ export class NinjaService {
 
   // URL to representative health check API
   // set to empty string to disable
-  nanoToUrl = 'https://rpc.nano.to';
+  ninjaUrl = 'https://rpc.nano.to'
 
-  // Static JSON list of recommended reps curated by NanoCharts.info
-  nanoChartsUrl = 'https://nanocharts.info/data/representatives-recommended.json'
+  // Backup static JSON list of recommended reps curated by NanoCharts.info
+  //ninjaUrl = 'https://nanocharts.info/data/representatives-recommended.json'
+
 
   // null - loading, false - offline, true - online
   status = null;
@@ -63,11 +64,11 @@ export class NinjaService {
   }
 
   async recommended(): Promise<any> {
-    if (this.nanoToUrl === '') {
+    if (this.ninjaUrl === '') {
       return Promise.resolve(null);
     }
 
-    this.http.post(this.nanoToUrl, { "action": "reps" } ).subscribe(res => {
+    this.http.post(this.ninjaUrl, { action: "reps" } ).subscribe(res => {
       return res;
     })
   }
@@ -91,14 +92,20 @@ export class NinjaService {
   // false, if the representative never voted as part of nano consensus
   // null, if the representative state is unknown (any other error)
   async getAccount(account: string): Promise<any> {
-    if (this.nanoToUrl === '') {
+    if (this.ninjaUrl === '') {
       return Promise.resolve(null);
     }
 
     const REQUEST_TIMEOUT_MS = 10000;
 
+    // Currently not working if rep is not in rep list of nano.to which is out of date
+    // const successPromise =
+    //   this.http.post(this.ninjaUrl, { action: "rep_info", account: account }).subscribe(res => {
+    //     return res
+    //   })
+
     const successPromise =
-      this.http.post(this.nanoToUrl, { "action": "rep_info", "account": account }).subscribe(res => {
+      this.http.post(this.ninjaUrl, { action: "account_info", account: account, pending: true, representative: true, weight: true }).subscribe(res => {
         return res
       })
 
@@ -117,5 +124,4 @@ export class NinjaService {
       timeoutPromise
     ]);
   }
-
 }
