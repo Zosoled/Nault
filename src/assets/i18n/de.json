@@ -1,31 +1,440 @@
 {
+	"account-details": {
+		"account-details": "Kontodetails",
+		"address-book-name-leave-blank-to-remove": "Adressbuchname (leer lassen zum Entfernen)",
+		"advanced-options": "Erweiterte Optionen",
+		"awaiting-confirmation": "Warte auf Bestätigung",
+		"block-signing": "Block-Signierung",
+		"confirmed-blocks": "Bestätigte Blöcke",
+		"copy-recipients-address": "Empfängeradresse kopieren",
+		"copy-representatives-address": "Vertreteradresse kopieren",
+		"copy-senders-address": "Absenderadresse kopieren",
+		"copy-transaction-id": "Transaktions-ID kopieren",
+		"donate-to-representative": "An Vertreter spenden",
+		"enable-remote-signing-multisig": "Fernunterzeichnung / Multisig aktivieren",
+		"external-address": "Externe Adresse",
+		"loading-incoming-transactions": "Lade eingehende Transaktionen...",
+		"loading-transactions": "Lade Transaktionen...",
+		"network-explorer": "Netzwerk-Explorer",
+		"no-label-set": "Kein Label gesetzt",
+		"no-transactions": "Keine Transaktionen",
+		"send-funds-back": "Guthaben zurücksenden",
+		"this-change-has-not-yet-been-confirmed-by-the-network": "Diese Änderung wurde noch nicht vom Netzwerk bestätigt",
+		"this-transaction-has-not-yet-been-confirmed-by-the-network": "Diese Transaktion wurde noch nicht vom Netzwerk bestätigt",
+		"transactions": "Transaktionen",
+		"view-transaction-details": "Transaktionsdetails anzeigen"
+	},
+	"accounts": {
+		"account-address-confirmed-on-ledger": "Kontoadresse auf Ledger bestätigt",
+		"account-address-denied-if-it-is-wrong-do-not-use-the-wallet": "Kontoadresse abgelehnt - wenn sie falsch ist, verwenden Sie die Wallet nicht!",
+		"add-new-account": "Neues Konto hinzufügen",
+		"advanced-mode": "Erweiterter Modus",
+		"confirm-address-on-ledger": "Adresse auf Ledger bestätigen",
+		"confirming-account-address-on-ledger-device": "Bestätige Kontoadresse auf Ledger-Gerät...",
+		"hide-account": "Konto ausblenden",
+		"invalid-account-index-must-be-positive-number": "Ungültiger Kontoindex - muss eine positive Zahl sein",
+		"ledger-device-must-be-ready": "Ledger-Gerät muss bereit sein",
+		"missing-accounts": {
+			"1": "Fehlende Konten?",
+			"2-link": "Neues Konto hinzufügen",
+			"3": "um eine zuvor verwendete Adresse zu importieren."
+		},
+		"simple-mode": "Einfacher Modus",
+		"successfully-created-new-account": "Neues Konto {{ account }} erfolgreich erstellt",
+		"successfully-removed-account": "Konto {{ account }} erfolgreich entfernt",
+		"the-account-at-this-index-is-already-loaded": "Das Konto mit diesem Index ist bereits geladen",
+		"unable-to-add-new-account": "Neues Konto konnte nicht hinzugefügt werden: {{ error }}",
+		"unable-to-delete-account": "Konto konnte nicht gelöscht werden: {{ error }}",
+		"wallet-locked": "Wallet gesperrt",
+		"wallet-is-not-configured": "Wallet ist nicht konfiguriert",
+		"wallet-unlocked": "Wallet entsperrt",
+		"wrong-password": "Falsches Passwort. Bitte versuchen Sie es erneut.",
+		"you-can-only-track-up-to-x-accounts-at-a-time": "Sie können nur bis zu {{ accounts }} Konten gleichzeitig verfolgen.",
+		"you-dont-have-any-accounts-yet": {
+			"1": "Sie haben noch keine Konten,",
+			"2-link": "klicken Sie hier, um eines zu erstellen",
+			"3": "."
+		}
+	},
+	"address-book": {
+		"a-notification-will-be-shown-whenever-the-address-has-a-new": "Eine Benachrichtigung wird angezeigt, wenn die Adresse eine neue eingehende Transaktion hat, Geld sendet oder empfängt oder ihren Vertreter ändert.",
+		"account-address-copied-to-clipboard": "Kontoadresse in die Zwischenablage kopiert!",
+		"account-and-name-are-required": "Konto und Name sind erforderlich",
+		"account-id-is-not-a-valid-account": "Konto-ID ist kein gültiges Konto",
+		"add-new-entry": "Neuen Eintrag hinzufügen",
+		"address-book-entry-saved-successfully": "Adressbucheintrag erfolgreich gespeichert!",
+		"address-book-export": "Adressbuch-Export",
+		"address-book-export-downloaded": "Adressbuch-Export heruntergeladen!",
+		"address-book-import": "Adressbuch-Import",
+		"address-book-too-large-for-a-qr-code": "Adressbuch zu groß für einen QR-Code.",
+		"back-to-address-book": "Zurück zum Adressbuch",
+		"bad-import-data-make-sure-you-selected-a-nault-address-book": "Fehlerhafte Importdaten, stellen Sie sicher, dass Sie einen Nault-Adressbuch-Export ausgewählt haben",
+		"edit-entry": "Eintrag bearbeiten",
+		"exchange-deposit-address-main-trading-account-etc": "Börsen-Einzahlungsadresse, Haupt-Handelskonto, etc.",
+		"export-address-book": "Adressbuch exportieren",
+		"export-all-address-book-entries-to-a-file-or-qr-code-url": "Exportieren Sie alle Adressbucheinträge in eine Datei oder einen QR-Code/URL.",
+		"export-as-file": "Als Datei exportieren",
+		"if-you-need-a-qr-use-fewer-entries-or-shorter-aliases": "Wenn Sie einen QR-Code benötigen, verwenden Sie weniger Einträge oder kürzere Aliase.",
+		"import-address-book": "Adressbuch importieren",
+		"import-address-book-entries-from-a-file": "Adressbucheinträge aus einer Datei importieren.",
+		"import-export": "Import / Export",
+		"note-exported-address-book-will-not-be-encrypted-by-your-wal": "Hinweis: Das exportierte Adressbuch wird NICHT durch Ihr Wallet-Passwort verschlüsselt.",
+		"reload-balances": "Guthaben neu laden",
+		"scan-the-qr-code-on-any-device-to-import-your-address-book": "Scannen Sie den QR-Code auf einem beliebigen Gerät, um Ihr Adressbuch zu importieren!",
+		"show-total-tracked-balance": "Gesamtes verfolgtes Guthaben anzeigen",
+		"successfully-deleted-address-book-entry": "Adressbucheintrag erfolgreich gelöscht",
+		"the-balance-will-be-displayed-in-the-address-book": "Das Guthaben wird im Adressbuch angezeigt.",
+		"this-name-is-already-in-use-please-use-a-unique-name": "Dieser Name wird bereits verwendet! Bitte verwenden Sie einen eindeutigen Namen",
+		"this-name-is-reserved-for-wallet-accounts-without-a-label": "Dieser Name ist für Wallet-Konten ohne Label reserviert",
+		"this-name-is-reserved-for-decentralized-aliases": "Namen, die mit @ beginnen, sind für dezentrale Aliase reserviert",
+		"track-balance": "Guthaben verfolgen",
+		"track-transactions": "Transaktionen verfolgen",
+		"unable-to-delete-entry": "Eintrag konnte nicht gelöscht werden: {{ message }}",
+		"unable-to-parse-import-data-make-sure-you-selected-the-right": "Importdaten konnten nicht analysiert werden, stellen Sie sicher, dass Sie die richtige Datei ausgewählt haben!",
+		"unable-to-save-entry": "Eintrag konnte nicht gespeichert werden: {{ message }}",
+		"updated-address-book-order": "Adressbuchreihenfolge aktualisiert!",
+		"you-can-also-import-your-address-book-by-using-the-url-below": "Sie können Ihr Adressbuch auch importieren, indem Sie die URL unten verwenden oder es als Datei herunterladen.",
+		"you-can-only-track-the-balance-of-maximum-20-addresses": "Sie können das Guthaben von maximal 20 Adressen verfolgen",
+		"you-can-still-import-your-address-book-by-using-the-url": "Sie können Ihr Adressbuch immer noch importieren, indem Sie die URL unten verwenden oder es als Datei herunterladen.",
+		"you-can-use-the-address-book-to-store": {
+			"1": "Sie können das Adressbuch verwenden, um ein Label für Ihre eigenen Konten zu speichern oder für einfachen Zugriff auf andere Adressen in der gesamten Anwendung.",
+			"2": "Es ist auch möglich, das Guthaben und/oder die Transaktionen einer beliebigen Adresse zu verfolgen, bekannt als 'Nur-Beobachten'."
+		},
+		"you-do-not-have-any-address-book-entries-saved-yet": {
+			"1": "Sie haben noch keine Adressbucheinträge gespeichert,",
+			"2-link": "klicken Sie hier, um einen zu erstellen",
+			"3": "."
+		}
+	},
 	"change-rep-widget": {
 		"acceptable-representative": "Akzeptabler Vertreter",
 		"bad-representative": "Schlechter Vertreter",
 		"checking-status": "Prüfe Status...",
 		"good-representative": "Guter Vertreter",
-		"health": "Status",
-		"representative-change-required": "Vetreterwechsel nötig",
-		"representative-for-account": "Vetreter für {{ account }}",
-		"representative-none": "Keinen",
-		"unknown-status": "Unbekannter Status"
+		"health": "Zustand",
+		"it-is-highly-advised-to-switch-to-a-different-representative": "Es wird dringend empfohlen, zu einem anderen Vertreter zu wechseln, um die Sicherheit und Dezentralisierung des Nano-Netzwerks zu verbessern.",
+		"receive-a-transaction-to-configure": "Empfangen Sie eine Transaktion zur Konfiguration",
+		"rep-represents-you": "{{ name }} vertritt Sie im Nano-Konsensprotokoll und stimmt in Ihrem Namen ab.",
+		"representative-change-required": "Vertreterwechsel erforderlich",
+		"representative-for-account": "Vertreter für {{ account }}",
+		"representative-none": "Keiner",
+		"switching-to-a-different-representative-could-improve": "Der Wechsel zu einem anderen Vertreter könnte die Sicherheit und Dezentralisierung des Nano-Netzwerks verbessern.",
+		"this-representative-has-a-high-voting-weight": "Dieser Vertreter hat ein hohes Stimmgewicht (über {{ percent }}%).",
+		"this-representative-has-a-very-high-voting-weight": "Dieser Vertreter hat ein sehr hohes Stimmgewicht (über {{ percent }}%).",
+		"this-representative-has-announced-plans-to-permanently-shutdown": "Dieser Vertreter hat Pläne zur dauerhaften Abschaltung angekündigt.",
+		"this-representative-has-been-offline-for-the-past-days": "Dieser Vertreter war in den letzten {{ days }} Tagen offline.",
+		"this-representative-is-marked-as-avoid": "Dieser Vertreter ist im Vertreterbuch als 'zu vermeiden' markiert.",
+		"this-representative-is-marked-as-nf": "Dieser Vertreter wurde von der Nano Foundation erstellt und sollte zur Erhöhung der Dezentralisierung vermieden werden.",
+		"this-representative-is-often-offline": "Dieser Vertreter ist oft offline ({{ percent }}% Verfügbarkeit)",
+		"this-representative-is-sometimes-offline": "Dieser Vertreter ist manchmal offline ({{ percent }}% Verfügbarkeit).",
+		"unknown-rep": "Unbekannter Vertreter",
+		"unknown-status": "Unbekannter Status",
+		"we-could-not-determine-status-of-this-representative": "Wir konnten den Status dieses Vertreters nicht ermitteln.",
+		"we-found-no-issues-with-uptime-or-weight": "Wir haben keine Probleme mit der Verfügbarkeit oder Gewichtsverteilung Ihres aktuellen Vertreters festgestellt.",
+		"you-can-change-representative-at-any-time": "Sie können den Vertreter jederzeit ändern, indem Sie auf seinen Namen oben klicken.",
+		"you-have-marked-this-representative-as-trusted": "Sie haben diesen Vertreter als vertrauenswürdig markiert, was bedeutet, dass sein Status 'Gut' bleibt, selbst bei schwerwiegenden Problemen mit Verfügbarkeit oder Gewichtsverteilung."
 	},
 	"configure-app": {
-		"language": "Sprache"
+		"advanced-options": "Erweiterte Optionen",
+		"allow-external-requests": "Externe Anfragen erlauben",
+		"api-server": "API-Server",
+		"app-display-settings-successfully-updated": "App-Anzeigeeinstellungen erfolgreich aktualisiert!",
+		"app-wallet-settings-successfully-updated": "App-Wallet-Einstellungen erfolgreich aktualisiert!",
+		"are-you-sure": "Sind Sie sicher?",
+		"authorization": "Autorisierung",
+		"change-if-your-wallet-should-be-locked-automatically-after": "Ändern Sie, ob Ihre Wallet automatisch gesperrt werden soll, nachdem Sie für eine bestimmte Zeit nicht damit interagiert haben",
+		"change-the-currency-pair-used-when-showing-fiat-values": "Ändern Sie das Währungspaar, das bei der Anzeige von Fiat-Werten in der Anwendung verwendet wird. Wählen Sie 'Keine', um Fiat-Paare auszublenden.",
+		"change-where-your-wallet-is-stored-if-you-select-none-your": "Ändern Sie, wo Ihre Wallet gespeichert wird. Wenn Sie 'Keine' auswählen, wird Ihre Wallet bei jedem Neuladen zurückgesetzt.",
+		"change-which-server-is-used-to-communicate-with-the-nano": "Ändern Sie, welcher Server für die Kommunikation mit dem Nano-Netzwerk verwendet wird",
+		"clear-all-data": {
+			"1": "Sie sind dabei, alle in Nault gespeicherten Daten zu löschen, einschließlich aller lokal gespeicherten Daten über Ihre aktuell konfigurierte Wallet, aller Einträge aus Ihrem Adress- und Vertreterbuch und aller anderen zwischengespeicherten Daten. Alle Einstellungen werden auf die Standardwerte zurückgesetzt.",
+			"successfully-deleted-locally-stored-data-and-reset-the": "Lokal gespeicherte Daten erfolgreich gelöscht und Einstellungen zurückgesetzt!"
+		},
+		"clear-work-cache": "Work-Cache leeren",
+		"click-to-refresh": "Zum Aktualisieren klicken",
+		"component": {
+			"wallet-storage": "Wallet-Speicher"
+		},
+		"configure-nault": "Nault konfigurieren",
+		"cpu-worker-support-not-available-set-pow-to-best": "CPU-Worker-Unterstützung nicht verfügbar, setze PoW auf 'Beste'",
+		"currencies": {
+			"none": "Keine"
+		},
+		"custom-api-server-has-an-invalid-address": "Benutzerdefinierter API-Server hat eine ungültige Adresse.",
+		"custom-update-server-has-an-invalid-address": "Benutzerdefinierter Update-Server hat eine ungültige Adresse.",
+		"decentralized-aliases": "Dezentrale Aliase",
+		"decentralized-aliases-options": {
+			"disabled": "Deaktiviert",
+			"enabled": "Aktiviert - Externe Anfragen an Alias-Domains erlauben"
+		},
+		"decentralized-aliases-require-external-requests": "Dezentrale Aliase erfordern externe Anfragen an Alias-Domains. Wenn Sie versuchen, die Adresse von @madeline@example.com nachzuschlagen, kann die Domain example.com Ihre IP-Adresse aufzeichnen.",
+		"default-representative": "Standard-Vertreter",
+		"default-representative-is-not-a-valid-account": "Standard-Vertreter ist kein gültiges Konto",
+		"delete-all-data": "ALLE Daten löschen",
+		"delete-wallet-data": "Wallet-Daten löschen",
+		"display-settings": "Anzeigeeinstellungen",
+		"fiat-currency": "FIAT-Währung",
+		"for-example-using-basic-auth": "Zum Beispiel mit Basic Auth: Basic xyz",
+		"identicon-options": {
+			"1-hour": "1 Stunde",
+			"1-minute": "1 Minute",
+			"nanoidenticons-by-keerifox": "Nanoidenticons (von keerifox)",
+			"natricon-by-appditto": "Natricon (von Appditto)",
+			"never": "Nie",
+			"none": "Keine",
+			"x-hours": "{{ hours }} Stunden",
+			"x-minutes": "{{ minutes }} Minuten"
+		},
+		"identicons": "Identicons",
+		"if-automatically-receiving-incoming-transactions-with-the": "Ob automatisch eingehende Transaktionen mit dem größten Betrag zuerst oder chronologisch ab dem aufgezeichneten Zeitpunkt empfangen werden. Manuell ermöglicht es Ihnen, Ihre eigenen Transaktionen vom Empfangsbildschirm auszuwählen.",
+		"language": "Sprache",
+		"leave-blank-to-accept-transactions-of-any-amount": "Leer lassen, um Transaktionen jeder Höhe zu akzeptieren",
+		"leave-blank-to-use-a-recommended-one": "Leer lassen, um einen empfohlenen zu verwenden",
+		"lock-after-inactivity": "Nach Inaktivität sperren",
+		"min-receive-amount": "Min. Empfangsbetrag",
+		"minimum-nano-amount-to-receive-transactions-below-this": "Minimaler XNO-Betrag zum Empfangen. Transaktionen unter diesem Betrag werden von der Wallet sowohl für den Empfang als auch in der Transaktionsliste ignoriert. Leer oder 0 setzen, um alle Transaktionen zu akzeptieren.",
+		"multiplier-options": {
+			"default-1x-or-1-64x": "Standard (1x oder 1/64x)"
+		},
+		"night-mode": "Nachtmodus",
+		"night-mode-options": {
+			"disabled": "Deaktiviert",
+			"enabled": "Aktiviert"
+		},
+		"node-stats": "Node-Statistiken",
+		"note-since-this-server-only-notifies-about-new-transactions": "Hinweis: Da dieser Server nur über neue Transaktionen benachrichtigt, funktionieren die meisten Wallet-Funktionen auch ohne ihn einwandfrei.",
+		"optional-increased-work-for-transaction-priority-during": "Optionale erhöhte Arbeit für Transaktionspriorität während Netzwerksättigung. Überschreibt sowohl die Standard-SENDEN 1x als auch die EMPFANGEN 1/64x Schwierigkeiten.",
+		"pending-options": {
+			"automatic-largest-amount-first": "Automatisch - Größter Betrag zuerst",
+			"automatic-oldest-transaction-first": "Automatisch - Älteste Transaktion zuerst",
+			"manual": "Manuell"
+		},
+		"pow-multiplier": "PoW-Multiplikator",
+		"pow-options": {
+			"best-option-available": "Beste verfügbare Option",
+			"client-side-cpu-slowest": "Client-seitig - CPU (Langsamste)",
+			"client-side-gpu-webgl": "Client-seitig - GPU/WebGL",
+			"external-custom-server": "Extern - Benutzerdefinierter Server",
+			"external-selected-server": "Extern - Ausgewählter Server"
+		},
+		"pow-source": "PoW-Quelle",
+		"random-server": "Zufälliger Server",
+		"receive-method": "Empfangsmethode",
+		"save-settings-to-update": "Einstellungen speichern, um zu aktualisieren",
+		"server-configuration": "Server-Konfiguration",
+		"server-settings": "Server-Einstellungen",
+		"server-settings-successfully-updated": "Server-Einstellungen erfolgreich aktualisiert!",
+		"storage-options": {
+			"browser-local-storage": "Browser-Lokalspeicher",
+			"none": "Keiner"
+		},
+		"successfully-cleared-the-work-cache": "Work-Cache erfolgreich geleert!",
+		"successfully-deleted-all-wallet-data": "Alle Wallet-Daten erfolgreich gelöscht!",
+		"successfully-updated": "Erfolgreich aktualisiert!",
+		"switched-back-to-browser-local-storage-for-the-wallet-data": "Auf 'Browser-Lokalspeicher' für die Wallet-Daten zurückgeschaltet. Verwenden Sie die Schaltfläche erneut, wenn Sie andere Einstellungen speichern möchten.",
+		"this-has-to-be-a-valid-authorization-header": "Dies muss ein gültiger Autorisierungs-Header sein.",
+		"this-has-to-be-a-valid-rpc": {
+			"1": "Dies muss ein gültiger",
+			"2-link-rpc": "Nano RPC-Endpunkt",
+			"3": "oder eine damit kompatible API sein."
+		},
+		"this-has-to-be-a-valid-websocket": {
+			"1": "Dies muss ein gültiger",
+			"2-link-websocket": "Nano Node WebSocket",
+			"3": "oder eine damit kompatible WebSocket-API sein."
+		},
+		"this-has-to-be-a-valid-work": {
+			"1": "Dies muss ein gültiger",
+			"2-link-work": "Nano Work Server",
+			"3": "Endpunkt oder eine damit kompatible API sein. Wenn Ihr Server auf localhost nicht funktioniert, versuchen Sie stattdessen die Desktop-App."
+		},
+		"this-representative-will-be-used-for-any-new-account": "Dieser Vertreter wird für alle neuen Konten verwendet",
+		"this-server-is-used-for-rpc-communication-with-the-nano-node": "Dieser Server wird für die RPC-Kommunikation mit dem Nano-Node verwendet",
+		"this-server-is-used-to-notify-the-wallet-in-real-time-when": "Dieser Server wird verwendet, um die Wallet in Echtzeit zu benachrichtigen, wenn neue Transaktionen eingehen",
+		"this-will-delete-all-data-related-to-your-wallet-your-seed-a": "Dies löscht alle Daten im Zusammenhang mit Ihrer Wallet (Ihr Seed und Konten)",
+		"this-will-delete-all-locally-cached-proof-of-work-values": "Dies löscht alle lokal zwischengespeicherten Proof of Work-Werte",
+		"this-will-delete-all-stored-data-and-reset-app-settings-incl": "Dies löscht ALLE gespeicherten Daten und setzt die App-Einstellungen zurück, einschließlich Ihrer Wallet, des Adressbuchs und mehr",
+		"update-display-settings": "Anzeigeeinstellungen aktualisieren",
+		"update-server-settings": "Server-Einstellungen aktualisieren",
+		"update-wallet-settings": "Wallet-Einstellungen aktualisieren",
+		"use-if-the-api-requires-authentication": "Verwenden Sie dies, wenn die API eine Authentifizierung erfordert",
+		"wallet-settings": "Wallet-Einstellungen",
+		"webgl-support-not-available-set-pow-to-best": "WebGL-Unterstützung nicht verfügbar, setze PoW auf 'Beste'",
+		"websocket-server": "WebSocket-Server",
+		"you-are-about-to-delete-all-locally-cached-proof-of-work": "Sie sind dabei, alle lokal zwischengespeicherten Proof of Work-Werte zu löschen.",
+		"you-are-about-to-delete-all-locally-stored-data-about-your": "Sie sind dabei, alle lokal gespeicherten Daten über Ihre aktuell konfigurierte Wallet zu löschen.",
+		"you-are-about-to-disable-storage-of-all-wallet-data-which": "Sie sind dabei, die Speicherung aller Wallet-Daten zu deaktivieren, was bedeutet, dass beim nächsten Verwenden von Nault keine Wallet konfiguriert sein wird."
+	},
+	"configure-wallet": {
+		"new-wallet": {
+			"copy-secret-recovery-mnemonic": "Geheime Wiederherstellungs-Mnemonik kopieren",
+			"copy-secret-recovery-seed": "Geheimen Wiederherstellungs-Seed kopieren",
+			"create-wallet": "Wallet erstellen",
+			"i-have-securely-stored-recovery-phrases": "Ich habe den geheimen Wiederherstellungs-Seed und/oder die Mnemonik sicher gespeichert",
+			"please-take-some-time-to-write-down-recovery-phrases": "Bitte nehmen Sie sich etwas Zeit, um den geheimen Wiederherstellungs-Seed und/oder die Mnemonik zu sichern, um in Zukunft auf diese Wallet zugreifen zu können.",
+			"recovery-phrases-alert": {
+				"1": {
+					"1": "Stellen Sie sicher, dass Sie Ihren Seed und/oder Ihre Mnemonik aufschreiben oder an einem sicheren Ort speichern, und ",
+					"2-strong": "teilen Sie sie niemals mit jemandem",
+					"3": "!"
+				},
+				"2": "Es ist der Hauptschlüssel zu allen Ihren Konten und die einzige Möglichkeit, Ihre Gelder in einem Notfall wiederherzustellen."
+			},
+			"recovery-phrases-for-new-wallet": "Wiederherstellungsphrasen für neue Wallet",
+			"secret-recovery-mnemonic": "Geheime Wiederherstellungs-Mnemonik",
+			"secret-recovery-seed": "Geheimer Wiederherstellungs-Seed",
+			"successfully-copied-secret-recovery-mnemonic": "Geheime Wiederherstellungs-Mnemonik erfolgreich in die Zwischenablage kopiert!",
+			"successfully-copied-secret-recovery-seed": "Geheimer Wiederherstellungs-Seed erfolgreich in die Zwischenablage kopiert!"
+		},
+		"set-wallet-password": {
+			"choose-a-wallet-password-that-will-be-used-to-unlock-this-application": "Wählen Sie ein Wallet-Passwort, das zum Entsperren dieser Anwendung verwendet wird.",
+			"errors": {
+				"password-must-be-at-least-x-characters-long": "Das Passwort muss mindestens {{ minCharacters }} Zeichen lang sein",
+				"passwords-do-not-match": "Passwörter stimmen nicht überein!"
+			},
+			"for-the-safety-of-your-funds-use-a-secure-password": "Verwenden Sie für die Sicherheit Ihrer Gelder ein sicheres Passwort.",
+			"set-wallet-password": "Wallet-Passwort festlegen",
+			"while-the-application-is-locked-the-secret-recovery-phrase-will-be-encrypted": "Während die Anwendung gesperrt ist, wird die geheime Wiederherstellungsphrase verschlüsselt, was das Senden/Empfangen von Geldern und die Verwaltung von Konten verhindert."
+		}
 	},
 	"general": {
 		"account": "Konto",
 		"accounts": "Konten",
+		"actions": "Aktionen",
+		"address": "Adresse",
 		"address-book": "Adressbuch",
-		"app-settings": "App Einstellungen",
-		"loading": "Lade...",
+		"amount": "Betrag",
+		"app-settings": "App-Einstellungen",
+		"avoid": "Vermeiden",
+		"balance": "Guthaben",
+		"block": "Block",
+		"block-count": "Block-Anzahl",
+		"blockactions": {
+			"ready-to-receive": "Bereit zum Empfangen",
+			"received": "Empfangen",
+			"rep-change": "Vertreter-Änderung",
+			"sent": "Gesendet",
+			"unknown-action": "Unbekannte Aktion"
+		},
+		"cancel": "Abbrechen",
+		"copy": "Kopieren",
+		"copy-to-clipboard": "In Zwischenablage kopieren",
+		"date": "Datum",
+		"edit": "Bearbeiten",
+		"loading": "Laden...",
+		"name": "Name",
+		"network": "Netzwerk",
 		"new": "Neu",
+		"no": "Nein",
+		"node-version": "Node-Version",
+		"optional": "optional",
+		"peers-stake-required": "Erforderlicher Peer-Einsatz",
+		"peers-stake-total": "Gesamter Peer-Einsatz",
 		"receive": "Empfangen",
+		"reload": "Neu laden",
 		"representative": "Vertreter",
 		"representatives": "Vertreter",
-		"scan-qr-code": "QR Code scannen",
+		"save": "Speichern",
+		"scan-qr-code": "QR-Code scannen",
 		"send": "Senden",
+		"server": "Server",
 		"settings": "Einstellungen",
-		"unknown": "Unbekannt"
+		"show-more": "Mehr anzeigen",
+		"show-qr-code": "QR-Code anzeigen",
+		"successfully-copied-to-clipboard": "Erfolgreich in die Zwischenablage kopiert!",
+		"uncemented-blocks": "Nicht zementierte Blöcke",
+		"unknown": "Unbekannt",
+		"unlock": "Entsperren",
+		"view-details": "Details anzeigen",
+		"view-on-network-explorer": "Im Netzwerk-Explorer anzeigen",
+		"wallet-must-be-unlocked": "Wallet muss entsperrt sein",
+		"yes": "Ja"
+	},
+	"receive": {
+		"all-accounts": "Alle Konten",
+		"amount-of-x": "Betrag in {{ currency }}",
+		"copied": "Kopiert!",
+		"copy-address": "Adresse kopieren",
+		"incoming-transactions": "Eingehende Transaktionen",
+		"minimum-receive-is-set-to": {
+			"1": "Mindestempfangsbetrag ist auf",
+			"2": "gesetzt, Transaktionen unter diesem Betrag werden ausgeblendet."
+		},
+		"nano-received": "Nano empfangen",
+		"receive-nano": "Nano empfangen",
+		"received": "Empfangen!",
+		"receiving": "Empfange...",
+		"requested-amount": "Angeforderter Betrag",
+		"select-an-account-to-view-qr-code": "Wählen Sie ein Konto aus, um den QR-Code anzuzeigen",
+		"successfully-received-nano": "Nano erfolgreich empfangen!",
+		"there-was-a-problem-receiving-the-transaction-try-manually": "Es gab ein Problem beim Empfangen der Transaktion, versuchen Sie es manuell!",
+		"unable-to-find-receiving-account": "Empfangskonto konnte in der Wallet nicht gefunden werden"
+	},
+	"representative-search": {
+		"representative-list-results": "Ergebnisse der Vertreterliste"
+	},
+	"reset-wallet": {
+		"before-continuing-make-sure-you-have-saved-the-nano-seed": "Bevor Sie fortfahren, stellen Sie sicher, dass Sie den geheimen Wiederherstellungs-Seed und/oder die Mnemonik Ihrer aktuellen Wallet gespeichert haben.",
+		"you-will-not-be-able-to-recover-the-funds-without-a-backup": "SIE WERDEN NICHT IN DER LAGE SEIN, DIE GELDER OHNE EIN BACKUP Ihrer aktuell konfigurierten Wallet wiederherzustellen."
+	},
+	"welcome": {
+		"a-secure-open-source-wallet-for-nano": "Eine sichere Open-Source-Wallet für Nano",
+		"advanced-security-features": {
+			"1": "Unterstützung für Ledger Nano S / Nano X Hardware-Wallets",
+			"2": "Möglichkeit, Multi-Signatur-Adressen zu erstellen, bei denen mehrere private Schlüssel erforderlich sind, um auf die Gelder zuzugreifen und sie zu überweisen",
+			"3": "Möglichkeit, Transaktionen fernzusignieren, sodass Sie Transaktionen sicher durchführen können, ohne dass Ihre geheimen Schlüssel jemals Ihr Offline-Gerät verlassen",
+			"nault-includes": "Nault enthält mehrere Optionen für erhöhte Sicherheit:",
+			"title": "Erweiterte Sicherheitsfunktionen"
+		},
+		"any-device-anywhere": {
+			"1": "Nault ist eine Webanwendung, die auf den meisten Desktop- und Mobilgeräten verwendet werden kann.",
+			"2": {
+				"1": "Sie können auch die Desktop-Anwendung für Windows, Linux oder Mac verwenden. Sie ist zum Download verfügbar",
+				"2-link-github-releases": "von der GitHub-Releases-Seite",
+				"3": "."
+			},
+			"3": {
+				"1": "Der gesamte Code ist Open Source und",
+				"2-link-github": "auf GitHub verfügbar",
+				"3": "."
+			},
+			"title": "Jedes Gerät, überall"
+		},
+		"any-node-always-available": {
+			"1": {
+				"1": "Selbst wenn die offizielle",
+				"2-link-nault": "nault.cc",
+				"3": "Domain unzugänglich werden sollte, könnten Sie immer noch die",
+				"4-link-github-releases": "Desktop-Anwendung",
+				"5": "verwenden oder",
+				"6-link-github-web-app": "die Webanwendung selbst hosten",
+				"7": "."
+			},
+			"2": {
+				"1": "In Nault gibt es keine einzige Quelle der Wahrheit. Alle Informationen werden vom Server bereitgestellt, der in den App-Einstellungen festgelegt ist. Das bedeutet auch, dass es keinen einzelnen Punkt des Versagens gibt – Sie können jeden öffentlichen oder selbst gehosteten",
+				"2-link-nano-node": "Nano-Node",
+				"3": "als Server wählen."
+			},
+			"title": "Jeder Node, immer verfügbar"
+		},
+		"configure-wallet": "Wallet konfigurieren",
+		"learn-more": "Mehr erfahren",
+		"secure-the-nano-network": {
+			"1": {
+				"1": "Nano verwendet",
+				"2-link-orv": "ORV-Konsens",
+				"3": ", der es Benutzern ermöglicht, zu kontrollieren, wie viel Stimmgewicht Vertreter im Netzwerk haben."
+			},
+			"2": "Nault überprüft automatisch den Status Ihrer Vertreter und gibt Empfehlungen, um die Sicherheit und Zensurresistenz für alle Netzwerkteilnehmer zu gewährleisten.",
+			"title": "Sichern Sie das Nano-Netzwerk"
+		},
+		"view-my-accounts": "Meine Konten anzeigen",
+		"welcome-back-it-looks-like-your-wallet-is-already-configured": "Willkommen zurück! Es sieht so aus, als wäre Ihre Wallet bereits konfiguriert.",
+		"your-keys-your-coins": {
+			"1": "Sie sind allein für die Sicherheit Ihrer Gelder verantwortlich.",
+			"2": "Geheime Schlüssel, die Sie in Nault verwenden, werden vorübergehend auf Ihrem Gerät gespeichert, verschlüsselt mit dem von Ihnen gewählten Passwort.",
+			"3": "Es werden keine sensiblen Daten über das Internet gesendet.",
+			"title": "Ihre Schlüssel, Ihre Münzen"
+		}
 	}
 }
