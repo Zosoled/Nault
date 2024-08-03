@@ -261,6 +261,7 @@
 		"wallet-settings": "Wallet-Einstellungen",
 		"webgl-support-not-available-set-pow-to-best": "WebGL-Unterstützung nicht verfügbar, setze PoW auf 'Beste'",
 		"websocket-server": "WebSocket-Server",
+    "work-server": "Arbeitsserver",
 		"you-are-about-to-delete-all-locally-cached-proof-of-work": "Sie sind dabei, alle lokal zwischengespeicherten Proof of Work-Werte zu löschen.",
 		"you-are-about-to-delete-all-locally-stored-data-about-your": "Sie sind dabei, alle lokal gespeicherten Daten über Ihre aktuell konfigurierte Wallet zu löschen.",
 		"you-are-about-to-disable-storage-of-all-wallet-data-which": "Sie sind dabei, die Speicherung aller Wallet-Daten zu deaktivieren, was bedeutet, dass beim nächsten Verwenden von Nault keine Wallet konfiguriert sein wird."
