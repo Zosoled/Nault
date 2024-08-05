@@ -100,7 +100,7 @@ class AppUpdater {
     autoUpdater.autoDownload = false;
     autoUpdater.logger = log;
 
-    autoUpdater.on('update-available', (event, releaseNotes, releaseName) => {
+    autoUpdater.on('update-available', () => {
       if (isDownloading) return;
       const dialogOpts = {
         type: 'info',
@@ -121,7 +121,7 @@ class AppUpdater {
       })
     })
 
-    autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+    autoUpdater.on('update-downloaded', () => {
       autoUpdater.quitAndInstall(true, true);
     })
 
