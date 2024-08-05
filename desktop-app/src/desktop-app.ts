@@ -103,7 +103,7 @@ class AppUpdater {
     autoUpdater.on('update-available', () => {
       if (isDownloading) return;
       const dialogOpts = {
-        type: 'info',
+        type: 'info' as const,
         buttons: ['Update', 'Ask Later'],
         title: 'New Version',
         message: 'An update for Nault is available!',
@@ -140,7 +140,7 @@ class AppUpdater {
       mainWindow.setTitle(`Nault - ${autoUpdater.currentVersion}`); // reset title
       showUpdateErrors = false; // disable errors
       const dialogOpts = {
-        type: 'error',
+        type: 'error' as const,
         buttons: ['OK'],
         title: 'Update Error',
         message: 'Something went wrong while downloading Nault.',
