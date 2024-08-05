@@ -8,8 +8,8 @@ import '@angular/localize/init';
 };
 
 // Add global to window, assigning the value of window itself.
-// (window as any).global = window;
-global.Buffer = global.Buffer || require('buffer').Buffer;
+globalThis.Buffer = globalThis.Buffer || require('buffer').Buffer;
+(window as any).global = globalThis;
 
 // Zone JS is included with and required by default for Angular itself.
 import 'zone.js';
