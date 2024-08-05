@@ -200,9 +200,9 @@ function createWindow () {
   });
 
   // Detect link clicks to new windows and open them in the default browser
-  mainWindow.webContents.on('new-window', function(e, externalurl) {
-    e.preventDefault();
-    shell.openExternal(externalurl);
+  mainWindow.webContents.setWindowOpenHandler(details => {
+    shell.openExternal(details.url);
+    return { action: 'deny' };
   });
 
   mainWindow.webContents.on('did-finish-load', function () {
