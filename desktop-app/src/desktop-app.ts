@@ -1,5 +1,3 @@
-import 'babel-polyfill';
-
 import { app, BrowserWindow, shell, Menu, screen, dialog, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import * as url from 'url';
