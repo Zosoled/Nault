@@ -46,7 +46,9 @@
               "punycode",
               "querystring",
               "hw-transport-webusb",
-              "hw-transport-web-ble"
+              "hw-transport-web-ble",
+              "events",
+              "hermes-channel"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
