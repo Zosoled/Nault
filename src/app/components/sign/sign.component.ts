@@ -1,24 +1,24 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import BigNumber from 'bignumber.js';
-import {AddressBookService} from '../../services/address-book.service';
-import {BehaviorSubject} from 'rxjs';
-import {WalletService} from '../../services/wallet.service';
-import {NotificationService} from '../../services/notification.service';
-import {UtilService, StateBlock, TxType} from '../../services/util.service';
-import {WorkPoolService} from '../../services/work-pool.service';
-import {AppSettingsService} from '../../services/app-settings.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {NanoBlockService} from '../../services/nano-block.service';
-import {ApiService} from '../../services/api.service';
-import {PriceService} from '../../services/price.service';
+import hermes from 'hermes-channel';
 import * as QRCode from 'qrcode';
 import * as bip39 from 'bip39';
 import * as bip39Wallet from 'nanocurrency-web';
-import { QrModalService } from '../../services/qr-modal.service';
-import hermes from 'hermes-channel';
 import * as nanocurrency from 'nanocurrency';
+import { AddressBookService } from '../../services/address-book.service';
+import { WalletService } from '../../services/wallet.service';
+import { NotificationService } from '../../services/notification.service';
+import { UtilService, StateBlock, TxType } from '../../services/util.service';
+import { WorkPoolService } from '../../services/work-pool.service';
+import { AppSettingsService } from '../../services/app-settings.service';
+import { NanoBlockService } from '../../services/nano-block.service';
+import { ApiService } from '../../services/api.service';
+import { PriceService } from '../../services/price.service';
+import { QrModalService } from '../../services/qr-modal.service';
 import { MusigService } from '../../services/musig.service';
-import { environment } from 'environments/environment';
+import { environment } from '../../../environments/environment';
 
 const INDEX_MAX = 4294967295;
 // navigation source for cancel command (excluding camera source because too complicated to fix)
