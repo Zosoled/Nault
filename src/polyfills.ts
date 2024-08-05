@@ -1,6 +1,4 @@
-/***************************************************************************************************
- * Load `$localize` onto the global scope - used if i18n tags appear in Angular templates.
- */
+// Load `$localize` onto the global scope - used if i18n tags appear in Angular templates.
 import '@angular/localize/init';
 // https://stackoverflow.com/a/51232137
 (window as any).process = {
@@ -13,16 +11,8 @@ import '@angular/localize/init';
 // (window as any).global = window;
 global.Buffer = global.Buffer || require('buffer').Buffer;
 
+// Zone JS is included with and required by default for Angular itself.
+import 'zone.js';
 
-
-/***************************************************************************************************
- * Zone JS is required by default for Angular itself.
- */
-import 'zone.js';  // Included with Angular CLI.
-
-
-
-/***************************************************************************************************
- * APPLICATION IMPORTS
- */
+// Application imports
 import 'core-js/stable';
