@@ -22,7 +22,8 @@
     "desktop:build": "npm run wallet:build-desktop && npm run desktop:compile",
     "desktop:build-local": "npm run desktop:build && npm run desktop:local",
     "desktop:dev": "npm run desktop:compile && electron desktop-app/dist/desktop-app.js",
-    "desktop:local": "electron-builder -p never"
+    "desktop:local": "electron-builder -p never",
+    "build:desktop:dev": "npm run desktop:build && electron desktop-app/dist/desktop-app.js"
   },
   "private": true,
   "dependencies": {
