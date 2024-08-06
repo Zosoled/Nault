@@ -131,7 +131,6 @@ export class RepresentativeService {
 
     // Now, loop through each representative and determine some details about it
     for (const representative of representatives) {
-      console.log('representative: ' + JSON.stringify(representative, null, 4))
       const repOnline = onlineReps.indexOf(representative.account) !== -1;
       const knownRep = this.getRepresentative(representative.account);
       const knownRepNinja = await this.ninja.getAccount(representative.account);
