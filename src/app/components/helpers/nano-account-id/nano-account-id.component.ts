@@ -11,23 +11,36 @@ export class NanoAccountIdComponent implements OnChanges {
   @Input() accountID: string;
   @Input() middle: 'on'|'off'|'auto'|'break' = 'auto';
 
+  prefix = 'nano_';
   firstCharacters = '';
   middleCharacters = '';
   lastCharacters = '';
+  openingChars = 10;
+  closingChars = 5;
 
   constructor() { }
 
   ngOnChanges() {
+    this.firstCharacters = this.accountID?.slice(0, this.openingChars).replace('nano_', '');
+    this.lastCharacters = this.accountID?.slice(-this.closingChars);
+    this.setMiddle();
+
     if (this.middle === 'auto') this.classes = 'uk-flex';
     if (this.middle === 'break') this.classes = 'nano-address-breakable';
-    const accountID = this.accountID;
-    const openingChars = 10;
-    const closingChars = 5;
-    this.firstCharacters = accountID?.split('').slice(0, openingChars).join('').replace('nano_', '');
-    this.lastCharacters = accountID?.split('').slice(-closingChars).join('');
-    if (this.middle !== 'off') {
-      this.middleCharacters = accountID?.split('').slice(openingChars, -closingChars).join('');
+  }
+
+  middleOn () {
+    if (this.middle = 'off') {
+      this.middle = 'on';
+      this.setMiddle();
     }
   }
 
+  private setMiddle () {
+    if (this.middle === 'off') {
+      this.middleCharacters = '...'
+    } else {
+      this.middleCharacters = this.accountID?.slice(this.openingChars, -this.closingChars)
+    }
+  }
 }
