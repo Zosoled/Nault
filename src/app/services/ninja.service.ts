@@ -3,36 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { NotificationService } from './notification.service';
 import { UtilService } from './util.service';
 
-interface Representative {
-  rep_address: string,
-  donation_address: string,
-  weight: number,
-  weight_nano: number,
-  delegators: string
-  uptime: string,
-  synced: number,
-  website: string,
-  location: string,
-  latitude: string,
-  longitude: string,
-  alias: string,
-  username: string,
-  score: number,
-  version: string,
-  protocol: number,
-  database: string
-}
-
 @Injectable()
 export class NinjaService {
 
   // URL to representative health check API
   // set to empty string to disable
-  ninjaUrl = 'https://rpc.nano.to'
-
-  // Backup static JSON list of recommended reps curated by NanoCharts.info
-  //ninjaUrl = 'https://nanocharts.info/data/representatives-recommended.json'
-
+  ninjaUrl = 'https://node.somenano.com/proxy'
 
   // null - loading, false - offline, true - online
   status = null;
@@ -41,12 +17,29 @@ export class NinjaService {
 
   private randomizeByScore(replist: any) {
 
-    const scores = {};
-    const newlist = [];
+  }
 
-    for (const account of replist) {
-      scores[account.score] = scores[account.score] || [];
-      scores[account.score].push(account);
+  async recommended(): Promise<any> {
+    if (this.ninjaUrl === '') {
+      return Promise.resolve(null);
+    }
+    this.http.post(this.ninjaUrl, { action: 'representatives_online' } ).subscribe(res => {
+      return res;
+    })
+  }
+
+  async recommendedRandomized(): Promise<any> {
+    const onlineReps = await this.recommended();
+    if (onlineReps == null) {
+      return [];
+    }
+
+    const scores = {};
+    const shuffledReps = [];
+
+    for (const onlineRep of onlineReps) {
+      scores[onlineRep.score] = scores[onlineRep.score] || [];
+      scores[onlineRep.score].push(onlineRep);
     }
 
     for (const score in scores) {
@@ -55,37 +48,17 @@ export class NinjaService {
         accounts = this.util.array.shuffle(accounts);
 
         for (const account of accounts) {
-          newlist.unshift(account);
+          shuffledReps.unshift(account);
         }
       }
     }
 
-    return newlist;
-  }
-
-  async recommended(): Promise<any> {
-    if (this.ninjaUrl === '') {
-      return Promise.resolve(null);
-    }
-
-    this.http.post(this.ninjaUrl, { action: "reps" } ).subscribe(res => {
-      return res;
-    })
-  }
-
-  async recommendedRandomized(): Promise<any> {
-    const replist = await this.recommended();
-
-    if (replist == null) {
-      return [];
-    }
-
-    return this.randomizeByScore(replist);
+    return shuffledReps;
   }
 
   async getSuggestedRep(): Promise<any> {
-    const replist = await this.recommendedRandomized();
-    return replist[0];
+    const randomReps = await this.recommendedRandomized();
+    return randomReps[0];
   }
 
   // Expected to return:
@@ -98,16 +71,17 @@ export class NinjaService {
 
     const REQUEST_TIMEOUT_MS = 10000;
 
-    // Currently not working if rep is not in rep list of nano.to which is out of date
-    // const successPromise =
-    //   this.http.post(this.ninjaUrl, { action: "rep_info", account: account }).subscribe(res => {
-    //     return res
-    //   })
-
+    const options = {
+      action: "account_info",
+      account: account,
+      pending: true,
+      representative: true,
+      weight: true
+    }
     const successPromise =
-      this.http.post(this.ninjaUrl, { action: "account_info", account: account, pending: true, representative: true, weight: true }).subscribe(res => {
-        return res
-      })
+      this.http.post(this.ninjaUrl, options).subscribe(res => {
+        return res;
+      });
 
     const timeoutPromise =
       new Promise(resolve => {

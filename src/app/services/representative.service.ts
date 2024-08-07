@@ -134,6 +134,8 @@ export class RepresentativeService {
       const repOnline = onlineReps.indexOf(representative.account) !== -1;
       const knownRep = this.getRepresentative(representative.account);
       const knownRepNinja = await this.ninja.getAccount(representative.account);
+      console.log('knownRepNinja: ' + Object.getOwnPropertyNames(knownRepNinja))
+      // console.log('knownRepNinja: ' + JSON.stringify(knownRepNinja, null, 4))
 
       const nanoWeight = this.util.nano.rawToMnano(representative.weight || 0);
       const percent = this.onlineStakeTotal ? nanoWeight.div(this.onlineStakeTotal).times(100) : new BigNumber(0);
