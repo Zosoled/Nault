@@ -239,12 +239,12 @@
             <ul class="uk-nav-sub">
               <li><a routerLink="/representatives" [queryParams]="" routerLinkActive="active"><div class="label">{{ 'general.representatives' | transloco }}</div></a></li>
               <li><a routerLink="/configure-app" routerLinkActive="active"><div class="label">{{ 'general.app-settings' | transloco }}</div></a></li>
-              <li *ngIf="isConfigured()"><a routerLink="/manage-wallet" routerLinkActive="active"><div class="label">Manage Wallet</div></a></li>
-              <li><a routerLink="/configure-wallet" routerLinkActive="active"><div class="label">Configure New Wallet</div></a></li>
+              <li *ngIf="isConfigured()"><a routerLink="/manage-wallet" routerLinkActive="active"><div class="label">{{ 'general.manage-wallet' | transloco }}</div></a></li>
+              <li><a routerLink="/configure-wallet" routerLinkActive="active"><div class="label">{{ 'configure-wallet.new-wallet.configure-new-wallet' | transloco }}</div></a></li>
             </ul>
           </li>
           <li class="uk-parent">
-            <a href="#">Advanced Tools</a>
+            <a href="#">{{ 'general.advanced-tools' | transloco }}</a>
             <ul class="uk-nav-sub">
               <li><a routerLink="/sweeper" routerLinkActive="active"><div class="label">Wallet Sweeper</div></a></li>
               <li><a routerLink="/remote-signing" routerLinkActive="active"><div class="label">Remote Signing</div></a></li>

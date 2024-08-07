@@ -268,6 +268,7 @@
 	},
 	"configure-wallet": {
 		"new-wallet": {
+			"configure-new-wallet": "Configure New Wallet",
 			"copy-secret-recovery-mnemonic": "Copy Secret Recovery Mnemonic",
 			"copy-secret-recovery-seed": "Copy Secret Recovery Seed",
 			"create-wallet": "Create Wallet",
@@ -304,6 +305,7 @@
 		"actions": "Actions",
 		"address": "Address",
 		"address-book": "Address Book",
+		"advanced-tools": "Advanced Tools",
 		"amount": "Amount",
 		"app-settings": "App Settings",
 		"avoid": "Avoid",
@@ -323,6 +325,7 @@
 		"date": "Date",
 		"edit": "Edit",
 		"loading": "Loading...",
+		"manage-wallet": "Manage Wallet",
 		"name": "Name",
 		"network": "Network",
 		"new": "New",
