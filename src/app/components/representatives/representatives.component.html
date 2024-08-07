@@ -57,7 +57,7 @@
                   </td>
                   <td class="representative-name-column uk-text-truncate rep-container" (click)="addSelectedAccounts(rep.accounts)">
                     <div class="representative-label-container">
-                      <div class="account-label rep">{{ rep.label ? rep.label : 'Unknown Rep' }}</div>
+                      <div class="account-label rep">{{ rep.label ? rep.label : unknown-rep | transloco }}</div>
                       <div class="representative-weight-percentage uk-width-auto uk-flex-inline uk-flex-middle">
                         <div class="value uk-text-small text-half-muted" *ngIf="!rep.percent.isZero()">{{ rep.percent.toFixed(2) }}%</div>
                       </div>
