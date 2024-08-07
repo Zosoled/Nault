@@ -301,7 +301,6 @@
 	},
 	"general": {
 		"account": "Account",
-		"accounts": "Accounts",
 		"actions": "Actions",
 		"address": "Address",
 		"address-book": "Address Book",
@@ -340,7 +339,6 @@
 		"representatives": "Representatives",
 		"save": "Save",
 		"scan-qr-code": "Scan QR Code",
-		"send": "Send",
 		"server": "Server",
 		"settings": "Settings",
 		"show-more": "Show More",
@@ -353,6 +351,11 @@
 		"view-on-network-explorer": "View on Network Explorer",
 		"wallet-must-be-unlocked": "Wallet must be unlocked",
 		"yes": "Yes"
+	},
+	"nav": {
+		"accounts": "Accounts",
+		"receive": "Receive",
+		"send": "Send"
 	},
 	"receive": {
 		"all-accounts": "All Accounts",

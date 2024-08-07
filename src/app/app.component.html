@@ -218,13 +218,13 @@
         </div>
 
         <ul role="navigation" aria-label="Main" class="uk-nav uk-nav-default left-nav" uk-nav>
-          <li><a routerLink="/accounts" routerLinkActive="active"><div class="label">{{ 'general.accounts' | transloco }}</div></a></li>
-          <li><a routerLink="/send" routerLinkActive="active"><div class="label">{{ 'general.send' | transloco }}</div></a></li>
+          <li><a routerLink="/accounts" routerLinkActive="active"><div class="label">{{ 'nav.accounts' | transloco }}</div></a></li>
+          <li><a routerLink="/send" routerLinkActive="active"><div class="label">{{ 'nav.send' | transloco }}</div></a></li>
           <li>
             <a routerLink="/receive" routerLinkActive="active">
               <div uk-grid>
                 <div class="uk-width-3-4">
-                  <div class="label">{{ 'general.receive' | transloco }}</div>
+                  <div class="label">{{ 'nav.receive' | transloco }}</div>
                 </div>
                 <div class="uk-width-1-4 uk-text-center label-new">
                   <span *ngIf="walletService.hasPendingTransactions()" class="uk-badge uk-text-top uk-align-center"><div class="label">{{ 'general.new' | transloco }}</div></span>
