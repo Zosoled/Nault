@@ -747,10 +747,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       return this.notifications.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-wallet-accounts-without-a-label'));
     }
 
-    if ( this.addressBookModel.startsWith('@') === true ) {
-      return this.notifications.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-decentralized-aliases'));
-    }
-
     // Make sure no other entries are using that name
     const accountIdWithSameName = this.addressBook.getAccountIdByName(this.addressBookModel);
 

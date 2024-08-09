@@ -20,7 +20,6 @@ interface AppSettings {
   multiplierSource: number;
   customWorkServer: string;
   pendingOption: string;
-  decentralizedAliasesOption: string;
   serverName: string;
   serverAPI: string | null;
   serverWS: string | null;
@@ -49,7 +48,6 @@ export class AppSettingsService {
     multiplierSource: 1,
     customWorkServer: '',
     pendingOption: 'amount',
-    decentralizedAliasesOption: 'disabled',
     serverName: 'random',
     serverAPI: null,
     serverWS: null,
@@ -218,7 +216,6 @@ export class AppSettingsService {
       multiplierSource: 1,
       customWorkServer: '',
       pendingOption: 'amount',
-      decentralizedAliasesOption: 'disabled',
       serverName: 'random',
       serverAPI: null,
       serverWS: null,

@@ -85,7 +85,6 @@
 		"the-balance-will-be-displayed-in-the-address-book": "余额将显示在地址簿中。",
 		"this-name-is-already-in-use-please-use-a-unique-name": "此名称已被使用！请使用唯一的名称",
 		"this-name-is-reserved-for-wallet-accounts-without-a-label": "此名称保留给没有标签的钱包账户",
-		"this-name-is-reserved-for-decentralized-aliases": "以@开头的名称保留给去中心化别名",
 		"track-balance": "跟踪余额",
 		"track-transactions": "跟踪交易",
 		"unable-to-delete-entry": "无法删除条目：{{ message }}",
@@ -162,12 +161,6 @@
 		},
 		"custom-api-server-has-an-invalid-address": "自定义API服务器地址无效。",
 		"custom-update-server-has-an-invalid-address": "自定义更新服务器地址无效。",
-		"decentralized-aliases": "去中心化别名",
-		"decentralized-aliases-options": {
-			"disabled": "禁用",
-			"enabled": "启用 - 允许对别名域进行外部请求"
-		},
-		"decentralized-aliases-require-external-requests": "去中心化别名需要对别名域进行外部请求。当您尝试查找 @madeline@example.com 的地址时，example.com 域可能会记录您的IP地址。",
 		"default-representative": "默认代表",
 		"default-representative-is-not-a-valid-account": "默认代表不是有效账户",
 		"delete-all-data": "删除所有数据",

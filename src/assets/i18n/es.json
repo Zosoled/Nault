@@ -85,7 +85,6 @@
 		"the-balance-will-be-displayed-in-the-address-book": "El saldo se mostrará en la libreta de direcciones.",
 		"this-name-is-already-in-use-please-use-a-unique-name": "¡Este nombre ya está en uso! Por favor, use un nombre único",
 		"this-name-is-reserved-for-wallet-accounts-without-a-label": "Este nombre está reservado para cuentas de billetera sin etiqueta",
-		"this-name-is-reserved-for-decentralized-aliases": "Los nombres que comienzan con @ están reservados para alias descentralizados",
 		"track-balance": "Rastrear saldo",
 		"track-transactions": "Rastrear transacciones",
 		"unable-to-delete-entry": "No se pudo eliminar la entrada: {{ message }}",
@@ -162,12 +161,6 @@
 		},
 		"custom-api-server-has-an-invalid-address": "El servidor API personalizado tiene una dirección inválida.",
 		"custom-update-server-has-an-invalid-address": "El servidor de actualización personalizado tiene una dirección inválida.",
-		"decentralized-aliases": "Alias descentralizados",
-		"decentralized-aliases-options": {
-			"disabled": "Deshabilitado",
-			"enabled": "Habilitado - Permitir solicitudes externas a dominios de alias"
-		},
-		"decentralized-aliases-require-external-requests": "Los alias descentralizados requieren solicitudes externas a dominios de alias. Cuando intentes buscar la dirección de @madeline@example.com, el dominio example.com puede registrar tu dirección IP.",
 		"default-representative": "Representante predeterminado",
 		"default-representative-is-not-a-valid-account": "El representante predeterminado no es una cuenta válida",
 		"delete-all-data": "Eliminar TODOS los datos",

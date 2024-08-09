@@ -85,7 +85,6 @@
 		"the-balance-will-be-displayed-in-the-address-book": "Das Guthaben wird im Adressbuch angezeigt.",
 		"this-name-is-already-in-use-please-use-a-unique-name": "Dieser Name wird bereits verwendet! Bitte verwenden Sie einen eindeutigen Namen",
 		"this-name-is-reserved-for-wallet-accounts-without-a-label": "Dieser Name ist für Wallet-Konten ohne Label reserviert",
-		"this-name-is-reserved-for-decentralized-aliases": "Namen, die mit @ beginnen, sind für dezentrale Aliase reserviert",
 		"track-balance": "Guthaben verfolgen",
 		"track-transactions": "Transaktionen verfolgen",
 		"unable-to-delete-entry": "Eintrag konnte nicht gelöscht werden: {{ message }}",
@@ -162,12 +161,6 @@
 		},
 		"custom-api-server-has-an-invalid-address": "Benutzerdefinierter API-Server hat eine ungültige Adresse.",
 		"custom-update-server-has-an-invalid-address": "Benutzerdefinierter Update-Server hat eine ungültige Adresse.",
-		"decentralized-aliases": "Dezentrale Aliase",
-		"decentralized-aliases-options": {
-			"disabled": "Deaktiviert",
-			"enabled": "Aktiviert - Externe Anfragen an Alias-Domains erlauben"
-		},
-		"decentralized-aliases-require-external-requests": "Dezentrale Aliase erfordern externe Anfragen an Alias-Domains. Wenn Sie versuchen, die Adresse von @madeline@example.com nachzuschlagen, kann die Domain example.com Ihre IP-Adresse aufzeichnen.",
 		"default-representative": "Standard-Vertreter",
 		"default-representative-is-not-a-valid-account": "Standard-Vertreter ist kein gültiges Konto",
 		"delete-all-data": "ALLE Daten löschen",
