@@ -8,5 +8,11 @@
   "i18n-ally.sourceLanguage": "en",
   "i18n-ally.extract.keyPrefix": "{fileNameWithoutExt}.",
   "i18n-ally.sortKeys": true,
-  "i18n-ally.extract.keyMaxLength": 60
+  "i18n-ally.extract.keyMaxLength": 60,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "package-lock.json": true
+  }
 }
