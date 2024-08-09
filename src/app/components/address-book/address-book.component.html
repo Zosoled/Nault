@@ -223,7 +223,7 @@
 
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-1-3@l">
                 <img *ngIf="addressBookShowQRExport" [src]="addressBookQRExportImg" alt="QR code" style="border-radius: 6px;">
-                <span *ngIf="!addressBookShowQRExport" class="uk-text-warning">{{ 'address-book.address-book-too-large-for-a-qr-code' | transloco }}<br>{{ 'address-book.if-you-need-a-qr-use-fewer-entries-or-shorter-aliases' | transloco }}</span>
+                <span *ngIf="!addressBookShowQRExport" class="uk-text-warning">{{ 'address-book.address-book-too-large-for-a-qr-code' | transloco }}<br>{{ 'address-book.if-you-need-a-qr-use-fewer-entries-or-shorter-names' | transloco }}</span>
               </div>
               <div class="uk-width-1-1@s uk-width-1-2@m uk-width-2-3@l">
                 <span *ngIf="addressBookShowQRExport">{{ 'address-book.scan-the-qr-code-on-any-device-to-import-your-address-book' | transloco }}<br><br></span>

@@ -74,7 +74,6 @@
 		"export-address-book": "Exporter le carnet d'adresses",
 		"export-all-address-book-entries-to-a-file-or-qr-code-url": "Exporter toutes les entrées du carnet d'adresses vers un fichier ou un code QR/URL.",
 		"export-as-file": "Exporter comme fichier",
-		"if-you-need-a-qr-use-fewer-entries-or-shorter-aliases": "Si vous avez besoin d'un QR, utilisez moins d'entrées ou des alias plus courts.",
 		"import-address-book": "Importer le carnet d'adresses",
 		"import-address-book-entries-from-a-file": "Importer les entrées du carnet d'adresses à partir d'un fichier.",
 		"import-export": "Importer / Exporter",
@@ -104,7 +103,8 @@
 			"1": "Vous n'avez pas encore d'entrées enregistrées dans le carnet d'adresses,",
 			"3": ".",
 			"2-link": "cliquez ici pour en créer une"
-		}
+		},
+		"if-you-need-a-qr-use-fewer-entries-or-shorter-names": "Si vous avez besoin d'un QR, utilisez moins d'entrées ou des noms plus courts."
 	},
 	"change-rep-widget": {
 		"acceptable-representative": "Représentant acceptable",
