@@ -32,28 +32,9 @@ export class SendComponent implements OnInit {
 
   accounts = this.walletService.wallet.accounts;
 
-  ALIAS_LOOKUP_DEFAULT_STATE = {
-    fullText: '',
-    name: '',
-    domain: '',
-  }
-
-  aliasLookup = {
-    ...this.ALIAS_LOOKUP_DEFAULT_STATE,
-  }
-  aliasLookupInProgress = {
-    ...this.ALIAS_LOOKUP_DEFAULT_STATE,
-  }
-  aliasLookupLatestSuccessful = {
-    ...this.ALIAS_LOOKUP_DEFAULT_STATE,
-    address: '',
-  }
-  aliasResults$ = new BehaviorSubject([]);
   addressBookResults$ = new BehaviorSubject([]);
-  isDestinationAccountAlias = false;
   showAddressBook = false;
   addressBookMatch = '';
-  addressAliasMatch = '';
 
   amounts = [
     { name: 'XNO', shortName: 'XNO', value: 'mnano' },
@@ -156,7 +137,6 @@ export class SendComponent implements OnInit {
 
     if (params && params.to) {
       this.toAccountID = params.to;
-      this.offerLookupIfDestinationIsAlias();
       this.validateDestination();
       this.sendDestinationType = 'external-address';
     }
@@ -217,10 +197,8 @@ export class SendComponent implements OnInit {
   }
 
   onDestinationAddressInput() {
-    this.addressAliasMatch = '';
     this.addressBookMatch = '';
 
-    this.offerLookupIfDestinationIsAlias();
     this.searchAddressBook();
 
     const destinationAddress = this.toAccountID || '';
@@ -270,188 +248,9 @@ export class SendComponent implements OnInit {
     this.addressBookResults$.next(matches);
   }
 
-  offerLookupIfDestinationIsAlias() {
-    const destinationAddress = this.toAccountID || '';
-
-    const mayBeAnAlias = (
-        ( destinationAddress.startsWith('@') === true )
-      && ( destinationAddress.includes('.') === true )
-      && ( destinationAddress.endsWith('.') === false )
-      && ( destinationAddress.includes('/') === false )
-      && ( destinationAddress.includes('?') === false )
-    );
-
-    if (mayBeAnAlias === false) {
-      this.isDestinationAccountAlias = false;
-      this.aliasLookup = {
-        ...this.ALIAS_LOOKUP_DEFAULT_STATE,
-      };
-      this.aliasResults$.next([]);
-      return
-    }
-
-    this.isDestinationAccountAlias = true;
-
-    let aliasWithoutFirstSymbol = destinationAddress.slice(1).toLowerCase();
-
-    if (aliasWithoutFirstSymbol.startsWith('_@') === true ) {
-      aliasWithoutFirstSymbol = aliasWithoutFirstSymbol.slice(2);
-    }
-
-    const aliasSplitResults = aliasWithoutFirstSymbol.split('@');
-
-    let aliasName = ''
-    let aliasDomain = ''
-
-    if (aliasSplitResults.length === 2) {
-      aliasName = aliasSplitResults[0]
-      aliasDomain = aliasSplitResults[1]
-    } else {
-      aliasDomain = aliasSplitResults[0]
-    }
-
-    this.aliasLookup = {
-      fullText: `@${aliasWithoutFirstSymbol}`,
-      name: aliasName,
-      domain: aliasDomain,
-    };
-
-    this.aliasResults$.next([{ ...this.aliasLookup }]);
-
-    this.toAccountStatus = 1; // Neutral state
-  }
-
-  async lookupAlias() {
-    if (this.aliasLookup.domain === '') {
-      return;
-    }
-
-    if (this.settings.settings.decentralizedAliasesOption === 'disabled') {
-      const UIkit = window['UIkit'];
-      try {
-        await UIkit.modal.confirm(
-          `<p class="uk-alert uk-alert-warning"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span>
-          <span style="font-size: 18px;">
-          ${ this.translocoService.translate('configure-app.decentralized-aliases-require-external-requests') }
-          </span>`,
-          {
-            labels: {
-              cancel: this.translocoService.translate('general.cancel'),
-              ok: this.translocoService.translate('configure-app.allow-external-requests'),
-            }
-          }
-        );
-
-        this.settings.setAppSetting('decentralizedAliasesOption', 'enabled');
-      } catch (err) {
-        // pressed cancel, or a different error
-        return;
-      }
-    }
-
-    this.toAccountStatus = 1; // Neutral state
-
-    const aliasLookup = { ...this.aliasLookup };
-
-    const aliasFullText = aliasLookup.fullText;
-    const aliasDomain = aliasLookup.domain;
-
-    const aliasName = (
-        (aliasLookup.name !== '')
-      ? aliasLookup.name
-      : '_'
-    );
-
-    const lookupUrl =
-      `https://${ aliasDomain }/.well-known/nano-currency.json?names=${ aliasName }`;
-
-    this.aliasLookupInProgress = {
-      ...aliasLookup,
-    };
-
-    await this.http.get<any>(lookupUrl).toPromise()
-      .then(res => {
-        const isOutdatedRequest = (
-            this.aliasLookupInProgress.fullText
-          !== aliasFullText
-        );
-
-        if (isOutdatedRequest === true) {
-          return;
-        }
-
-        this.aliasLookupInProgress = {
-          ...this.ALIAS_LOOKUP_DEFAULT_STATE,
-        };
-
-        try {
-          const aliasesInJsonCount = (
-              ( Array.isArray(res.names) === true )
-            ? res.names.length
-            : 0
-          );
-
-          if (aliasesInJsonCount === 0) {
-            this.toAccountStatus = 0; // Error state
-            this.notificationService.sendWarning(`Alias @${aliasName} not found on ${aliasDomain}`);
-            return;
-          }
-
-          const matchingAccount =
-            res.names.find(
-              (account) =>
-                (account.name === aliasName)
-            );
-
-          if (matchingAccount == null) {
-            this.toAccountStatus = 0; // Error state
-            this.notificationService.sendWarning(`Alias @${aliasName} not found on ${aliasDomain}`);
-            return;
-          }
-
-          if (!this.util.account.isValidAccount(matchingAccount.address)) {
-            this.toAccountStatus = 0; // Error state
-            this.notificationService.sendWarning(`Alias ${aliasFullText} does not have a valid address`);
-            return;
-          }
-
-          this.toAccountID = matchingAccount.address;
-
-          this.aliasLookupLatestSuccessful = {
-            ...aliasLookup,
-            address: this.toAccountID,
-          };
-
-          this.onDestinationAddressInput();
-          this.validateDestination();
-
-          return;
-        } catch(err) {
-          this.toAccountStatus = 0; // Error state
-          this.notificationService.sendWarning(`Unknown error has occurred while trying to lookup ${aliasFullText}`);
-          return;
-        }
-      })
-      .catch(err => {
-        this.aliasLookupInProgress = {
-          ...this.ALIAS_LOOKUP_DEFAULT_STATE,
-        };
-        this.toAccountStatus = 0; // Error state
-
-        if (err.status === 404) {
-          this.notificationService.sendWarning(`No aliases found on ${aliasDomain}`);
-        } else {
-          this.notificationService.sendWarning(`Could not reach domain ${aliasDomain}`);
-        }
-
-        return;
-      });
-  }
-
   selectBookEntry(account) {
     this.showAddressBook = false;
     this.toAccountID = account;
-    this.isDestinationAccountAlias = false;
     this.searchAddressBook();
     this.validateDestination();
   }
@@ -466,21 +265,6 @@ export class SendComponent implements OnInit {
 
     // Remove spaces from the account id
     this.toAccountID = this.toAccountID.replace(/ /g, '');
-
-    this.addressAliasMatch = (
-        (
-            (this.aliasLookupLatestSuccessful.address !== '')
-          && (this.aliasLookupLatestSuccessful.address === this.toAccountID)
-        )
-      ? this.aliasLookupLatestSuccessful.fullText
-      : null
-    );
-
-    if (this.isDestinationAccountAlias === true) {
-      this.addressBookMatch = null;
-      this.toAccountStatus = 1; // Neutral state
-      return;
-    }
 
     this.addressBookMatch = (
         this.addressBookService.getAccountName(this.toAccountID)
@@ -647,7 +431,6 @@ export class SendComponent implements OnInit {
         this.fromAddressBook = '';
         this.toAddressBook = '';
         this.addressBookMatch = '';
-        this.addressAliasMatch = '';
       } else {
         if (!this.walletService.isLedgerWallet()) {
           this.notificationService.sendError(`There was an error sending your transaction, please try again.`);
