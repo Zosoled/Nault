@@ -36,8 +36,8 @@
 		"ledger-device-must-be-ready": "Ledger-Gerät muss bereit sein",
 		"missing-accounts": {
 			"1": "Fehlende Konten?",
-			"2-link": "Neues Konto hinzufügen",
-			"3": "um eine zuvor verwendete Adresse zu importieren."
+			"3": "um eine zuvor verwendete Adresse zu importieren.",
+			"2-link": "Neues Konto hinzufügen"
 		},
 		"simple-mode": "Einfacher Modus",
 		"successfully-created-new-account": "Neues Konto {{ account }} erfolgreich erstellt",
@@ -52,8 +52,8 @@
 		"you-can-only-track-up-to-x-accounts-at-a-time": "Sie können nur bis zu {{ accounts }} Konten gleichzeitig verfolgen.",
 		"you-dont-have-any-accounts-yet": {
 			"1": "Sie haben noch keine Konten,",
-			"2-link": "klicken Sie hier, um eines zu erstellen",
-			"3": "."
+			"3": ".",
+			"2-link": "klicken Sie hier, um eines zu erstellen"
 		}
 	},
 	"address-book": {
@@ -74,7 +74,6 @@
 		"export-address-book": "Adressbuch exportieren",
 		"export-all-address-book-entries-to-a-file-or-qr-code-url": "Exportieren Sie alle Adressbucheinträge in eine Datei oder einen QR-Code/URL.",
 		"export-as-file": "Als Datei exportieren",
-		"if-you-need-a-qr-use-fewer-entries-or-shorter-aliases": "Wenn Sie einen QR-Code benötigen, verwenden Sie weniger Einträge oder kürzere Aliase.",
 		"import-address-book": "Adressbuch importieren",
 		"import-address-book-entries-from-a-file": "Adressbucheinträge aus einer Datei importieren.",
 		"import-export": "Import / Export",
@@ -102,9 +101,10 @@
 		},
 		"you-do-not-have-any-address-book-entries-saved-yet": {
 			"1": "Sie haben noch keine Adressbucheinträge gespeichert,",
-			"2-link": "klicken Sie hier, um einen zu erstellen",
-			"3": "."
-		}
+			"3": ".",
+			"2-link": "klicken Sie hier, um einen zu erstellen"
+		},
+		"if-you-need-a-qr-use-fewer-entries-or-shorter-names": "Wenn Sie einen QR-Code benötigen, verwenden Sie weniger Einträge oder kürzere Namen."
 	},
 	"change-rep-widget": {
 		"acceptable-representative": "Akzeptabler Vertreter",
@@ -235,18 +235,18 @@
 		"this-has-to-be-a-valid-authorization-header": "Dies muss ein gültiger Autorisierungs-Header sein.",
 		"this-has-to-be-a-valid-rpc": {
 			"1": "Dies muss ein gültiger",
-			"2-link-rpc": "Nano RPC-Endpunkt",
-			"3": "oder eine damit kompatible API sein."
+			"3": "oder eine damit kompatible API sein.",
+			"2-link-rpc": "Nano RPC-Endpunkt"
 		},
 		"this-has-to-be-a-valid-websocket": {
 			"1": "Dies muss ein gültiger",
-			"2-link-websocket": "Nano Node WebSocket",
-			"3": "oder eine damit kompatible WebSocket-API sein."
+			"3": "oder eine damit kompatible WebSocket-API sein.",
+			"2-link-websocket": "Nano Node WebSocket"
 		},
 		"this-has-to-be-a-valid-work": {
 			"1": "Dies muss ein gültiger",
-			"2-link-work": "Nano Work Server",
-			"3": "Endpunkt oder eine damit kompatible API sein. Wenn Ihr Server auf localhost nicht funktioniert, versuchen Sie stattdessen die Desktop-App."
+			"3": "Endpunkt oder eine damit kompatible API sein. Wenn Ihr Server auf localhost nicht funktioniert, versuchen Sie stattdessen die Desktop-App.",
+			"2-link-work": "Nano Work Server"
 		},
 		"this-representative-will-be-used-for-any-new-account": "Dieser Vertreter wird für alle neuen Konten verwendet",
 		"this-server-is-used-for-rpc-communication-with-the-nano-node": "Dieser Server wird für die RPC-Kommunikation mit dem Nano-Node verwendet",
@@ -261,7 +261,7 @@
 		"wallet-settings": "Wallet-Einstellungen",
 		"webgl-support-not-available-set-pow-to-best": "WebGL-Unterstützung nicht verfügbar, setze PoW auf 'Beste'",
 		"websocket-server": "WebSocket-Server",
-    "work-server": "Arbeitsserver",
+		"work-server": "Arbeitsserver",
 		"you-are-about-to-delete-all-locally-cached-proof-of-work": "Sie sind dabei, alle lokal zwischengespeicherten Proof of Work-Werte zu löschen.",
 		"you-are-about-to-delete-all-locally-stored-data-about-your": "Sie sind dabei, alle lokal gespeicherten Daten über Ihre aktuell konfigurierte Wallet zu löschen.",
 		"you-are-about-to-disable-storage-of-all-wallet-data-which": "Sie sind dabei, die Speicherung aller Wallet-Daten zu deaktivieren, was bedeutet, dass beim nächsten Verwenden von Nault keine Wallet konfiguriert sein wird."
@@ -276,8 +276,8 @@
 			"recovery-phrases-alert": {
 				"1": {
 					"1": "Stellen Sie sicher, dass Sie Ihren Seed und/oder Ihre Mnemonik aufschreiben oder an einem sicheren Ort speichern, und ",
-					"2-strong": "teilen Sie sie niemals mit jemandem",
-					"3": "!"
+					"3": "!",
+					"2-strong": "teilen Sie sie niemals mit jemandem"
 				},
 				"2": "Es ist der Hauptschlüssel zu allen Ihren Konten und die einzige Möglichkeit, Ihre Gelder in einem Notfall wiederherzustellen."
 			},
@@ -391,30 +391,30 @@
 			"1": "Nault ist eine Webanwendung, die auf den meisten Desktop- und Mobilgeräten verwendet werden kann.",
 			"2": {
 				"1": "Sie können auch die Desktop-Anwendung für Windows, Linux oder Mac verwenden. Sie ist zum Download verfügbar",
-				"2-link-github-releases": "von der GitHub-Releases-Seite",
-				"3": "."
+				"3": ".",
+				"2-link-github-releases": "von der GitHub-Releases-Seite"
 			},
 			"3": {
 				"1": "Der gesamte Code ist Open Source und",
-				"2-link-github": "auf GitHub verfügbar",
-				"3": "."
+				"3": ".",
+				"2-link-github": "auf GitHub verfügbar"
 			},
 			"title": "Jedes Gerät, überall"
 		},
 		"any-node-always-available": {
 			"1": {
 				"1": "Selbst wenn die offizielle",
-				"2-link-nault": "nault.cc",
 				"3": "Domain unzugänglich werden sollte, könnten Sie immer noch die",
-				"4-link-github-releases": "Desktop-Anwendung",
 				"5": "verwenden oder",
-				"6-link-github-web-app": "die Webanwendung selbst hosten",
-				"7": "."
+				"7": ".",
+				"2-link-nault": "nault.cc",
+				"4-link-github-releases": "Desktop-Anwendung",
+				"6-link-github-web-app": "die Webanwendung selbst hosten"
 			},
 			"2": {
 				"1": "In Nault gibt es keine einzige Quelle der Wahrheit. Alle Informationen werden vom Server bereitgestellt, der in den App-Einstellungen festgelegt ist. Das bedeutet auch, dass es keinen einzelnen Punkt des Versagens gibt – Sie können jeden öffentlichen oder selbst gehosteten",
-				"2-link-nano-node": "Nano-Node",
-				"3": "als Server wählen."
+				"3": "als Server wählen.",
+				"2-link-nano-node": "Nano-Node"
 			},
 			"title": "Jeder Node, immer verfügbar"
 		},
@@ -423,8 +423,8 @@
 		"secure-the-nano-network": {
 			"1": {
 				"1": "Nano verwendet",
-				"2-link-orv": "ORV-Konsens",
-				"3": ", der es Benutzern ermöglicht, zu kontrollieren, wie viel Stimmgewicht Vertreter im Netzwerk haben."
+				"3": ", der es Benutzern ermöglicht, zu kontrollieren, wie viel Stimmgewicht Vertreter im Netzwerk haben.",
+				"2-link-orv": "ORV-Konsens"
 			},
 			"2": "Nault überprüft automatisch den Status Ihrer Vertreter und gibt Empfehlungen, um die Sicherheit und Zensurresistenz für alle Netzwerkteilnehmer zu gewährleisten.",
 			"title": "Sichern Sie das Nano-Netzwerk"

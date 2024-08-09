@@ -36,8 +36,8 @@
 		"ledger-device-must-be-ready": "El dispositivo Ledger debe estar listo",
 		"missing-accounts": {
 			"1": "¿Faltan cuentas?",
-			"2-link": "Agregar nueva cuenta",
-			"3": "para importar una dirección utilizada previamente."
+			"3": "para importar una dirección utilizada previamente.",
+			"2-link": "Agregar nueva cuenta"
 		},
 		"simple-mode": "Modo simple",
 		"successfully-created-new-account": "Se creó exitosamente la nueva cuenta {{ account }}",
@@ -52,8 +52,8 @@
 		"you-can-only-track-up-to-x-accounts-at-a-time": "Solo puede rastrear hasta {{ accounts }} cuentas a la vez.",
 		"you-dont-have-any-accounts-yet": {
 			"1": "Aún no tienes ninguna cuenta,",
-			"2-link": "haz clic aquí para crear una",
-			"3": "."
+			"3": ".",
+			"2-link": "haz clic aquí para crear una"
 		}
 	},
 	"address-book": {
@@ -74,7 +74,6 @@
 		"export-address-book": "Exportar libreta de direcciones",
 		"export-all-address-book-entries-to-a-file-or-qr-code-url": "Exportar todas las entradas de la libreta de direcciones a un archivo o código QR/URL.",
 		"export-as-file": "Exportar como archivo",
-		"if-you-need-a-qr-use-fewer-entries-or-shorter-aliases": "Si necesita un QR, use menos entradas o alias más cortos.",
 		"import-address-book": "Importar libreta de direcciones",
 		"import-address-book-entries-from-a-file": "Importar entradas de la libreta de direcciones desde un archivo.",
 		"import-export": "Importar / Exportar",
@@ -102,9 +101,10 @@
 		},
 		"you-do-not-have-any-address-book-entries-saved-yet": {
 			"1": "Aún no tienes ninguna entrada guardada en la libreta de direcciones,",
-			"2-link": "haz clic aquí para crear una",
-			"3": "."
-		}
+			"3": ".",
+			"2-link": "haz clic aquí para crear una"
+		},
+		"if-you-need-a-qr-use-fewer-entries-or-shorter-names": "Si necesita un QR, use menos entradas o nombres más cortos."
 	},
 	"change-rep-widget": {
 		"acceptable-representative": "Representante aceptable",
@@ -235,13 +235,13 @@
 		"this-has-to-be-a-valid-authorization-header": "Esto debe ser un encabezado de Autorización válido.",
 		"this-has-to-be-a-valid-rpc": {
 			"1": "Esto tiene que ser un",
-			"2-link-rpc": "punto final RPC de nano",
-			"3": "válido o una API compatible con él."
+			"3": "válido o una API compatible con él.",
+			"2-link-rpc": "punto final RPC de nano"
 		},
 		"this-has-to-be-a-valid-websocket": {
 			"1": "Esto tiene que ser un",
-			"2-link-websocket": "WebSocket de Nodo Nano",
-			"3": "válido o una API de WebSocket compatible con él."
+			"3": "válido o una API de WebSocket compatible con él.",
+			"2-link-websocket": "WebSocket de Nodo Nano"
 		},
 		"this-has-to-be-a-valid-work": {
 			"1": "Esto tiene que ser un",
@@ -276,8 +276,8 @@
 			"recovery-phrases-alert": {
 				"1": {
 					"1": "Asegúrate de anotar tu semilla y/o frase mnemotécnica o guardarla en un lugar seguro, y ",
-					"2-strong": "nunca la compartas con nadie",
-					"3": "!"
+					"3": "!",
+					"2-strong": "nunca la compartas con nadie"
 				},
 				"2": "Es la clave maestra de todas tus cuentas y la única forma de recuperar tus fondos en caso de emergencia."
 			},
@@ -391,30 +391,30 @@
 			"1": "Nault es una aplicación web que se puede usar en la mayoría de los dispositivos de escritorio y portátiles.",
 			"2": {
 				"1": "También puedes usar la aplicación de escritorio para Windows, Linux o Mac. Está disponible para descargar",
-				"2-link-github-releases": "desde la página de lanzamientos de GitHub",
-				"3": "."
+				"3": ".",
+				"2-link-github-releases": "desde la página de lanzamientos de GitHub"
 			},
 			"3": {
 				"1": "Todo el código es de código abierto y",
-				"2-link-github": "está disponible en GitHub",
-				"3": "."
+				"3": ".",
+				"2-link-github": "está disponible en GitHub"
 			},
 			"title": "Cualquier dispositivo, en cualquier lugar"
 		},
 		"any-node-always-available": {
 			"1": {
 				"1": "Incluso si el dominio oficial",
-				"2-link-nault": "nault.cc",
 				"3": "se volviera inaccesible, aún podrías usar la",
-				"4-link-github-releases": "aplicación de escritorio",
 				"5": "o",
-				"6-link-github-web-app": "alojar la aplicación web tú mismo",
-				"7": "."
+				"7": ".",
+				"2-link-nault": "nault.cc",
+				"4-link-github-releases": "aplicación de escritorio",
+				"6-link-github-web-app": "alojar la aplicación web tú mismo"
 			},
 			"2": {
 				"1": "En Nault no hay una única fuente de verdad. Toda la información es proporcionada por el servidor que está configurado en la configuración de la aplicación. Eso también significa que no hay un único punto de falla – puedes elegir cualquier",
-				"2-link-nano-node": "nodo nano",
-				"3": "público o autohospedado como servidor."
+				"3": "público o autohospedado como servidor.",
+				"2-link-nano-node": "nodo nano"
 			},
 			"title": "Cualquier nodo, siempre disponible"
 		},
@@ -423,8 +423,8 @@
 		"secure-the-nano-network": {
 			"1": {
 				"1": "Nano utiliza",
-				"2-link-orv": "consenso ORV",
-				"3": ", que permite a los usuarios controlar cuánto poder de voto tienen los representantes en la red."
+				"3": ", que permite a los usuarios controlar cuánto poder de voto tienen los representantes en la red.",
+				"2-link-orv": "consenso ORV"
 			},
 			"2": "Nault verificará automáticamente el estado de tus representantes y proporcionará recomendaciones para garantizar la seguridad y la resistencia a la censura para todos los participantes de la red.",
 			"title": "Asegura la red Nano"

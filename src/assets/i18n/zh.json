@@ -1,441 +1,441 @@
 {
-    "account-details": {
-        "account-details": "账户详情",
-        "address-book-name-leave-blank-to-remove": "地址簿名称（留空以删除）",
-        "advanced-options": "高级选项",
-        "awaiting-confirmation": "等待确认",
-        "block-signing": "区块签名",
-        "confirmed-blocks": "已确认区块",
-        "copy-recipients-address": "复制接收方地址",
-        "copy-representatives-address": "复制代表地址",
-        "copy-senders-address": "复制发送方地址",
-        "copy-transaction-id": "复制交易ID",
-        "donate-to-representative": "向代表捐赠",
-        "enable-remote-signing-multisig": "启用远程签名/多重签名",
-        "external-address": "外部地址",
-        "loading-incoming-transactions": "正在加载传入交易...",
-        "loading-transactions": "正在加载交易...",
-        "network-explorer": "网络浏览器",
-        "no-label-set": "未设置标签",
-        "no-transactions": "无交易",
-        "send-funds-back": "退回资金",
-        "this-change-has-not-yet-been-confirmed-by-the-network": "此更改尚未被网络确认",
-        "this-transaction-has-not-yet-been-confirmed-by-the-network": "此交易尚未被网络确认",
-        "transactions": "交易",
-        "view-transaction-details": "查看交易详情"
-    },
-    "accounts": {
-        "account-address-confirmed-on-ledger": "账户地址已在Ledger上确认",
-        "account-address-denied-if-it-is-wrong-do-not-use-the-wallet": "账户地址被拒绝 - 如果有误，请勿使用钱包！",
-        "add-new-account": "添加新账户",
-        "advanced-mode": "高级模式",
-        "confirm-address-on-ledger": "在Ledger上确认地址",
-        "confirming-account-address-on-ledger-device": "正在Ledger设备上确认账户地址...",
-        "hide-account": "隐藏账户",
-        "invalid-account-index-must-be-positive-number": "无效的账户索引 - 必须为正数",
-        "ledger-device-must-be-ready": "Ledger设备必须就绪",
-        "missing-accounts": {
-            "1": "缺少账户？",
-            "2-link": "添加新账户",
-            "3": "以导入之前使用的地址。"
-        },
-        "simple-mode": "简单模式",
-        "successfully-created-new-account": "成功创建新账户 {{ account }}",
-        "successfully-removed-account": "成功移除账户 {{ account }}",
-        "the-account-at-this-index-is-already-loaded": "此索引的账户已加载",
-        "unable-to-add-new-account": "无法添加新账户：{{ error }}",
-        "unable-to-delete-account": "无法删除账户：{{ error }}",
-        "wallet-locked": "钱包已锁定",
-        "wallet-is-not-configured": "钱包未配置",
-        "wallet-unlocked": "钱包已解锁",
-        "wrong-password": "密码错误。请重试。",
-        "you-can-only-track-up-to-x-accounts-at-a-time": "您一次最多只能跟踪 {{ accounts }} 个账户。",
-        "you-dont-have-any-accounts-yet": {
-            "1": "您还没有任何账户，",
-            "2-link": "点击此处创建一个",
-            "3": "。"
-        }
-    },
-    "address-book": {
-        "a-notification-will-be-shown-whenever-the-address-has-a-new": "每当地址有新的传入交易、发送或接收资金，或更改其代表时，都会显示通知。",
-        "account-address-copied-to-clipboard": "账户地址已复制到剪贴板！",
-        "account-and-name-are-required": "账户和名称是必填项",
-        "account-id-is-not-a-valid-account": "账户ID不是有效账户",
-        "add-new-entry": "添加新条目",
-        "address-book-entry-saved-successfully": "地址簿条目保存成功！",
-        "address-book-export": "地址簿导出",
-        "address-book-export-downloaded": "地址簿导出已下载！",
-        "address-book-import": "地址簿导入",
-        "address-book-too-large-for-a-qr-code": "地址簿太大，无法生成二维码。",
-        "back-to-address-book": "返回地址簿",
-        "bad-import-data-make-sure-you-selected-a-nault-address-book": "导入数据有误，请确保您选择了Nault地址簿导出文件",
-        "edit-entry": "编辑条目",
-        "exchange-deposit-address-main-trading-account-etc": "交易所存款地址、主交易账户等",
-        "export-address-book": "导出地址簿",
-        "export-all-address-book-entries-to-a-file-or-qr-code-url": "将所有地址簿条目导出到文件或二维码/URL。",
-        "export-as-file": "导出为文件",
-        "if-you-need-a-qr-use-fewer-entries-or-shorter-aliases": "如果需要二维码，请使用更少的条目或更短的别名。",
-        "import-address-book": "导入地址簿",
-        "import-address-book-entries-from-a-file": "从文件导入地址簿条目。",
-        "import-export": "导入/导出",
-        "note-exported-address-book-will-not-be-encrypted-by-your-wal": "注意：导出的地址簿不会被您的钱包密码加密。",
-        "reload-balances": "重新加载余额",
-        "scan-the-qr-code-on-any-device-to-import-your-address-book": "在任何设备上扫描二维码以导入您的地址簿！",
-        "show-total-tracked-balance": "显示总跟踪余额",
-        "successfully-deleted-address-book-entry": "成功删除地址簿条目",
-        "the-balance-will-be-displayed-in-the-address-book": "余额将显示在地址簿中。",
-        "this-name-is-already-in-use-please-use-a-unique-name": "此名称已被使用！请使用唯一的名称",
-        "this-name-is-reserved-for-wallet-accounts-without-a-label": "此名称保留给没有标签的钱包账户",
-        "this-name-is-reserved-for-decentralized-aliases": "以@开头的名称保留给去中心化别名",
-        "track-balance": "跟踪余额",
-        "track-transactions": "跟踪交易",
-        "unable-to-delete-entry": "无法删除条目：{{ message }}",
-        "unable-to-parse-import-data-make-sure-you-selected-the-right": "无法解析导入数据，请确保您选择了正确的文件！",
-        "unable-to-save-entry": "无法保存条目：{{ message }}",
-        "updated-address-book-order": "已更新地址簿顺序！",
-        "you-can-also-import-your-address-book-by-using-the-url-below": "您也可以使用以下URL导入地址簿或将其下载为文件。",
-        "you-can-only-track-the-balance-of-maximum-20-addresses": "您最多只能跟踪20个地址的余额",
-        "you-can-still-import-your-address-book-by-using-the-url": "您仍然可以使用以下URL导入地址簿或将其下载为文件。",
-        "you-can-use-the-address-book-to-store": {
-            "1": "您可以使用地址簿为自己的账户存储标签，或在整个应用程序中轻松访问其他地址。",
-            "2": "还可以跟踪任何地址的余额和/或交易，称为\"仅观察\"。"
-        },
-        "you-do-not-have-any-address-book-entries-saved-yet": {
-            "1": "您还没有保存任何地址簿条目，",
-            "2-link": "点击此处创建一个",
-            "3": "。"
-        }
-    },
-    "change-rep-widget": {
-        "acceptable-representative": "可接受的代表",
-        "bad-representative": "不良代表",
-        "checking-status": "正在检查状态...",
-        "good-representative": "良好的代表",
-        "health": "健康",
-        "it-is-highly-advised-to-switch-to-a-different-representative": "强烈建议切换到不同的代表，以提高纳米网络的安全性和去中心化程度。",
-        "receive-a-transaction-to-configure": "接收交易以配置",
-        "rep-represents-you": "{{ name }} 在纳米共识协议中代表您进行投票。",
-        "representative-change-required": "需要更改代表",
-        "representative-for-account": "{{ account }} 的代表",
-        "representative-none": "无",
-        "switching-to-a-different-representative-could-improve": "切换到不同的代表可以提高纳米网络的安全性和去中心化程度。",
-        "this-representative-has-a-high-voting-weight": "此代表的投票权重较高（超过 {{ percent }}%）。",
-        "this-representative-has-a-very-high-voting-weight": "此代表的投票权重非常高（超过 {{ percent }}%）。",
-        "this-representative-has-announced-plans-to-permanently-shutdown": "此代表已宣布永久关闭的计划。",
-        "this-representative-has-been-offline-for-the-past-days": "此代表在过去 {{ days }} 天内一直离线。",
-        "this-representative-is-marked-as-avoid": "此代表在代表簿中被标记为\"避免\"。",
-        "this-representative-is-marked-as-nf": "此代表由Nano基金会创建，应避免使用以增加去中心化。",
-        "this-representative-is-often-offline": "此代表经常离线（{{ percent }}% 在线时间）",
-        "this-representative-is-sometimes-offline": "此代表有时离线（{{ percent }}% 在线时间）。",
-        "unknown-rep": "未知代表",
-        "unknown-status": "未知状态",
-        "we-could-not-determine-status-of-this-representative": "我们无法确定此代表的状态。",
-        "we-found-no-issues-with-uptime-or-weight": "我们没有发现您当前代表的在线时间或权重分配存在问题。",
-        "you-can-change-representative-at-any-time": "您可以随时通过点击上面的名称来更改代表。",
-        "you-have-marked-this-representative-as-trusted": "您已将此代表标记为受信任，这意味着即使在线时间或权重分配出现严重问题，其状态仍将保持\"良好\"。"
-    },
-    "configure-app": {
-        "advanced-options": "高级选项",
-        "allow-external-requests": "允许外部请求",
-        "api-server": "API服务器",
-        "app-display-settings-successfully-updated": "应用显示设置更新成功！",
-        "app-wallet-settings-successfully-updated": "应用钱包设置更新成功！",
-        "are-you-sure": "您确定吗？",
-        "authorization": "授权",
-        "change-if-your-wallet-should-be-locked-automatically-after": "更改您的钱包在一段时间未与之交互后是否应自动锁定",
-        "change-the-currency-pair-used-when-showing-fiat-values": "更改在应用程序中显示法定货币值时使用的货币对。选择\"无\"以隐藏法定货币对。",
-        "change-where-your-wallet-is-stored-if-you-select-none-your": "更改钱包的存储位置。如果选择\"无\"，每次重新加载时都会重置您的钱包。",
-        "change-which-server-is-used-to-communicate-with-the-nano": "更改用于与纳米网络通信的服务器",
-        "clear-all-data": {
-            "1": "您即将删除存储在Nault中的所有数据，包括有关当前配置的钱包的所有本地存储数据、地址和代表簿中的所有条目以及任何其他缓存数据。所有设置将重置为默认值。",
-            "successfully-deleted-locally-stored-data-and-reset-the": "成功删除本地存储的数据并重置设置！"
-        },
-        "clear-work-cache": "清除工作缓存",
-        "click-to-refresh": "点击刷新",
-        "component": {
-            "wallet-storage": "钱包存储"
-        },
-        "configure-nault": "配置Nault",
-        "cpu-worker-support-not-available-set-pow-to-best": "CPU工作支持不可用，请将PoW设置为\"最佳\"",
-        "currencies": {
-            "none": "无"
-        },
-        "custom-api-server-has-an-invalid-address": "自定义API服务器地址无效。",
-        "custom-update-server-has-an-invalid-address": "自定义更新服务器地址无效。",
-        "decentralized-aliases": "去中心化别名",
-        "decentralized-aliases-options": {
-            "disabled": "禁用",
-            "enabled": "启用 - 允许对别名域进行外部请求"
-        },
-        "decentralized-aliases-require-external-requests": "去中心化别名需要对别名域进行外部请求。当您尝试查找 @madeline@example.com 的地址时，example.com 域可能会记录您的IP地址。",
-        "default-representative": "默认代表",
-        "default-representative-is-not-a-valid-account": "默认代表不是有效账户",
-        "delete-all-data": "删除所有数据",
-        "delete-wallet-data": "删除钱包数据",
-        "display-settings": "显示设置",
-        "fiat-currency": "法定货币",
-        "for-example-using-basic-auth": "例如使用基本认证：Basic xyz",
-        "identicon-options": {
-            "1-hour": "1小时",
-            "1-minute": "1分钟",
-            "nanoidenticons-by-keerifox": "Nanoidenticons（由keerifox提供）",
-            "natricon-by-appditto": "Natricon（由Appditto提供）",
-            "never": "永不",
-            "none": "无",
-            "x-hours": "{{ hours }}小时",
-            "x-minutes": "{{ minutes }}分钟"
-        },
-        "identicons": "身份图标",
-        "if-automatically-receiving-incoming-transactions-with-the": "如果自动接收传入交易，是优先接收金额最大的还是按记录时间顺序接收。手动将允许您在接收界面自行选择交易。",
-        "language": "语言",
-        "leave-blank-to-accept-transactions-of-any-amount": "留空以接受任何金额的交易",
-        "leave-blank-to-use-a-recommended-one": "留空以使用推荐的代表",
-        "lock-after-inactivity": "闲置后锁定",
-        "min-receive-amount": "最小接收金额",
-        "minimum-nano-amount-to-receive-transactions-below-this": "接收交易的最小XNO金额。低于此金额的交易将被钱包忽略，不会接收也不会显示在交易列表中。设置为空白或0以接受所有交易。",
-        "multiplier-options": {
-            "default-1x-or-1-64x": "默认（1x或1/64x）"
-        },
-        "night-mode": "夜间模式",
-        "night-mode-options": {
-            "disabled": "禁用",
-            "enabled": "启用"
-        },
-        "node-stats": "节点统计",
-        "note-since-this-server-only-notifies-about-new-transactions": "注意：由于此服务器只通知新交易，大多数钱包功能无需它也能正常工作。",
-        "optional-increased-work-for-transaction-priority-during": "网络饱和时可选择增加工作量以提高交易优先级。覆盖默认的发送1x和接收1/64x难度。",
-        "pending-options": {
-            "automatic-largest-amount-first": "自动 - 优先处理最大金额",
-            "automatic-oldest-transaction-first": "自动 - 优先处理最早交易",
-            "manual": "手动"
-        },
-        "pow-multiplier": "PoW乘数",
-        "pow-options": {
-            "best-option-available": "最佳可用选项",
-            "client-side-cpu-slowest": "客户端 - CPU（最慢）",
-            "client-side-gpu-webgl": "客户端 - GPU/WebGL",
-            "external-custom-server": "外部 - 自定义服务器",
-            "external-selected-server": "外部 - 选定服务器"
-        },
-        "pow-source": "PoW来源",
-        "random-server": "随机服务器",
-        "receive-method": "接收方式",
-        "save-settings-to-update": "保存设置以更新",
-        "server-configuration": "服务器配置",
-        "server-settings": "服务器设置",
-        "server-settings-successfully-updated": "服务器设置更新成功！",
-        "storage-options": {
-            "browser-local-storage": "浏览器本地存储",
-            "none": "无"
-        },
-        "successfully-cleared-the-work-cache": "成功清除工作缓存！",
-        "successfully-deleted-all-wallet-data": "成功删除所有钱包数据！",
-        "successfully-updated": "更新成功！",
-        "switched-back-to-browser-local-storage-for-the-wallet-data": "已切换回\"浏览器本地存储\"以存储钱包数据。如果您想保存其他设置，请再次使用该按钮。",
-        "this-has-to-be-a-valid-authorization-header": "这必须是有效的Authorization头。",
-        "this-has-to-be-a-valid-rpc": {
-            "1": "这必须是有效的",
-            "2-link-rpc": "nano RPC端点",
-            "3": "或与之兼容的API。"
-        },
-        "this-has-to-be-a-valid-websocket": {
-            "1": "这必须是有效的",
-            "2-link-websocket": "Nano节点WebSocket",
-            "3": "或与之兼容的WebSocket API。"
-        },
-        "this-has-to-be-a-valid-work": {
-            "1": "这必须是有效的",
-            "2-link-work": "Nano工作服务器",
-            "3": "端点或与之兼容的API。如果本地主机上的服务器不工作，请尝试使用桌面应用程序。"
-        },
-        "this-representative-will-be-used-for-any-new-account": "此代表将用于任何新账户",
-        "this-server-is-used-for-rpc-communication-with-the-nano-node": "此服务器用于与nano节点进行RPC通信",
-        "this-server-is-used-to-notify-the-wallet-in-real-time-when": "此服务器用于在新交易到达时实时通知钱包",
-        "this-will-delete-all-data-related-to-your-wallet-your-seed-a": "这将删除与您的钱包相关的所有数据（您的种子和账户）",
-        "this-will-delete-all-locally-cached-proof-of-work-values": "这将删除所有本地缓存的工作量证明值",
-        "this-will-delete-all-stored-data-and-reset-app-settings-incl": "这将删除所有存储的数据并重置应用程序设置，包括您的钱包、地址簿等",
-        "update-display-settings": "更新显示设置",
-        "update-server-settings": "更新服务器设置",
-        "update-wallet-settings": "更新钱包设置",
-        "use-if-the-api-requires-authentication": "如果API需要认证，请使用此选项",
-        "wallet-settings": "钱包设置",
-        "webgl-support-not-available-set-pow-to-best": "WebGL支持不可用，请将PoW设置为\"最佳\"",
-        "websocket-server": "WebSocket服务器",
-        "work-server": "工作服务器",
-        "you-are-about-to-delete-all-locally-cached-proof-of-work": "您即将删除所有本地缓存的工作量证明值。",
-        "you-are-about-to-delete-all-locally-stored-data-about-your": "您即将删除有关当前配置的钱包的所有本地存储数据。",
-        "you-are-about-to-disable-storage-of-all-wallet-data-which": "您即将禁用所有钱包数据的存储，这意味着下次使用Nault时将没有配置的钱包。"
-    },
-    "configure-wallet": {
-        "new-wallet": {
-            "copy-secret-recovery-mnemonic": "复制秘密恢复助记词",
-            "copy-secret-recovery-seed": "复制秘密恢复种子",
-            "create-wallet": "创建钱包",
-            "i-have-securely-stored-recovery-phrases": "我已安全存储秘密恢复种子和/或助记词",
-            "please-take-some-time-to-write-down-recovery-phrases": "请花些时间备份秘密恢复种子和/或助记词，以便将来能够访问此钱包。",
-            "recovery-phrases-alert": {
-                "1": {
-                    "1": "请务必写下您的种子和/或助记词或将其安全保存，并且",
-                    "2-strong": "切勿与任何人分享",
-                    "3": "！"
-                },
-                "2": "它是您所有账户的主密钥，也是在紧急情况下恢复资金的唯一方法。"
-            },
-            "recovery-phrases-for-new-wallet": "新钱包的恢复短语",
-            "secret-recovery-mnemonic": "秘密恢复助记词",
-            "secret-recovery-seed": "秘密恢复种子",
-            "successfully-copied-secret-recovery-mnemonic": "成功将秘密恢复助记词复制到剪贴板！",
-            "successfully-copied-secret-recovery-seed": "成功将秘密恢复种子复制到剪贴板！"
-        },
-        "set-wallet-password": {
-            "choose-a-wallet-password-that-will-be-used-to-unlock-this-application": "选择一个用于解锁此应用程序的钱包密码。",
-            "errors": {
-                "password-must-be-at-least-x-characters-long": "密码长度必须至少为 {{ minCharacters }} 个字符",
-                "passwords-do-not-match": "密码不匹配！"
-            },
-            "for-the-safety-of-your-funds-use-a-secure-password": "为了资金安全，请使用安全的密码。",
-            "set-wallet-password": "设置钱包密码",
-            "while-the-application-is-locked-the-secret-recovery-phrase-will-be-encrypted": "当应用程序被锁定时，秘密恢复短语将被加密，这会阻止发送/接收资金和管理账户。"
-        }
-    },
-    "general": {
-        "account": "账户",
-        "accounts": "账户",
-        "actions": "操作",
-        "address": "地址",
-        "address-book": "地址簿",
-        "amount": "金额",
-        "app-settings": "应用设置",
-        "avoid": "避免",
-        "balance": "余额",
-        "block": "区块",
-        "block-count": "区块数",
-        "blockactions": {
-            "ready-to-receive": "准备接收",
-            "received": "已接收",
-            "rep-change": "代表变更",
-            "sent": "已发送",
-            "unknown-action": "未知操作"
-        },
-        "cancel": "取消",
-        "copy": "复制",
-        "copy-to-clipboard": "复制到剪贴板",
-        "date": "日期",
-        "edit": "编辑",
-        "loading": "加载中...",
-        "name": "名称",
-        "network": "网络",
-        "new": "新建",
-        "no": "否",
-        "node-version": "节点版本",
-        "optional": "可选",
-        "peers-stake-required": "所需对等节点权益",
-        "peers-stake-total": "对等节点总权益",
-        "receive": "接收",
-        "reload": "重新加载",
-        "representative": "代表",
-        "representatives": "代表",
-        "save": "保存",
-        "scan-qr-code": "扫描二维码",
-        "send": "发送",
-        "server": "服务器",
-        "settings": "设置",
-        "show-more": "显示更多",
-        "show-qr-code": "显示二维码",
-        "successfully-copied-to-clipboard": "成功复制到剪贴板！",
-        "uncemented-blocks": "未确认区块",
-        "unknown": "未知",
-        "unlock": "解锁",
-        "view-details": "查看详情",
-        "view-on-network-explorer": "在网络浏览器中查看",
-        "wallet-must-be-unlocked": "钱包必须解锁",
-        "yes": "是"
-    },
-    "receive": {
-        "all-accounts": "所有账户",
-        "amount-of-x": "{{ currency }} 金额",
-        "copied": "已复制！",
-        "copy-address": "复制地址",
-        "incoming-transactions": "传入交易",
-        "minimum-receive-is-set-to": {
-            "1": "最小接收金额设置为",
-            "2": "，低于此金额的交易将被隐藏。"
-        },
-        "nano-received": "已接收Nano",
-        "receive-nano": "接收Nano",
-        "received": "已接收！",
-        "receiving": "接收中...",
-        "requested-amount": "请求金额",
-        "select-an-account-to-view-qr-code": "选择一个账户以查看二维码",
-        "successfully-received-nano": "成功接收Nano！",
-        "there-was-a-problem-receiving-the-transaction-try-manually": "接收交易时出现问题，请尝试手动接收！",
-        "unable-to-find-receiving-account": "无法在钱包中找到接收账户"
-    },
-    "representative-search": {
-        "representative-list-results": "代表列表结果"
-    },
-    "reset-wallet": {
-        "before-continuing-make-sure-you-have-saved-the-nano-seed": "在继续之前，请确保您已保存当前钱包的秘密恢复种子和/或助记词。",
-        "you-will-not-be-able-to-recover-the-funds-without-a-backup": "如果没有当前配置钱包的备份，您将无法恢复资金。"
-    },
-    "welcome": {
-        "a-secure-open-source-wallet-for-nano": "一个安全的开源Nano钱包",
-        "advanced-security-features": {
-            "1": "支持Ledger Nano S / Nano X硬件钱包",
-            "2": "能够创建多重签名地址，其中需要多个私钥来访问和转移资金",
-            "3": "能够远程签名交易，允许您在不让秘密密钥离开离线设备的情况下安全地进行交易",
-            "nault-includes": "Nault包括几个增强安全性的选项：",
-            "title": "高级安全功能"
-        },
-        "any-device-anywhere": {
-            "1": "Nault是一个可在大多数桌面和手持设备上使用的Web应用程序。",
-            "2": {
-                "1": "您也可以使用适用于Windows、Linux或Mac的桌面应用程序。可以从",
-                "2-link-github-releases": "GitHub发布页面",
-                "3": "下载。"
-            },
-            "3": {
-                "1": "所有代码都是开源的，并且",
-                "2-link-github": "可在GitHub上获取",
-                "3": "。"
-            },
-            "title": "任何设备，随处可用"
-        },
-        "any-node-always-available": {
-            "1": {
-                "1": "即使官方",
-                "2-link-nault": "nault.cc",
-                "3": "域名变得无法访问，您仍然可以使用",
-                "4-link-github-releases": "桌面应用程序",
-                "5": "或",
-                "6-link-github-web-app": "自行托管Web应用程序",
-                "7": "。"
-            },
-            "2": {
-                "1": "在Nault中没有单一的信息来源。所有信息都由应用设置中设置的服务器提供。这也意味着没有单点故障 - 您可以选择任何公共或自托管的",
-                "2-link-nano-node": "Nano节点",
-                "3": "作为服务器。"
-            },
-            "title": "任何节点，始终可用"
-        },
-        "configure-wallet": "配置钱包",
-        "learn-more": "了解更多",
-        "secure-the-nano-network": {
-            "1": {
-                "1": "Nano使用",
-                "2-link-orv": "ORV共识",
-                "3": "，允许用户控制代表在网络中的投票权重。"
-            },
-            "2": "Nault将自动检查您的代表状态并提供建议，以确保所有网络参与者的安全和抗审查能力。",
-            "title": "保护Nano网络"
-        },
-        "view-my-accounts": "查看我的账户",
-        "welcome-back-it-looks-like-your-wallet-is-already-configured": "欢迎回来！看起来您的钱包已经配置好了。",
-        "your-keys-your-coins": {
-            "1": "您对资金的安全负有全部责任。",
-            "2": "您在Nault中使用的秘密密钥暂时存储在您的设备上，并由您选择的密码加密。",
-            "3": "敏感数据永远不会通过互联网传输。",
-            "title": "您的密钥，您的资金"
-        }
-    }
+	"account-details": {
+		"account-details": "账户详情",
+		"address-book-name-leave-blank-to-remove": "地址簿名称（留空以删除）",
+		"advanced-options": "高级选项",
+		"awaiting-confirmation": "等待确认",
+		"block-signing": "区块签名",
+		"confirmed-blocks": "已确认区块",
+		"copy-recipients-address": "复制接收方地址",
+		"copy-representatives-address": "复制代表地址",
+		"copy-senders-address": "复制发送方地址",
+		"copy-transaction-id": "复制交易ID",
+		"donate-to-representative": "向代表捐赠",
+		"enable-remote-signing-multisig": "启用远程签名/多重签名",
+		"external-address": "外部地址",
+		"loading-incoming-transactions": "正在加载传入交易...",
+		"loading-transactions": "正在加载交易...",
+		"network-explorer": "网络浏览器",
+		"no-label-set": "未设置标签",
+		"no-transactions": "无交易",
+		"send-funds-back": "退回资金",
+		"this-change-has-not-yet-been-confirmed-by-the-network": "此更改尚未被网络确认",
+		"this-transaction-has-not-yet-been-confirmed-by-the-network": "此交易尚未被网络确认",
+		"transactions": "交易",
+		"view-transaction-details": "查看交易详情"
+	},
+	"accounts": {
+		"account-address-confirmed-on-ledger": "账户地址已在Ledger上确认",
+		"account-address-denied-if-it-is-wrong-do-not-use-the-wallet": "账户地址被拒绝 - 如果有误，请勿使用钱包！",
+		"add-new-account": "添加新账户",
+		"advanced-mode": "高级模式",
+		"confirm-address-on-ledger": "在Ledger上确认地址",
+		"confirming-account-address-on-ledger-device": "正在Ledger设备上确认账户地址...",
+		"hide-account": "隐藏账户",
+		"invalid-account-index-must-be-positive-number": "无效的账户索引 - 必须为正数",
+		"ledger-device-must-be-ready": "Ledger设备必须就绪",
+		"missing-accounts": {
+			"1": "缺少账户？",
+			"3": "以导入之前使用的地址。",
+			"2-link": "添加新账户"
+		},
+		"simple-mode": "简单模式",
+		"successfully-created-new-account": "成功创建新账户 {{ account }}",
+		"successfully-removed-account": "成功移除账户 {{ account }}",
+		"the-account-at-this-index-is-already-loaded": "此索引的账户已加载",
+		"unable-to-add-new-account": "无法添加新账户：{{ error }}",
+		"unable-to-delete-account": "无法删除账户：{{ error }}",
+		"wallet-locked": "钱包已锁定",
+		"wallet-is-not-configured": "钱包未配置",
+		"wallet-unlocked": "钱包已解锁",
+		"wrong-password": "密码错误。请重试。",
+		"you-can-only-track-up-to-x-accounts-at-a-time": "您一次最多只能跟踪 {{ accounts }} 个账户。",
+		"you-dont-have-any-accounts-yet": {
+			"1": "您还没有任何账户，",
+			"3": "。",
+			"2-link": "点击此处创建一个"
+		}
+	},
+	"address-book": {
+		"a-notification-will-be-shown-whenever-the-address-has-a-new": "每当地址有新的传入交易、发送或接收资金，或更改其代表时，都会显示通知。",
+		"account-address-copied-to-clipboard": "账户地址已复制到剪贴板！",
+		"account-and-name-are-required": "账户和名称是必填项",
+		"account-id-is-not-a-valid-account": "账户ID不是有效账户",
+		"add-new-entry": "添加新条目",
+		"address-book-entry-saved-successfully": "地址簿条目保存成功！",
+		"address-book-export": "地址簿导出",
+		"address-book-export-downloaded": "地址簿导出已下载！",
+		"address-book-import": "地址簿导入",
+		"address-book-too-large-for-a-qr-code": "地址簿太大，无法生成二维码。",
+		"back-to-address-book": "返回地址簿",
+		"bad-import-data-make-sure-you-selected-a-nault-address-book": "导入数据有误，请确保您选择了Nault地址簿导出文件",
+		"edit-entry": "编辑条目",
+		"exchange-deposit-address-main-trading-account-etc": "交易所存款地址、主交易账户等",
+		"export-address-book": "导出地址簿",
+		"export-all-address-book-entries-to-a-file-or-qr-code-url": "将所有地址簿条目导出到文件或二维码/URL。",
+		"export-as-file": "导出为文件",
+		"import-address-book": "导入地址簿",
+		"import-address-book-entries-from-a-file": "从文件导入地址簿条目。",
+		"import-export": "导入/导出",
+		"note-exported-address-book-will-not-be-encrypted-by-your-wal": "注意：导出的地址簿不会被您的钱包密码加密。",
+		"reload-balances": "重新加载余额",
+		"scan-the-qr-code-on-any-device-to-import-your-address-book": "在任何设备上扫描二维码以导入您的地址簿！",
+		"show-total-tracked-balance": "显示总跟踪余额",
+		"successfully-deleted-address-book-entry": "成功删除地址簿条目",
+		"the-balance-will-be-displayed-in-the-address-book": "余额将显示在地址簿中。",
+		"this-name-is-already-in-use-please-use-a-unique-name": "此名称已被使用！请使用唯一的名称",
+		"this-name-is-reserved-for-wallet-accounts-without-a-label": "此名称保留给没有标签的钱包账户",
+		"this-name-is-reserved-for-decentralized-aliases": "以@开头的名称保留给去中心化别名",
+		"track-balance": "跟踪余额",
+		"track-transactions": "跟踪交易",
+		"unable-to-delete-entry": "无法删除条目：{{ message }}",
+		"unable-to-parse-import-data-make-sure-you-selected-the-right": "无法解析导入数据，请确保您选择了正确的文件！",
+		"unable-to-save-entry": "无法保存条目：{{ message }}",
+		"updated-address-book-order": "已更新地址簿顺序！",
+		"you-can-also-import-your-address-book-by-using-the-url-below": "您也可以使用以下URL导入地址簿或将其下载为文件。",
+		"you-can-only-track-the-balance-of-maximum-20-addresses": "您最多只能跟踪20个地址的余额",
+		"you-can-still-import-your-address-book-by-using-the-url": "您仍然可以使用以下URL导入地址簿或将其下载为文件。",
+		"you-can-use-the-address-book-to-store": {
+			"1": "您可以使用地址簿为自己的账户存储标签，或在整个应用程序中轻松访问其他地址。",
+			"2": "还可以跟踪任何地址的余额和/或交易，称为\"仅观察\"。"
+		},
+		"you-do-not-have-any-address-book-entries-saved-yet": {
+			"1": "您还没有保存任何地址簿条目，",
+			"3": "。",
+			"2-link": "点击此处创建一个"
+		},
+		"if-you-need-a-qr-use-fewer-entries-or-shorter-names": "如果您需要二维码，请使用较少的条目或较短的名称。"
+	},
+	"change-rep-widget": {
+		"acceptable-representative": "可接受的代表",
+		"bad-representative": "不良代表",
+		"checking-status": "正在检查状态...",
+		"good-representative": "良好的代表",
+		"health": "健康",
+		"it-is-highly-advised-to-switch-to-a-different-representative": "强烈建议切换到不同的代表，以提高纳米网络的安全性和去中心化程度。",
+		"receive-a-transaction-to-configure": "接收交易以配置",
+		"rep-represents-you": "{{ name }} 在纳米共识协议中代表您进行投票。",
+		"representative-change-required": "需要更改代表",
+		"representative-for-account": "{{ account }} 的代表",
+		"representative-none": "无",
+		"switching-to-a-different-representative-could-improve": "切换到不同的代表可以提高纳米网络的安全性和去中心化程度。",
+		"this-representative-has-a-high-voting-weight": "此代表的投票权重较高（超过 {{ percent }}%）。",
+		"this-representative-has-a-very-high-voting-weight": "此代表的投票权重非常高（超过 {{ percent }}%）。",
+		"this-representative-has-announced-plans-to-permanently-shutdown": "此代表已宣布永久关闭的计划。",
+		"this-representative-has-been-offline-for-the-past-days": "此代表在过去 {{ days }} 天内一直离线。",
+		"this-representative-is-marked-as-avoid": "此代表在代表簿中被标记为\"避免\"。",
+		"this-representative-is-marked-as-nf": "此代表由Nano基金会创建，应避免使用以增加去中心化。",
+		"this-representative-is-often-offline": "此代表经常离线（{{ percent }}% 在线时间）",
+		"this-representative-is-sometimes-offline": "此代表有时离线（{{ percent }}% 在线时间）。",
+		"unknown-rep": "未知代表",
+		"unknown-status": "未知状态",
+		"we-could-not-determine-status-of-this-representative": "我们无法确定此代表的状态。",
+		"we-found-no-issues-with-uptime-or-weight": "我们没有发现您当前代表的在线时间或权重分配存在问题。",
+		"you-can-change-representative-at-any-time": "您可以随时通过点击上面的名称来更改代表。",
+		"you-have-marked-this-representative-as-trusted": "您已将此代表标记为受信任，这意味着即使在线时间或权重分配出现严重问题，其状态仍将保持\"良好\"。"
+	},
+	"configure-app": {
+		"advanced-options": "高级选项",
+		"allow-external-requests": "允许外部请求",
+		"api-server": "API服务器",
+		"app-display-settings-successfully-updated": "应用显示设置更新成功！",
+		"app-wallet-settings-successfully-updated": "应用钱包设置更新成功！",
+		"are-you-sure": "您确定吗？",
+		"authorization": "授权",
+		"change-if-your-wallet-should-be-locked-automatically-after": "更改您的钱包在一段时间未与之交互后是否应自动锁定",
+		"change-the-currency-pair-used-when-showing-fiat-values": "更改在应用程序中显示法定货币值时使用的货币对。选择\"无\"以隐藏法定货币对。",
+		"change-where-your-wallet-is-stored-if-you-select-none-your": "更改钱包的存储位置。如果选择\"无\"，每次重新加载时都会重置您的钱包。",
+		"change-which-server-is-used-to-communicate-with-the-nano": "更改用于与纳米网络通信的服务器",
+		"clear-all-data": {
+			"1": "您即将删除存储在Nault中的所有数据，包括有关当前配置的钱包的所有本地存储数据、地址和代表簿中的所有条目以及任何其他缓存数据。所有设置将重置为默认值。",
+			"successfully-deleted-locally-stored-data-and-reset-the": "成功删除本地存储的数据并重置设置！"
+		},
+		"clear-work-cache": "清除工作缓存",
+		"click-to-refresh": "点击刷新",
+		"component": {
+			"wallet-storage": "钱包存储"
+		},
+		"configure-nault": "配置Nault",
+		"cpu-worker-support-not-available-set-pow-to-best": "CPU工作支持不可用，请将PoW设置为\"最佳\"",
+		"currencies": {
+			"none": "无"
+		},
+		"custom-api-server-has-an-invalid-address": "自定义API服务器地址无效。",
+		"custom-update-server-has-an-invalid-address": "自定义更新服务器地址无效。",
+		"decentralized-aliases": "去中心化别名",
+		"decentralized-aliases-options": {
+			"disabled": "禁用",
+			"enabled": "启用 - 允许对别名域进行外部请求"
+		},
+		"decentralized-aliases-require-external-requests": "去中心化别名需要对别名域进行外部请求。当您尝试查找 @madeline@example.com 的地址时，example.com 域可能会记录您的IP地址。",
+		"default-representative": "默认代表",
+		"default-representative-is-not-a-valid-account": "默认代表不是有效账户",
+		"delete-all-data": "删除所有数据",
+		"delete-wallet-data": "删除钱包数据",
+		"display-settings": "显示设置",
+		"fiat-currency": "法定货币",
+		"for-example-using-basic-auth": "例如使用基本认证：Basic xyz",
+		"identicon-options": {
+			"1-hour": "1小时",
+			"1-minute": "1分钟",
+			"nanoidenticons-by-keerifox": "Nanoidenticons（由keerifox提供）",
+			"natricon-by-appditto": "Natricon（由Appditto提供）",
+			"never": "永不",
+			"none": "无",
+			"x-hours": "{{ hours }}小时",
+			"x-minutes": "{{ minutes }}分钟"
+		},
+		"identicons": "身份图标",
+		"if-automatically-receiving-incoming-transactions-with-the": "如果自动接收传入交易，是优先接收金额最大的还是按记录时间顺序接收。手动将允许您在接收界面自行选择交易。",
+		"language": "语言",
+		"leave-blank-to-accept-transactions-of-any-amount": "留空以接受任何金额的交易",
+		"leave-blank-to-use-a-recommended-one": "留空以使用推荐的代表",
+		"lock-after-inactivity": "闲置后锁定",
+		"min-receive-amount": "最小接收金额",
+		"minimum-nano-amount-to-receive-transactions-below-this": "接收交易的最小XNO金额。低于此金额的交易将被钱包忽略，不会接收也不会显示在交易列表中。设置为空白或0以接受所有交易。",
+		"multiplier-options": {
+			"default-1x-or-1-64x": "默认（1x或1/64x）"
+		},
+		"night-mode": "夜间模式",
+		"night-mode-options": {
+			"disabled": "禁用",
+			"enabled": "启用"
+		},
+		"node-stats": "节点统计",
+		"note-since-this-server-only-notifies-about-new-transactions": "注意：由于此服务器只通知新交易，大多数钱包功能无需它也能正常工作。",
+		"optional-increased-work-for-transaction-priority-during": "网络饱和时可选择增加工作量以提高交易优先级。覆盖默认的发送1x和接收1/64x难度。",
+		"pending-options": {
+			"automatic-largest-amount-first": "自动 - 优先处理最大金额",
+			"automatic-oldest-transaction-first": "自动 - 优先处理最早交易",
+			"manual": "手动"
+		},
+		"pow-multiplier": "PoW乘数",
+		"pow-options": {
+			"best-option-available": "最佳可用选项",
+			"client-side-cpu-slowest": "客户端 - CPU（最慢）",
+			"client-side-gpu-webgl": "客户端 - GPU/WebGL",
+			"external-custom-server": "外部 - 自定义服务器",
+			"external-selected-server": "外部 - 选定服务器"
+		},
+		"pow-source": "PoW来源",
+		"random-server": "随机服务器",
+		"receive-method": "接收方式",
+		"save-settings-to-update": "保存设置以更新",
+		"server-configuration": "服务器配置",
+		"server-settings": "服务器设置",
+		"server-settings-successfully-updated": "服务器设置更新成功！",
+		"storage-options": {
+			"browser-local-storage": "浏览器本地存储",
+			"none": "无"
+		},
+		"successfully-cleared-the-work-cache": "成功清除工作缓存！",
+		"successfully-deleted-all-wallet-data": "成功删除所有钱包数据！",
+		"successfully-updated": "更新成功！",
+		"switched-back-to-browser-local-storage-for-the-wallet-data": "已切换回\"浏览器本地存储\"以存储钱包数据。如果您想保存其他设置，请再次使用该按钮。",
+		"this-has-to-be-a-valid-authorization-header": "这必须是有效的Authorization头。",
+		"this-has-to-be-a-valid-rpc": {
+			"1": "这必须是有效的",
+			"3": "或与之兼容的API。",
+			"2-link-rpc": "nano RPC端点"
+		},
+		"this-has-to-be-a-valid-websocket": {
+			"1": "这必须是有效的",
+			"3": "或与之兼容的WebSocket API。",
+			"2-link-websocket": "Nano节点WebSocket"
+		},
+		"this-has-to-be-a-valid-work": {
+			"1": "这必须是有效的",
+			"3": "端点或与之兼容的API。如果本地主机上的服务器不工作，请尝试使用桌面应用程序。",
+			"2-link-work": "Nano工作服务器"
+		},
+		"this-representative-will-be-used-for-any-new-account": "此代表将用于任何新账户",
+		"this-server-is-used-for-rpc-communication-with-the-nano-node": "此服务器用于与nano节点进行RPC通信",
+		"this-server-is-used-to-notify-the-wallet-in-real-time-when": "此服务器用于在新交易到达时实时通知钱包",
+		"this-will-delete-all-data-related-to-your-wallet-your-seed-a": "这将删除与您的钱包相关的所有数据（您的种子和账户）",
+		"this-will-delete-all-locally-cached-proof-of-work-values": "这将删除所有本地缓存的工作量证明值",
+		"this-will-delete-all-stored-data-and-reset-app-settings-incl": "这将删除所有存储的数据并重置应用程序设置，包括您的钱包、地址簿等",
+		"update-display-settings": "更新显示设置",
+		"update-server-settings": "更新服务器设置",
+		"update-wallet-settings": "更新钱包设置",
+		"use-if-the-api-requires-authentication": "如果API需要认证，请使用此选项",
+		"wallet-settings": "钱包设置",
+		"webgl-support-not-available-set-pow-to-best": "WebGL支持不可用，请将PoW设置为\"最佳\"",
+		"websocket-server": "WebSocket服务器",
+		"work-server": "工作服务器",
+		"you-are-about-to-delete-all-locally-cached-proof-of-work": "您即将删除所有本地缓存的工作量证明值。",
+		"you-are-about-to-delete-all-locally-stored-data-about-your": "您即将删除有关当前配置的钱包的所有本地存储数据。",
+		"you-are-about-to-disable-storage-of-all-wallet-data-which": "您即将禁用所有钱包数据的存储，这意味着下次使用Nault时将没有配置的钱包。"
+	},
+	"configure-wallet": {
+		"new-wallet": {
+			"copy-secret-recovery-mnemonic": "复制秘密恢复助记词",
+			"copy-secret-recovery-seed": "复制秘密恢复种子",
+			"create-wallet": "创建钱包",
+			"i-have-securely-stored-recovery-phrases": "我已安全存储秘密恢复种子和/或助记词",
+			"please-take-some-time-to-write-down-recovery-phrases": "请花些时间备份秘密恢复种子和/或助记词，以便将来能够访问此钱包。",
+			"recovery-phrases-alert": {
+				"1": {
+					"1": "请务必写下您的种子和/或助记词或将其安全保存，并且",
+					"3": "！",
+					"2-strong": "切勿与任何人分享"
+				},
+				"2": "它是您所有账户的主密钥，也是在紧急情况下恢复资金的唯一方法。"
+			},
+			"recovery-phrases-for-new-wallet": "新钱包的恢复短语",
+			"secret-recovery-mnemonic": "秘密恢复助记词",
+			"secret-recovery-seed": "秘密恢复种子",
+			"successfully-copied-secret-recovery-mnemonic": "成功将秘密恢复助记词复制到剪贴板！",
+			"successfully-copied-secret-recovery-seed": "成功将秘密恢复种子复制到剪贴板！"
+		},
+		"set-wallet-password": {
+			"choose-a-wallet-password-that-will-be-used-to-unlock-this-application": "选择一个用于解锁此应用程序的钱包密码。",
+			"errors": {
+				"password-must-be-at-least-x-characters-long": "密码长度必须至少为 {{ minCharacters }} 个字符",
+				"passwords-do-not-match": "密码不匹配！"
+			},
+			"for-the-safety-of-your-funds-use-a-secure-password": "为了资金安全，请使用安全的密码。",
+			"set-wallet-password": "设置钱包密码",
+			"while-the-application-is-locked-the-secret-recovery-phrase-will-be-encrypted": "当应用程序被锁定时，秘密恢复短语将被加密，这会阻止发送/接收资金和管理账户。"
+		}
+	},
+	"general": {
+		"account": "账户",
+		"accounts": "账户",
+		"actions": "操作",
+		"address": "地址",
+		"address-book": "地址簿",
+		"amount": "金额",
+		"app-settings": "应用设置",
+		"avoid": "避免",
+		"balance": "余额",
+		"block": "区块",
+		"block-count": "区块数",
+		"blockactions": {
+			"ready-to-receive": "准备接收",
+			"received": "已接收",
+			"rep-change": "代表变更",
+			"sent": "已发送",
+			"unknown-action": "未知操作"
+		},
+		"cancel": "取消",
+		"copy": "复制",
+		"copy-to-clipboard": "复制到剪贴板",
+		"date": "日期",
+		"edit": "编辑",
+		"loading": "加载中...",
+		"name": "名称",
+		"network": "网络",
+		"new": "新建",
+		"no": "否",
+		"node-version": "节点版本",
+		"optional": "可选",
+		"peers-stake-required": "所需对等节点权益",
+		"peers-stake-total": "对等节点总权益",
+		"receive": "接收",
+		"reload": "重新加载",
+		"representative": "代表",
+		"representatives": "代表",
+		"save": "保存",
+		"scan-qr-code": "扫描二维码",
+		"send": "发送",
+		"server": "服务器",
+		"settings": "设置",
+		"show-more": "显示更多",
+		"show-qr-code": "显示二维码",
+		"successfully-copied-to-clipboard": "成功复制到剪贴板！",
+		"uncemented-blocks": "未确认区块",
+		"unknown": "未知",
+		"unlock": "解锁",
+		"view-details": "查看详情",
+		"view-on-network-explorer": "在网络浏览器中查看",
+		"wallet-must-be-unlocked": "钱包必须解锁",
+		"yes": "是"
+	},
+	"receive": {
+		"all-accounts": "所有账户",
+		"amount-of-x": "{{ currency }} 金额",
+		"copied": "已复制！",
+		"copy-address": "复制地址",
+		"incoming-transactions": "传入交易",
+		"minimum-receive-is-set-to": {
+			"1": "最小接收金额设置为",
+			"2": "，低于此金额的交易将被隐藏。"
+		},
+		"nano-received": "已接收Nano",
+		"receive-nano": "接收Nano",
+		"received": "已接收！",
+		"receiving": "接收中...",
+		"requested-amount": "请求金额",
+		"select-an-account-to-view-qr-code": "选择一个账户以查看二维码",
+		"successfully-received-nano": "成功接收Nano！",
+		"there-was-a-problem-receiving-the-transaction-try-manually": "接收交易时出现问题，请尝试手动接收！",
+		"unable-to-find-receiving-account": "无法在钱包中找到接收账户"
+	},
+	"representative-search": {
+		"representative-list-results": "代表列表结果"
+	},
+	"reset-wallet": {
+		"before-continuing-make-sure-you-have-saved-the-nano-seed": "在继续之前，请确保您已保存当前钱包的秘密恢复种子和/或助记词。",
+		"you-will-not-be-able-to-recover-the-funds-without-a-backup": "如果没有当前配置钱包的备份，您将无法恢复资金。"
+	},
+	"welcome": {
+		"a-secure-open-source-wallet-for-nano": "一个安全的开源Nano钱包",
+		"advanced-security-features": {
+			"1": "支持Ledger Nano S / Nano X硬件钱包",
+			"2": "能够创建多重签名地址，其中需要多个私钥来访问和转移资金",
+			"3": "能够远程签名交易，允许您在不让秘密密钥离开离线设备的情况下安全地进行交易",
+			"nault-includes": "Nault包括几个增强安全性的选项：",
+			"title": "高级安全功能"
+		},
+		"any-device-anywhere": {
+			"1": "Nault是一个可在大多数桌面和手持设备上使用的Web应用程序。",
+			"2": {
+				"1": "您也可以使用适用于Windows、Linux或Mac的桌面应用程序。可以从",
+				"3": "下载。",
+				"2-link-github-releases": "GitHub发布页面"
+			},
+			"3": {
+				"1": "所有代码都是开源的，并且",
+				"3": "。",
+				"2-link-github": "可在GitHub上获取"
+			},
+			"title": "任何设备，随处可用"
+		},
+		"any-node-always-available": {
+			"1": {
+				"1": "即使官方",
+				"3": "域名变得无法访问，您仍然可以使用",
+				"5": "或",
+				"7": "。",
+				"2-link-nault": "nault.cc",
+				"4-link-github-releases": "桌面应用程序",
+				"6-link-github-web-app": "自行托管Web应用程序"
+			},
+			"2": {
+				"1": "在Nault中没有单一的信息来源。所有信息都由应用设置中设置的服务器提供。这也意味着没有单点故障 - 您可以选择任何公共或自托管的",
+				"3": "作为服务器。",
+				"2-link-nano-node": "Nano节点"
+			},
+			"title": "任何节点，始终可用"
+		},
+		"configure-wallet": "配置钱包",
+		"learn-more": "了解更多",
+		"secure-the-nano-network": {
+			"1": {
+				"1": "Nano使用",
+				"3": "，允许用户控制代表在网络中的投票权重。",
+				"2-link-orv": "ORV共识"
+			},
+			"2": "Nault将自动检查您的代表状态并提供建议，以确保所有网络参与者的安全和抗审查能力。",
+			"title": "保护Nano网络"
+		},
+		"view-my-accounts": "查看我的账户",
+		"welcome-back-it-looks-like-your-wallet-is-already-configured": "欢迎回来！看起来您的钱包已经配置好了。",
+		"your-keys-your-coins": {
+			"1": "您对资金的安全负有全部责任。",
+			"2": "您在Nault中使用的秘密密钥暂时存储在您的设备上，并由您选择的密码加密。",
+			"3": "敏感数据永远不会通过互联网传输。",
+			"title": "您的密钥，您的资金"
+		}
+	}
 }
