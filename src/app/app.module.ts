@@ -34,7 +34,6 @@ import { SweeperComponent } from './components/sweeper/sweeper.component';
 import { TransactionDetailsComponent } from './components/transaction-details/transaction-details.component';
 import { WalletWidgetComponent } from './components/wallet-widget/wallet-widget.component';
 
-import { AccountPipe } from './pipes/account.pipe';
 import { AmountSplitPipe } from './pipes/amount-split.pipe';
 import { CurrencySymbolPipe } from './pipes/currency-symbol.pipe';
 import { FiatPipe } from './pipes/fiat.pipe';
@@ -99,7 +98,6 @@ import { environment } from '../environments/environment';
     CurrencySymbolPipe,
     RepresentativesComponent,
     ManageRepresentativesComponent,
-    AccountPipe,
     ChangeRepWidgetComponent,
     SweeperComponent,
     QrScanComponent,
