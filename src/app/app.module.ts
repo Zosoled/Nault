@@ -68,7 +68,6 @@ import { environment } from '../environments/environment';
 import { MultisigComponent } from './components/multisig/multisig.component';
 import { KeygeneratorComponent } from './components/keygenerator/keygenerator.component';
 import { NanoTransactionMobileComponent } from './components/helpers/nano-transaction-mobile/nano-transaction-mobile.component';
-import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
 import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
@@ -109,8 +108,7 @@ import { TranslocoRootModule } from './transloco-root.module';
     InstallWidgetComponent,
     MultisigComponent,
     KeygeneratorComponent,
-    NanoTransactionMobileComponent,
-    NoPaddingZerosPipe
+    NanoTransactionMobileComponent
   ],
   imports: [
     BrowserModule,
@@ -146,8 +144,7 @@ import { TranslocoRootModule } from './transloco-root.module';
     NgbActiveModal,
     QrModalService,
     DeeplinkService,
-    MusigService,
-    NoPaddingZerosPipe
+    MusigService
   ],
   bootstrap: [AppComponent]
 })
