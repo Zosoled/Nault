@@ -157,7 +157,9 @@ new AppUpdater();
 if (process.platform === 'darwin') {
   nano_schemes.forEach((scheme) => app.setAsDefaultProtocolClient(scheme));
 } else {
-  const args = process.argv[1] ? [path.resolve(process.argv[1])] : [];
+  const args = process.argv[1]
+    ? [path.resolve(process.argv[1])]
+    : [];
   nano_schemes.forEach((scheme) => app.setAsDefaultProtocolClient(scheme, process.execPath, args));
 }
 

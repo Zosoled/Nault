@@ -61,7 +61,9 @@ export class LedgerService {
   // Open a connection to the usb device and initialize up the Nano Ledger library
   async loadTransport(bluetooth: boolean) {
     return new Promise((resolve, reject) => {
-      const transport = bluetooth ? TransportNodeBle : TransportNodeHid;
+      const transport = bluetooth
+        ? TransportNodeBle
+        : TransportNodeHid;
       let found = false;
       const sub = transport.listen({
         next: async(e) => {
@@ -153,7 +155,12 @@ export class LedgerService {
     } catch (err) {
       this.queryingLedger = false;
 
-      const data = { error: true, errorMessage: typeof err === 'string' ? err : err.message };
+      const data = {
+        error: true,
+        errorMessage: typeof err === 'string'
+          ? err
+          : err.message
+      };
       this.ledgerMessage$.next({ event: 'account-details', data: Object.assign({ accountIndex }, data) });
 
       if (err.statusCode === STATUS_CODES.CONDITIONS_OF_USE_NOT_SATISFIED) {
@@ -177,7 +184,12 @@ export class LedgerService {
     } catch (err) {
       this.queryingLedger = false;
 
-      const data = { error: true, errorMessage: typeof err === 'string' ? err : err.message };
+      const data = {
+        error: true,
+        errorMessage: typeof err === 'string'
+          ? err
+          : err.message
+        };
       this.ledgerMessage$.next({ event: 'cache-block', data: Object.assign({ accountIndex }, data) });
 
       this.resetLedger(); // Apparently ledger not working?
@@ -194,7 +206,12 @@ export class LedgerService {
     } catch (err) {
       this.queryingLedger = false;
 
-      const data = { error: true, errorMessage: typeof err === 'string' ? err : err.message };
+      const data = {
+        error: true,
+        errorMessage: typeof err === 'string'
+          ? err
+          : err.message
+        };
       this.ledgerMessage$.next({ event: 'sign-block', data: Object.assign({ accountIndex }, data) });
 
       this.resetLedger(); // Apparently ledger not working?

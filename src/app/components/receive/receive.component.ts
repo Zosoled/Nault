@@ -98,7 +98,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 		// Update selected account if changed in the sidebar
 		this.walletService.wallet.selectedAccount$.subscribe(async acc => {
 			if (this.selAccountInit) {
-				this.pendingAccountModel = acc ? acc.id : '0';
+				this.pendingAccountModel = acc?.id ?? '0';
 				this.onSelectedAccountChange(this.pendingAccountModel);
 			}
 			this.selAccountInit = true;
@@ -236,7 +236,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 		const rawAmount = this.util.nano.mnanoToRaw(this.amountNano || 0);
 
 		// This is getting hacky, but if their currency is bitcoin, use 6 decimals, if it is not, use 2
-		const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
+		const precision = this.settings.settings.displayCurrency === 'BTC'
+			? 1000000
+			: 100;
 
 		// Determine fiat value of the amount
 		const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice)
@@ -298,7 +300,10 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 		if (account.length > 1) {
 			this.qrAccount = account;
 			this.qrCodeImage = null;
-			this.qrCodeUri = `nano:${account}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`;
+			const amount = this.qrAmount.isGreaterThan(0)
+				? `?amount=${this.qrAmount.toString(10)}`
+				: '';
+			this.qrCodeUri = `nano:${account}${amount}`;
 			qrCode = await QRCode.toDataURL(this.qrCodeUri, { scale: 7 });
 		}
 		this.qrCodeImage = qrCode;
@@ -314,7 +319,10 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 		}
 		if (this.qrAccount.length > 1) {
 			this.qrCodeImage = null;
-			this.qrCodeUri = `nano:${this.qrAccount}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`;
+			const amount = this.qrAmount.isGreaterThan(0)
+				? `?amount=${this.qrAmount.toString(10)}`
+				: '';
+			this.qrCodeUri = `nano:${this.qrAccount}${amount}`;
 			qrCode = await QRCode.toDataURL(this.qrCodeUri, { scale: 7 });
 			this.qrCodeImage = qrCode;
 		}

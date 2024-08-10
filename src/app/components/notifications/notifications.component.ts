@@ -20,8 +20,8 @@ export class NotificationsComponent implements OnInit {
       }
 
       // Check the options
-      const length = notification.options.hasOwnProperty('length') ? notification.options.length : this.notificationLength;
-      const identifier = notification.options.identifier || null;
+      const length = notification.options?.length ?? this.notificationLength;
+      const identifier = notification.options?.identifier || null;
 
       // Stop duplicates
       if (identifier) {

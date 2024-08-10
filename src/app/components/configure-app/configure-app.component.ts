@@ -230,8 +230,8 @@ export class ConfigureAppComponent implements OnInit {
 
     try {
       const quorumData = await this.api.confirmationQuorum();
-      this.peersStakeReq = quorumData ? Number(this.util.nano.rawToMnano(quorumData.quorum_delta)).toLocaleString('en-US') : null;
-      this.peersStakeTotal = quorumData ? Number(this.util.nano.rawToMnano(quorumData.peers_stake_total)).toLocaleString('en-US') : null;
+      this.peersStakeReq = Number(this.util.nano.rawToMnano(quorumData?.quorum_delta)).toLocaleString('en-US') ?? null;
+      this.peersStakeTotal = Number(this.util.nano.rawToMnano(quorumData?.peers_stake_total)).toLocaleString('en-US') ?? null;
     } catch {console.warn('Failed to get node stats: confirmation quorum'); }
 
     try {
@@ -252,7 +252,9 @@ export class ConfigureAppComponent implements OnInit {
     const matchingCurrency = this.currencies.find(d => d.value === settings.displayCurrency);
     this.selectedCurrency = matchingCurrency.value || this.currencies[0].value;
 
-    const nightModeOptionString = (settings.lightModeEnabled === true) ? 'disabled' : 'enabled';
+    const nightModeOptionString = settings.lightModeEnabled
+      ? 'disabled'
+      : 'enabled';
     const matchingNightModeOption = this.nightModeOptions.find(d => d.value === nightModeOptionString);
     this.selectedNightModeOption = matchingNightModeOption.value || this.nightModeOptions[0].value;
 
@@ -263,18 +265,18 @@ export class ConfigureAppComponent implements OnInit {
     this.selectedStorage = matchingStorage.value || this.storageOptions[0].value;
 
     const matchingInactivityMinutes = this.inactivityOptions.find(d => d.value === settings.lockInactivityMinutes);
-    this.selectedInactivityMinutes = matchingInactivityMinutes ? matchingInactivityMinutes.value : this.inactivityOptions[4].value;
+    this.selectedInactivityMinutes = matchingInactivityMinutes?.value ?? this.inactivityOptions[4].value;
 
     const matchingPowOption = this.powOptions.find(d => d.value === settings.powSource);
-    this.selectedPoWOption = matchingPowOption ? matchingPowOption.value : this.powOptions[0].value;
+    this.selectedPoWOption = matchingPowOption?.value ?? this.powOptions[0].value;
 
     const matchingMultiplierOption = this.multiplierOptions.find(d => d.value === settings.multiplierSource);
-    this.selectedMultiplierOption = matchingMultiplierOption ? matchingMultiplierOption.value : this.multiplierOptions[0].value;
+    this.selectedMultiplierOption = matchingMultiplierOption?.value ?? this.multiplierOptions[0].value;
 
     this.customWorkServer = settings.customWorkServer;
 
     const matchingPendingOption = this.pendingOptions.find(d => d.value === settings.pendingOption);
-    this.selectedPendingOption = matchingPendingOption ? matchingPendingOption.value : this.pendingOptions[0].value;
+    this.selectedPendingOption = matchingPendingOption?.value ?? this.pendingOptions[0].value;
 
     this.serverOptions = this.appSettings.serverOptions;
     this.selectedServer = settings.serverName;
@@ -341,13 +343,14 @@ export class ConfigureAppComponent implements OnInit {
     // ask for user confirmation before clearing the wallet cache
     if (resaveWallet && newStorage === this.storageOptions[1].value) {
       const UIkit = window['UIkit'];
+      const saveSeedWarning = `<br><b style="font-size: 18px;">${this.translocoService.translate('reset-wallet.before-continuing-make-sure-you-have-saved-the-nano-seed')}</b><br><br><span style="font-size: 18px;"><b>${this.translocoService.translate('reset-wallet.you-will-not-be-able-to-recover-the-funds-without-a-backup')}</b></span></p><br>`;
       try {
         await UIkit.modal.confirm(
           `<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span>
           <span style="font-size: 18px;">
           ${ this.translocoService.translate('configure-app.you-are-about-to-disable-storage-of-all-wallet-data-which') }
           </span><br>
-          ${ this.walletService.isConfigured() ? '<br><b style="font-size: 18px;">' + this.translocoService.translate('reset-wallet.before-continuing-make-sure-you-have-saved-the-nano-seed') + '</b><br><br><span style="font-size: 18px;"><b>' + this.translocoService.translate('reset-wallet.you-will-not-be-able-to-recover-the-funds-without-a-backup') + '</b></span></p><br>' : '' }`
+          ${ this.walletService.isConfigured() ? saveSeedWarning : '' }`
         );
       } catch (err) {
         // pressing cancel, reset storage setting and interrupt
@@ -539,7 +542,9 @@ export class ConfigureAppComponent implements OnInit {
       this.serverAPIUpdated = null;
       this.serverWS = custom.ws;
       this.serverAuth = custom.auth;
-      this.shouldRandom = custom.shouldRandom ? this.translocoService.translate('general.yes') : this.translocoService.translate('general.no');
+      this.shouldRandom = custom.shouldRandom
+        ? this.translocoService.translate('general.yes')
+        : this.translocoService.translate('general.no');
     }
 
     // reset server stats until updated
@@ -551,7 +556,7 @@ export class ConfigureAppComponent implements OnInit {
     this.peersStakeTotal = null;
     this.nodeVendor = null;
     this.nodeNetwork = null;
-    this.statsRefreshEnabled = newServer === 'random' ? false : true;
+    this.statsRefreshEnabled = newServer !== 'random';
   }
 
   getRemotePoWOptionName() {

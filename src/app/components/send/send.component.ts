@@ -83,7 +83,7 @@ export class SendComponent implements OnInit {
     this.addressBookService.loadAddressBook();
 
     // Set default From account
-    this.fromAccountID = this.accounts.length ? this.accounts[0].id : '';
+    this.fromAccountID = this.accounts[0]?.id ?? '';
 
     // Update selected account if changed in the sidebar
     this.walletService.wallet.selectedAccount$.subscribe(async acc => {
@@ -173,7 +173,9 @@ export class SendComponent implements OnInit {
     }
 
     // This is getting hacky, but if their currency is bitcoin, use 6 decimals, if it is not, use 2
-    const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
+    const precision = this.settings.settings.displayCurrency === 'BTC'
+      ? 1000000
+      : 100;
 
     // Determine fiat value of the amount
     const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice)

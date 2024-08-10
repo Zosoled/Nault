@@ -12,8 +12,9 @@ const base32 = require('nano-base32');
 })
 export class MusigService {
   // The multisig wasm library can be validated by running build-or-validate_musig_wasm.sh
-  private wasmURL = environment.desktop ?
-    '../../../resources/app.asar/dist/assets/lib/musig-nano/musig_nano.wasm.b64' : '../../../assets/lib/musig-nano/musig_nano.wasm.b64';
+  private wasmURL = environment.desktop
+    ? '../../../resources/app.asar/dist/assets/lib/musig-nano/musig_nano.wasm.b64'
+    : '../../../assets/lib/musig-nano/musig_nano.wasm.b64';
 
   wasm = null;
   wasmErrors = ['No error', 'Internal error', 'Invalid parameter(s)', 'Invalid Participant Input'];
@@ -248,7 +249,9 @@ export class MusigService {
         privateKeyPtr = this.copyToWasm(this.util.hex.toUint8(privateKey));
       }
 
-      const outLen = (this.musigStageNum === 2) ? 65 : 33;
+      const outLen = this.musigStageNum === 2
+        ? 65
+        : 33;
       const outPtr = this.wasm.musig_malloc(outLen);
       const outBuf = new Uint8Array(this.wasm.memory.buffer, outPtr, outLen);
       outBuf[0] = 0;

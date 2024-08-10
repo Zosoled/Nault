@@ -111,9 +111,9 @@ export class AddressBookService {
   }
 
   getAccountIdByName(name: string): string|null {
-    if (!name || !name.length) return null;
+    if (!name?.length) return null;
     const match = this.addressBook.find(a => a.name.toLowerCase() === name.toLowerCase());
-    return match ? match.account : null;
+    return match?.account ?? null;
   }
 
   nameExists(name: string): boolean {

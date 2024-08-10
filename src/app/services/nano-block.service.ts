@@ -267,7 +267,9 @@ export class NanoBlockService {
 
 		const srcBlockInfo = await this.api.blocksInfo([sourceBlock]);
 		const srcAmount = new BigNumber(srcBlockInfo.blocks[sourceBlock].amount);
-		const newBalance = openEquiv ? srcAmount : new BigNumber(toAcct.balance).plus(srcAmount);
+		const newBalance = openEquiv
+			? srcAmount
+			: new BigNumber(toAcct.balance).plus(srcAmount);
 		const newBalanceDecimal = newBalance.toString(10);
 		let newBalancePadded = newBalance.toString(16);
 		while (newBalancePadded.length < 32) newBalancePadded = '0' + newBalancePadded; // Left pad with 0's
@@ -310,7 +312,9 @@ export class NanoBlockService {
 			this.signStateBlock(walletAccount, blockData);
 		}
 
-		workBlock = openEquiv ? walletAccountPublicKey : previousBlock;
+		workBlock = openEquiv
+			? this.util.account.getAccountPublicKey(walletAccount.id)
+			: previousBlock;
 		if (!this.workPool.workExists(workBlock)) {
 			this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
 		}
@@ -318,7 +322,12 @@ export class NanoBlockService {
 		console.log('Get work for receive block');
 		blockData.work = await this.workPool.getWork(workBlock, 1 / 64); // low PoW threshold since receive block
 		this.notifications.removeNotification('pow');
-		const processResponse = await this.api.process(blockData, openEquiv ? TxType.open : TxType.receive);
+		const processResponse = await this.api.process(
+			blockData,
+			openEquiv
+				? TxType.open
+				: TxType.receive
+		);
 		if (processResponse && processResponse.hash) {
 			walletAccount.frontier = processResponse.hash;
 			// Add new hash into the work pool, high PoW threshold since we don't know what the next one will be
@@ -391,7 +400,9 @@ export class NanoBlockService {
 
 		if (genWork) {
 			// For open blocks which don't have a frontier, use the public key of the account
-			const workBlock = openEquiv ? this.util.account.getAccountPublicKey(walletAccount.id) : block.previous;
+			const workBlock = openEquiv
+				? this.util.account.getAccountPublicKey(walletAccount.id)
+				: block.previous;
 			if (!this.workPool.workExists(workBlock)) {
 				this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
 			}

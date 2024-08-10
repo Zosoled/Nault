@@ -152,8 +152,7 @@ export class PowService {
 
     const work = {state: null, work: ''};
     switch (powSource) {
-      default:
-      case 'server':
+      case 'server': {
         const serverWork = await this.getHashServer(queueItem.hash, queueItem.multiplier);
         if (serverWork) {
           work.work = serverWork;
@@ -162,7 +161,8 @@ export class PowService {
           work.state = workState.error;
         }
         break;
-      case 'clientCPU':
+      }
+      case 'clientCPU': {
         try {
           work.work = await this.getHashCPUWorker(queueItem.hash, localMultiplier);
           work.state = workState.success;
@@ -170,7 +170,8 @@ export class PowService {
           work.state = state;
         }
         break;
-      case 'clientWebGL':
+      }
+      case 'clientWebGL': {
         try {
           work.work = await this.getHashWebGL(queueItem.hash, localMultiplier);
           work.state = workState.success;
@@ -178,13 +179,20 @@ export class PowService {
           work.state = state;
         }
         break;
-      case 'custom':
+      }
+      case 'custom': {
         const workServer = this.appSettings.settings.customWorkServer;
         // Check all known APIs and return true if there is no match. Then allow local PoW mutliplier
-        const allowLocalMulti = workServer !== '' &&
-          this.appSettings.knownApiEndpoints.every(endpointUrl => !workServer.includes(endpointUrl));
+        const allowLocalMulti = workServer !== ''
+          && this.appSettings.knownApiEndpoints.every(endpointUrl => !workServer.includes(endpointUrl));
 
-        const customWork = await this.getHashServer(queueItem.hash, allowLocalMulti ? localMultiplier : queueItem.multiplier, workServer);
+        const customWork = await this.getHashServer(
+          queueItem.hash,
+          allowLocalMulti
+            ? localMultiplier
+            : queueItem.multiplier,
+          workServer
+        );
         if (customWork) {
           work.work = customWork;
           work.state = workState.success;
@@ -192,6 +200,7 @@ export class PowService {
           work.state = workState.error;
         }
         break;
+      }
     }
 
     this.currentProcessTime = 0; // Reset timer
@@ -218,19 +227,18 @@ export class PowService {
    */
   async getHashServer(hash, multiplier, workServer = '') {
     const newThreshold = this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold);
-    const serverString = workServer === '' ? 'external' : 'custom';
-    console.log('Generating work with multiplier ' + multiplier + ' at threshold ' +
-      newThreshold + ' using ' + serverString + ' server for hash: ', hash);
+    const serverString = workServer === ''
+      ? 'external'
+      : 'custom';
+    console.log(`Generating work with multiplier ${multiplier} at threshold ${newThreshold} using ${serverString} server for hash: `, hash);
     return await this.api.workGenerate(hash, newThreshold, workServer)
-    .then(work => work.work)
-    // Do not fallback to CPU pow. Let the user decide
-    // .catch(async err => await this.getHashCPUWorker(hash, multiplier))
-    .catch(err => null);
+      .then(work => work.work)
+      // Do not fallback to CPU pow. Let the user decide
+      // .catch(async err => await this.getHashCPUWorker(hash, multiplier))
+      .catch(err => null);
   }
 
-  /**
-   * Generate PoW using CPU without workers (Not used)
-   */
+  //Generate PoW using CPU without workers (Not used)
   getHashCPUSync(hash) {
     const response = this.getDeferredPromise();
 
@@ -254,16 +262,6 @@ export class PowService {
     const response = this.getDeferredPromise();
 
     const start = Date.now();
-    // -- OLD CPU CODE THAT CANT DEFINE THRESHOLD-- //
-    /*
-    const NUM_THREADS = navigator.hardwareConcurrency < 4 ? navigator.hardwareConcurrency : 4;
-    const workers = window['pow_initiate'](NUM_THREADS, '/assets/lib/pow/');
-
-    window['pow_callback'](workers, hash, () => {}, (work) => {
-      console.log(`CPU Worker: Found work (${work}) for ${hash} after ${(Date.now() - start) / 1000} seconds [${NUM_THREADS} Workers]`);
-      response.resolve(work);
-    });
-    */
 
     // calculate threshold from multiplier
     const newThreshold = this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold);

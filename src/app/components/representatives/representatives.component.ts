@@ -306,8 +306,9 @@ export class RepresentativesComponent implements OnInit {
       return this.notifications.sendWarning(`Representative is not a valid account`);
     }
 
-    const allAccounts = accounts.find(a => a.id === 'All Current Accounts');
-    const accountsToChange = allAccounts ? this.walletService.wallet.accounts : accounts;
+    const accountsToChange = accounts.find(a => a.id === 'All Current Accounts')
+      ? this.walletService.wallet.accounts
+      : accounts;
 
     // Remove any that don't need their represetatives to be changed
     const accountsNeedingChange = accountsToChange.filter(account => {

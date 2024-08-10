@@ -136,7 +136,9 @@ export class SignComponent implements OnInit {
     this.qrModal = qrModal;
 
     const params = this.router.snapshot.queryParams;
-    this.signTypeSelected = this.walletService.isConfigured() ? this.signTypes[0] : this.signTypes[1];
+    this.signTypeSelected = this.walletService.isConfigured()
+      ? this.signTypes[0]
+      : this.signTypes[1];
 
     // Multisig tab listening functions
     hermes.on('tab-ping', (data) => {
@@ -179,27 +181,70 @@ export class SignComponent implements OnInit {
 
     let shouldGetFromAccount = false;
 
-    if ('sign' in params && 'n_account' in params && 'n_previous' in params && 'n_representative' in params &&
-      'n_balance' in params && 'n_link' in params) {
-      this.currentBlock = {'account': params.n_account, 'previous': params.n_previous, 'representative': params.n_representative,
-      'balance': params.n_balance, 'link': params.n_link, 'signature': 'n_signature' in params ? params.n_signature : '',
-      'work': 'n_work' in params ? params.n_work : ''};
-
-      this.paramsString = 'sign?sign=' + params.sign + '&n_account=' + params.n_account + '&n_previous=' + params.n_previous +
-      '&n_representative=' + params.n_representative + '&n_balance=' + params.n_balance + '&n_link=' + params.n_link +
-      ('n_signature' in params ? ('&n_signature=' + params.n_signature) : '') + ('n_work' in params ? ('&n_work=' + params.n_work) : '');
+    if (
+      'sign' in params
+      && 'n_account' in params
+      && 'n_previous' in params
+      && 'n_representative' in params
+      && 'n_balance' in params
+      && 'n_link' in params
+    ) {
+      this.currentBlock = {
+        'account': params.n_account,
+        'previous': params.n_previous,
+        'representative': params.n_representative,
+        'balance': params.n_balance,
+        'link': params.n_link,
+        'signature': params.n_signature ?? '',
+        'work': params.n_work ?? ''
+      };
+      const paramsArray = [
+        `sign?sign=${params.sign}`,
+        `n_account=${params.n_account}`,
+        `n_previous=${params.n_previous}`,
+        `n_representative=${params.n_representative}`,
+        `n_balance=${params.n_balance}`,
+        `n_link=${params.n_link}`,
+        'n_signature' in params
+          ? `n_signature=${params.n_signature}`
+          : '',
+        'n_work' in params
+          ? `n_work=${params.n_work}`
+          : ''
+      ];
+      this.paramsString = paramsArray.join('&');
 
       // previous block won't be included with open block (or maybe if another wallet implement this feature)
-      if ('p_account' in params && 'p_previous' in params && 'p_representative' in params && 'p_balance' in params && 'p_link' in params) {
-        this.previousBlock = {'account': params.p_account, 'previous': params.p_previous, 'representative': params.p_representative,
-        'balance': params.p_balance, 'link': params.p_link, 'signature': 'p_signature' in params ? params.p_signature : '', 'work': ''};
-
-        this.paramsString = this.paramsString + '&p_account=' + params.p_account + '&p_previous=' + params.p_previous +
-        '&p_representative=' + params.p_representative + '&p_balance=' + params.p_balance + '&p_link=' + params.p_link +
-        ('p_signature' in params ? ('&p_signature=' + params.p_signature) : '');
+      if (
+        'p_account' in params
+        && 'p_previous' in params
+        && 'p_representative' in params
+        && 'p_balance' in params
+        && 'p_link' in params
+      ) {
+        this.previousBlock = {
+          'account': params.p_account,
+          'previous': params.p_previous,
+          'representative': params.p_representative,
+          'balance': params.p_balance,
+          'link': params.p_link,
+          'signature': params.p_signature ?? '',
+          'work': ''
+        };
+        const paramsArray = [
+          `${this.paramsString}`,
+          `p_account=${params.p_account}`,
+          `p_previous=${params.p_previous}`,
+          `p_representative=${params.p_representative}`,
+          `p_balance=${params.p_balance}`,
+          `p_link=${params.p_link}`,
+          'p_signature' in params
+            ? `p_signature=${params.p_signature}`
+            : ''
+        ];
+        this.paramsString = paramsArray.join('&');
       }
-
-      this.shouldSign = params.sign === '1' ? true : false;
+      this.shouldSign = params.sign === '1';
       this.shouldGenWork = this.currentBlock.work === '' && !this.shouldSign;
 
       // check if multisig
@@ -403,7 +448,9 @@ export class SignComponent implements OnInit {
   changeThreshold() {
     // multiplier has changed, clear the cache and recalculate
     if (this.selectedThreshold !== this.selectedThresholdOld) {
-      const workBlock = this.txType === TxType.open ? this.util.account.getAccountPublicKey(this.toAccountID) : this.currentBlock.previous;
+      const workBlock = this.txType === TxType.open
+        ? this.util.account.getAccountPublicKey(this.toAccountID)
+        : this.currentBlock.previous;
       this.workPool.removeFromCache(workBlock);
       console.log('PoW multiplier changed: Clearing cache');
       this.powChange();
@@ -414,7 +461,9 @@ export class SignComponent implements OnInit {
     // The block has been verified
     if (this.toAccountID) {
       console.log('Precomputing work...');
-      const workBlock = this.txType === TxType.open ? this.util.account.getAccountPublicKey(this.toAccountID) : this.currentBlock.previous;
+      const workBlock = this.txType === TxType.open
+        ? this.util.account.getAccountPublicKey(this.toAccountID)
+        : this.currentBlock.previous;
       this.workPool.addWorkToCache(workBlock, this.selectedThreshold);
     }
   }
@@ -502,11 +551,13 @@ export class SignComponent implements OnInit {
         return this.notificationService.sendError('The multi-signature was invalid!', {length: 0});
       }
       block.signature = signature;
-      const openEquiv = this.txType === TxType.open;
+
       // Start precomputing the work...
       if (this.shouldGenWork) {
         // For open blocks which don't have a frontier, use the public key of the account
-        const workBlock = openEquiv ? this.util.account.getAccountPublicKey(this.multisigAccount) : block.previous;
+        const workBlock = this.txType === TxType.open
+          ? this.util.account.getAccountPublicKey(this.multisigAccount)
+          : block.previous;
         if (!this.workPool.workExists(workBlock)) {
           this.notificationService.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
         }
@@ -562,7 +613,9 @@ export class SignComponent implements OnInit {
   // Send signed block to the network
   async confirmBlock() {
     this.confirmingTransaction = true;
-    const workBlock = this.txType === TxType.open ? this.util.account.getAccountPublicKey(this.toAccountID) : this.currentBlock.previous;
+    const workBlock = this.txType === TxType.open
+      ? this.util.account.getAccountPublicKey(this.toAccountID)
+      : this.currentBlock.previous;
     if (this.shouldGenWork) {
       // For open blocks which don't have a frontier, use the public key of the account
       if (!this.workPool.workExists(workBlock)) {
@@ -874,7 +927,7 @@ export class SignComponent implements OnInit {
 
   // Checking input tab data and act when enough data is available for the current active step
   tabListener(activate = false) {
-    this.tabListenerActive = activate ? true : this.tabListenerActive;
+    this.tabListenerActive = !!activate || this.tabListenerActive;
     if (this.tabListenerActive) {
       const stepData = [];
       for (const data of this.tabData) {
