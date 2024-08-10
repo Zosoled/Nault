@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -112,7 +112,6 @@ import { TranslocoRootModule } from './transloco-root.module';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
@@ -144,7 +143,8 @@ import { TranslocoRootModule } from './transloco-root.module';
     NgbActiveModal,
     QrModalService,
     DeeplinkService,
-    MusigService
+    MusigService,
+    provideHttpClient()
   ],
   bootstrap: [AppComponent]
 })
