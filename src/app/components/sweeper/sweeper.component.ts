@@ -27,9 +27,9 @@ export class SweeperComponent implements OnInit {
   indexMax = INDEX_MAX;
   incomingMax = SWEEP_MAX_PENDING;
 
-  myAccountModel = this.accounts.length > 0 ? this.accounts[0].id : '0';
+  myAccountModel = this.accounts[0]?.id ?? '0';
   sourceWallet = '';
-  destinationAccount = this.accounts.length > 0 ? this.accounts[0].id : '';
+  destinationAccount = this.accounts[0]?.id ?? '';
   startIndex = '0';
   endIndex = '5';
   maxIncoming = SWEEP_MAX_PENDING.toString();
@@ -50,7 +50,7 @@ export class SweeperComponent implements OnInit {
   customAccountSelected = this.accounts.length === 0;
 
   validSeed = false;
-  validDestination = this.myAccountModel !== '0' ? true : false;
+  validDestination = this.myAccountModel !== '0';
   validStartIndex = true;
   validEndIndex = true;
   validMaxIncoming = true;
@@ -79,7 +79,7 @@ export class SweeperComponent implements OnInit {
     // Update selected account if changed in the sidebar
     this.walletService.wallet.selectedAccount$.subscribe(async acc => {
       if (this.selAccountInit) {
-        this.myAccountModel = acc ? acc.id : (this.accounts.length > 0 ? this.accounts[0].id : '0');
+        this.myAccountModel = acc?.id ?? this.accounts[0]?.id ?? '0';
       }
       this.selAccountInit = true;
     });
@@ -266,22 +266,22 @@ export class SweeperComponent implements OnInit {
       const data = await this.api.process(block.block, TxType.send);
       if (data.hash) {
         const blockInfo = await this.api.blockInfo(data.hash);
-        let nanoAmountSent = null;
-        if (blockInfo.amount) {
-          nanoAmountSent = this.util.nano.rawToMnano(blockInfo.amount);
-          this.totalSwept = this.util.big.add(this.totalSwept, nanoAmountSent);
-        }
-        this.notificationService.sendInfo('Account ' + address + ' was swept and ' +
-        (nanoAmountSent ? ( 'Ӿ' + nanoAmountSent.toString(10) ) : '') + ' transferred to ' + this.destinationAccount, {length: 15000});
-        this.appendLog('Funds transferred ' + (nanoAmountSent ? ('(Ӿ' + nanoAmountSent.toString(10) + ')') : '') + ': ' + data.hash);
-        console.log(this.adjustedBalance + ' raw transferred to ' + this.destinationAccount);
+        const nanoAmountSent = this.util.nano.rawToMnano(blockInfo?.amount) ?? 0;
+        this.totalSwept = this.util.big.add(this.totalSwept, nanoAmountSent);
+
+        this.notificationService.sendInfo(
+          `Account ${address} was swept and ${'Ӿ' + nanoAmountSent.toString(10)} transferred to ${this.destinationAccount}`,
+          {length: 15000}
+        );
+        this.appendLog(`Funds transferred (Ӿ${nanoAmountSent.toString(10)}): ${data.hash}`);
+        console.log(`${this.adjustedBalance} raw transferred to ${this.destinationAccount}`);
       } else {
-        this.notificationService.sendWarning(`Failed processing block.`);
-        this.appendLog('Failed processing block: ' + data.error);
+        this.notificationService.sendWarning('Failed processing block.');
+        this.appendLog(`Failed processing block: ${data.error}`);
       }
       sendCallback();
     } else {
-      this.notificationService.sendError(`The destination address is not valid.`);
+      this.notificationService.sendError('The destination address is not valid.');
       sendCallback();
     }
   }
@@ -315,9 +315,14 @@ export class SweeperComponent implements OnInit {
       this.previous = block.hash;
 
       // publish block for each iteration
-      const data = await this.api.process(block.block, this.subType === 'open' ? TxType.open : TxType.receive);
+      const data = await this.api.process(
+        block.block,
+        this.subType === 'open'
+          ? TxType.open
+          : TxType.receive
+      );
       if (data.hash) {
-        this.appendLog('Processed pending: ' + data.hash);
+        this.appendLog(`Processed pending: ${data.hash}`);
 
         // continue with the next pending
         this.keyCount += 1;

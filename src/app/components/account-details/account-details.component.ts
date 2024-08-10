@@ -511,18 +511,16 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
             amount: transaction.amount,
             amountRaw: new BigNumber( transaction.amount || 0 ).mod(this.nano),
             local_timestamp: transaction.local_timestamp,
-            local_date_string: (
-                transaction.local_timestamp
+            local_date_string: (transaction.local_timestamp
               ? formatDate(transaction.local_timestamp * 1000, 'MMM d, y', 'en-US')
               : 'N/A'
             ),
-            local_time_string: (
-                transaction.local_timestamp
+            local_time_string: (transaction.local_timestamp
               ? formatDate(transaction.local_timestamp * 1000, 'HH:mm:ss', 'en-US')
               : ''
             ),
             addressBookName: (
-                this.addressBook.getAccountName(transaction.source)
+              this.addressBook.getAccountName(transaction.source)
               || this.getAccountLabel(transaction.source, null)
             ),
             hash: block,
@@ -618,23 +616,16 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
 
     const additionalBlocksInfo = [];
+    const accountConfirmationHeight = parseInt(this.account?.confirmation_height, 10) || null;
 
-    const accountConfirmationHeight = (
-        this.account.confirmation_height
-      ? parseInt(this.account.confirmation_height, 10)
-      : null
-    );
-
-    if (history && history.history && Array.isArray(history.history)) {
+    if (Array.isArray(history?.history)) {
       this.accountHistory = history.history.map(h => {
-        h.local_date_string = (
-            h.local_timestamp
+        h.local_date_string = (h.local_timestamp
           ? formatDate(h.local_timestamp * 1000, 'MMM d, y', 'en-US')
           : 'N/A'
         );
 
-        h.local_time_string = (
-            h.local_timestamp
+        h.local_time_string = (h.local_timestamp
           ? formatDate(h.local_timestamp * 1000, 'HH:mm:ss', 'en-US')
           : ''
         );
@@ -647,44 +638,37 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
             // Remove a receivable block if this is a receive for it
             const sourceHashToFind = h.link;
 
-            this.pendingBlocks =
-              this.pendingBlocks.filter(
-                (knownReceivableBlock) =>
-                  (knownReceivableBlock.hash !== sourceHashToFind)
-              );
+            this.pendingBlocks = this.pendingBlocks.filter(knownReceivableBlock => {
+              knownReceivableBlock.hash !== sourceHashToFind;
+            });
           } else if (h.subtype === 'change') {
             h.link_as_account = h.representative;
             h.addressBookName = (
-                this.addressBook.getAccountName(h.link_as_account)
+              this.addressBook.getAccountName(h.link_as_account)
               || this.getAccountLabel(h.link_as_account, null)
             );
           } else {
             h.link_as_account = this.util.account.getPublicAccountID(this.util.hex.toUint8(h.link));
             h.addressBookName = (
-                this.addressBook.getAccountName(h.link_as_account)
+              this.addressBook.getAccountName(h.link_as_account)
               || this.getAccountLabel(h.link_as_account, null)
             );
           }
         } else {
           h.addressBookName = (
-              this.addressBook.getAccountName(h.account)
+            this.addressBook.getAccountName(h.account)
             || this.getAccountLabel(h.account, null)
           );
         }
-
-        if (
-              (accountConfirmationHeight != null)
-            && (h.height != null)
-            && ( accountConfirmationHeight < parseInt(h.height, 10) )
-          ) {
-            h.confirmed = false;
-        }
-
+        h.confirmed = parseInt(h.height, 10) <= accountConfirmationHeight;
         return h;
       });
 
       // Currently not supporting non-state rep change or state epoch blocks
-      this.accountHistory = this.accountHistory.filter(h => h.type !== 'change' && h.subtype !== 'epoch');
+      this.accountHistory = this.accountHistory.filter(h => {
+        h.type !== 'change'
+        && h.subtype !== 'epoch'
+      });
 
       if (additionalBlocksInfo.length) {
         const blocksInfo = await this.api.blocksInfo(additionalBlocksInfo.map(b => b.link));
@@ -829,7 +813,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     }
 
     // This is getting hacky, but if their currency is bitcoin, use 6 decimals, if it is not, use 2
-    const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
+    const precision = this.settings.settings.displayCurrency === 'BTC'
+      ? 1000000
+      : 100;
 
     // Determine fiat value of the amount
     const fiatAmount = this.util.nano.rawToMnano(rawAmount)
@@ -913,8 +899,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   setMaxAmount() {
-    this.amountRaw = this.account.balance ? new BigNumber(this.account.balance).mod(this.nano) : new BigNumber(0);
-    const nanoVal = this.util.nano.rawToNano(this.account.balance).decimalPlaces(0, 3);
+    this.amountRaw = new BigNumber(this.account?.balance).mod(this.nano) ?? new BigNumber(0);
+    const nanoVal = this.util.nano.rawToNano(this.account?.balance).decimalPlaces(0, 3);
     const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
     this.amount = maxAmount.toNumber();
     this.syncFiatPrice();
@@ -1082,7 +1068,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     const srcBlockInfo = await this.api.blocksInfo([pendingHash]);
     const srcAmount = new BigNumber(srcBlockInfo.blocks[pendingHash].amount);
-    const newBalance = openEquiv ? srcAmount : new BigNumber(toAcct.balance).plus(srcAmount);
+    const newBalance = openEquiv
+      ? srcAmount
+      : new BigNumber(toAcct.balance).plus(srcAmount);
     const newBalanceDecimal = newBalance.toString(10);
 
     const blockData = {

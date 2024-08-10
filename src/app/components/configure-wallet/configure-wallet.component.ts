@@ -240,7 +240,9 @@ export class ConfigureWalletComponent implements OnInit {
           return this.notifications.sendError(`Invalid import option`);
         }
 
-        this.keyString = this.isExpanded ? this.importExpandedKeyModel : this.importPrivateKeyModel;
+        this.keyString = this.isExpanded
+          ? this.importExpandedKeyModel
+          : this.importPrivateKeyModel;
         this.keyString = this.keyString.trim();
         if (this.isExpanded && this.keyString.length === 128) {
           // includes deterministic R value material which we ignore

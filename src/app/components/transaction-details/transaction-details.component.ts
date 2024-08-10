@@ -89,7 +89,7 @@ export class TransactionDetailsComponent implements OnInit {
 
     this.transactionJSON = JSON.stringify(hashData.contents, null , 4);
 
-    this.isUnconfirmedBlock = (hashData.confirmed === 'false') ? true : false;
+    this.isUnconfirmedBlock = hashData.confirmed === 'false';
     this.blockHeight = hashData.height;
 
     const HASH_ONLY_ZEROES = '0000000000000000000000000000000000000000000000000000000000000000';

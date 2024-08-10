@@ -85,7 +85,7 @@ export class RepresentativeService {
    * @returns {Promise<FullRepresentativeOverview[]>}
    */
   async detectChangeableReps(cachedReps?: FullRepresentativeOverview[]): Promise<FullRepresentativeOverview[]> {
-    const representatives = cachedReps ? cachedReps : await this.getRepresentativesOverview();
+    const representatives = cachedReps ?? await this.getRepresentativesOverview();
 
     // Now based on some of their properties, we filter them out
     const needsChange = [];
@@ -124,8 +124,8 @@ export class RepresentativeService {
     const onlineReps = await this.getOnlineRepresentatives();
     const quorum = await this.api.confirmationQuorum();
 
-    const online_stake_total = quorum ? this.util.nano.rawToMnano(quorum.online_stake_total) : null;
-    this.onlineStakeTotal = online_stake_total ? new BigNumber(online_stake_total) : null;
+    const online_stake_total = this.util.nano.rawToMnano(quorum?.online_stake_total) ?? null;
+    this.onlineStakeTotal = new BigNumber(online_stake_total) ?? null;
 
     const allReps = [];
 
@@ -138,7 +138,7 @@ export class RepresentativeService {
       // console.log('knownRepNinja: ' + JSON.stringify(knownRepNinja, null, 4))
 
       const nanoWeight = this.util.nano.rawToMnano(representative.weight || 0);
-      const percent = this.onlineStakeTotal ? nanoWeight.div(this.onlineStakeTotal).times(100) : new BigNumber(0);
+      const percent = nanoWeight.div(this.onlineStakeTotal)?.times(100) ?? new BigNumber(0);
 
       const repStatus: RepresentativeStatus = {
         online: repOnline,
@@ -182,7 +182,9 @@ export class RepresentativeService {
 
       if (knownRep) {
         // in the list of known representatives
-        status = status === 'none' ? 'ok' : status;
+        status = status === 'none'
+          ? 'ok'
+          : status;
         label = knownRep.name;
         repStatus.known = true;
         if (knownRep.trusted) {
@@ -198,7 +200,9 @@ export class RepresentativeService {
           repStatus.changeRequired = true;
         }
       } else if (knownRepNinja) {
-        status = status === 'none' ? 'ok' : status;
+        status = status === 'none'
+          ? 'ok'
+          : status;
         label = knownRepNinja.alias;
       }
 
@@ -228,7 +232,9 @@ export class RepresentativeService {
         repStatus.changeRequired = true;
       } else {
         // any other api error
-        status = status === 'none' ? 'unknown' : status;
+        status = status === 'none'
+          ? 'unknown'
+          : status;
       }
 
       const additionalData = {

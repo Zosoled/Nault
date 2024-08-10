@@ -383,7 +383,10 @@ export class LedgerService {
     }).catch(err => {
       console.log(`error when loading ledger `, err);
       if (!hideNotifications) {
-        this.notifications.sendWarning(`Error loading Ledger device: ${typeof err === 'string' ? err : err.message}`, { length: 6000 });
+        const errmsg = typeof err === 'string'
+          ? err
+          : err.message;
+        this.notifications.sendWarning(`Error loading Ledger device: ${errmsg}`, { length: 6000 });
       }
 
       return null;
@@ -403,7 +406,9 @@ export class LedgerService {
     const cacheData = {
       representative: blockData.contents.representative,
       balance: blockData.contents.balance,
-      previousBlock: blockData.contents.previous === zeroBlock ? null : blockData.contents.previous,
+      previousBlock: blockData.contents.previous === zeroBlock
+        ? null
+        : blockData.contents.previous,
       sourceBlock: blockData.contents.link,
     };
 
@@ -422,7 +427,9 @@ export class LedgerService {
     const cacheData = {
       representative: blockData.representative,
       balance: blockData.balance,
-      previousBlock: blockData.previous === zeroBlock ? null : blockData.previous,
+      previousBlock: blockData.previous === zeroBlock
+        ? null
+        : blockData.previous,
       sourceBlock: blockData.link,
     };
 
