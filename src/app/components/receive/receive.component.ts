@@ -300,7 +300,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 		if (account.length > 1) {
 			this.qrAccount = account;
 			this.qrCodeImage = null;
-			const amount = this.qrAmount.isGreaterThan(0)
+			const amount = this.qrAmount?.isGreaterThan(0)
 				? `?amount=${this.qrAmount.toString(10)}`
 				: '';
 			this.qrCodeUri = `nano:${account}${amount}`;
@@ -309,17 +309,17 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 		this.qrCodeImage = qrCode;
 	}
 
-	async changeQRAmount (raw?) {
+	async changeQRAmount (raw?: string) {
 		this.qrAmount = null;
 		let qrCode = null;
 		if (raw) {
 			if (this.util.account.isValidAmount(raw)) {
-				this.qrAmount = raw;
+				this.qrAmount = this.toBigNumber(raw);
 			}
 		}
 		if (this.qrAccount.length > 1) {
 			this.qrCodeImage = null;
-			const amount = this.qrAmount.isGreaterThan(0)
+			const amount = this.qrAmount?.isGreaterThan(0)
 				? `?amount=${this.qrAmount.toString(10)}`
 				: '';
 			this.qrCodeUri = `nano:${this.qrAccount}${amount}`;
