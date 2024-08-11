@@ -110,7 +110,8 @@ export class RemoteSignService {
       const data = JSON.parse(stringdata);
       return (
         this.util.nano.isValidSignature(data.block.signature)
-        && (this.util.nano.isValidWork(data.block.work) ?? true));
+        && (this.util.nano.isValidWork(data.block.work) ?? true)
+      );
     } catch (error) {
       return false;
     }

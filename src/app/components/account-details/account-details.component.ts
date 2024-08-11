@@ -275,50 +275,35 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   onRefreshButtonClick() {
     if (!this.manualRefreshAllowed) return;
-
     this.loadAccountDetails();
   }
 
   isReceivableBlockUpdateRelevant(receivableBlockUpdate) {
-    let isRelevant = true;
-
     if (receivableBlockUpdate.account !== this.accountID) {
-      isRelevant = false;
-      return isRelevant;
+      return false;
     }
 
     const sourceHashToFind = receivableBlockUpdate.sourceHash;
 
-    const alreadyInReceivableBlocks =
-      this.pendingBlocks.some(
-        (knownReceivableBlock) =>
-          (knownReceivableBlock.hash === sourceHashToFind)
-      );
+    const alreadyInReceivableBlocks = this.pendingBlocks.some(knownReceivableBlock => {
+      knownReceivableBlock.hash === sourceHashToFind
+    });
 
-    if (receivableBlockUpdate.hasBeenReceived === true) {
+    if (receivableBlockUpdate.hasBeenReceived) {
       const destinationHashToFind = receivableBlockUpdate.destinationHash;
 
-      const alreadyInAccountHistory =
-        this.accountHistory.some(
-          (knownAccountHistoryBlock) =>
-            (knownAccountHistoryBlock.hash === destinationHashToFind)
-        );
+      const alreadyInAccountHistory = this.accountHistory.some(knownAccountHistoryBlock => {
+        knownAccountHistoryBlock.hash === destinationHashToFind
+      });
 
-      if (
-            (alreadyInAccountHistory === true)
-          && (alreadyInReceivableBlocks === false)
-        ) {
-          isRelevant = false;
-          return isRelevant;
+      if (alreadyInAccountHistory && !alreadyInReceivableBlocks) {
+        return false;
       }
-    } else {
-      if (alreadyInReceivableBlocks === true) {
-        isRelevant = false;
-        return isRelevant;
-      }
+    } else if (alreadyInReceivableBlocks) {
+      return false;
     }
 
-    return isRelevant;
+    return true;
   }
 
   onReceivableBlockUpdate(receivableBlockUpdate) {
@@ -326,8 +311,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const isRelevantUpdate =
-      this.isReceivableBlockUpdateRelevant(receivableBlockUpdate);
+    const isRelevantUpdate = this.isReceivableBlockUpdateRelevant(receivableBlockUpdate);
 
     if (isRelevantUpdate === false) {
       return;
@@ -337,22 +321,20 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   }
 
   loadAccountDetailsThrottled(params) {
-    this.autoRefreshReasonBlockUpdate = (
-        (params.receivableBlockUpdate != null)
+    this.autoRefreshReasonBlockUpdate = params.receivableBlockUpdate != null
       ? params.receivableBlockUpdate
-      : null
-    );
+      : null;
 
-    if (this.initialLoadDone === false) {
+    if (!this.initialLoadDone) {
       return;
     }
 
-    if (this.instantAutoRefreshAllowed === true) {
+    if (this.instantAutoRefreshAllowed) {
       this.loadAccountDetails();
       return;
     }
 
-    if (this.loadingAccountDetails === true) {
+    if (this.loadingAccountDetails) {
       // Queue refresh once the loading is done
       this.shouldQueueAutoRefresh = true;
     } else {

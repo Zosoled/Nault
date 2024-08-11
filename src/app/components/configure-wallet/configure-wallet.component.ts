@@ -95,8 +95,8 @@ export class ConfigureWalletComponent implements OnInit {
       exampleSeedTrimmed = exampleSeedFull.slice(trimIdx, trimIdx + 6);
       trimIdx += 2;
     } while (
-        (trimIdx < 30)
-      && ( exampleSeedTrimmed.match(/^([0-9]+|[A-F]+)$/g) !== null )
+      trimIdx < 30
+      && exampleSeedTrimmed.match(/^([0-9]+|[A-F]+)$/g) !== null
     );
 
     // must have both letters and numbers

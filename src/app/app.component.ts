@@ -72,10 +72,10 @@ export class AppComponent implements OnInit {
 
   @HostListener('document:mousedown', ['$event']) onGlobalClick(event): void {
     if (
-            ( this.selectButton.nativeElement.contains(event.target) === false )
-          && ( this.accountsDropdown.nativeElement.contains(event.target) === false )
-      ) {
-        this.showAccountsDropdown = false;
+      this.selectButton.nativeElement.contains(event.target) === false
+      && this.accountsDropdown.nativeElement.contains(event.target) === false
+    ) {
+      this.showAccountsDropdown = false;
     }
   }
 
@@ -309,7 +309,7 @@ export class AppComponent implements OnInit {
     if (!searchData.length) return;
 
     const isValidNanoAccount = (
-        ( searchData.startsWith('xrb_') || searchData.startsWith('nano_') )
+      (searchData.startsWith('xrb_') || searchData.startsWith('nano_'))
       && this.util.account.isValidAccount(searchData)
     );
 

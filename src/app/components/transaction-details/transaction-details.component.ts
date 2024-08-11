@@ -130,11 +130,8 @@ export class TransactionDetailsComponent implements OnInit {
       this.amountRaw = new BigNumber(hashData.amount).mod(this.nano);
     }
 
-    if (
-          (hashData.successor != null)
-        && (hashData.successor !== HASH_ONLY_ZEROES)
-      ) {
-        this.successorHash = hashData.successor;
+    if (hashData.successor != null && hashData.successor !== HASH_ONLY_ZEROES) {
+      this.successorHash = hashData.successor;
     }
 
     this.transaction = hashData;

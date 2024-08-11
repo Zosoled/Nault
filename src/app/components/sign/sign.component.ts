@@ -514,14 +514,24 @@ export class SignComponent implements OnInit {
     }
 
     // using seed or private key
-    if ((this.signTypeSelected === this.signTypes[1] && !this.validSeed) || (this.signTypeSelected === this.signTypes[2]
-      && !this.validPrivkey) || (this.signTypeSelected === this.signTypes[3] && !this.validPrivkey)) {
-        return this.notificationService.sendWarning('Could not find a valid private key to sign with.');
-      }
-    if (this.signTypeSelected === this.signTypes[1] || this.signTypeSelected === this.signTypes[2]) {
+    if (
+      (this.signTypeSelected === this.signTypes[1] && !this.validSeed)
+      || (this.signTypeSelected === this.signTypes[2] && !this.validPrivkey)
+      || (this.signTypeSelected === this.signTypes[3] && !this.validPrivkey)
+    ) {
+      return this.notificationService.sendWarning('Could not find a valid private key to sign with.');
+    }
+    if (
+      this.signTypeSelected === this.signTypes[1]
+      || this.signTypeSelected === this.signTypes[2]
+    ) {
       isLedger = false;
       // create dummy wallet that only contains needed elements for signature
-      walletAccount = {keyPair: {secretKey: this.util.hex.toUint8(this.privateKey), expanded: this.privateKeyExpanded}};
+      const keyPair = {
+        secretKey: this.util.hex.toUint8(this.privateKey),
+        expanded: this.privateKeyExpanded
+      }
+      walletAccount = {keyPair: keyPair};
     }
 
     this.confirmingTransaction = true;
@@ -529,8 +539,15 @@ export class SignComponent implements OnInit {
     // sign the block (if not multisig)
     let block: StateBlock;
     if (this.signTypeSelected !== this.signTypes[3]) {
-      block = await this.nanoBlock.signOfflineBlock(walletAccount, this.currentBlock,
-        this.previousBlock, this.txType, this.shouldGenWork, this.selectedThreshold, isLedger);
+      block = await this.nanoBlock.signOfflineBlock(
+        walletAccount,
+        this.currentBlock,
+        this.previousBlock,
+        this.txType,
+        this.shouldGenWork,
+        this.selectedThreshold,
+        isLedger
+      );
       console.log('Signature: ' + block.signature || 'Error');
       console.log('Work: ' + block.work || 'Not applied');
 
