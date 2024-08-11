@@ -131,11 +131,7 @@ export class ChangeRepWidgetComponent implements OnInit {
 
     if (this.selectedAccount !== null) {
       const selectedAccountRep = this.representatives
-        .filter(rep => {
-          rep.accounts.some(a => {
-            a.id === this.selectedAccount.id
-          })
-        })[0];
+        .filter(rep => rep.accounts.some(a => a.id === this.selectedAccount.id))[0];
 
       if (selectedAccountRep == null) {
         return [];
