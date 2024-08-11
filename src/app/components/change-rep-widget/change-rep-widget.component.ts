@@ -100,17 +100,14 @@ export class ChangeRepWidgetComponent implements OnInit {
     const repRequiringChange = this.changeableRepresentatives
       .sort((a, b) => b.delegatedWeight.minus(a.delegatedWeight))
       .filter(changeableRep => {
-        return changeableRep.status.changeRequired
-          && displayedReps.every(displayedRep => {
-            displayedRep.id !== changeableRep.id
-          })
-        })[0];
+        const isNoDisplayedRepChangeable = displayedReps.every(displayedRep => displayedRep.id !== changeableRep.id)
+        return changeableRep.status.changeRequired && isNoDisplayedRepChangeable
+      })[0];
 
-    if (repRequiringChange === null) {
-      return [...displayedReps];
+    if (!!repRequiringChange) {
+      displayedReps.push(Object.assign({}, repRequiringChange))
     }
-
-    return [ ...displayedReps, Object.assign({}, repRequiringChange) ];
+    return displayedReps;
   }
 
   updateSelectedAccountHasRep() {
