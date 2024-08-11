@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { NotificationService } from './notification.service';
 import { IpcRenderer } from 'electron';
+import { NotificationService } from './notification.service';
 
 @Injectable()
 export class DesktopService {
