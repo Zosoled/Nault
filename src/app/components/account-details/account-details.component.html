@@ -801,10 +801,10 @@
             }"
             (click)="mobileTransactionMenuModal.hide()"
             *ngIf="(
-                walletAccount
+              walletAccount
               && !isNaN(mobileTransactionData.amount)
               && (
-                  mobileTransactionData.type === 'receive'
+                mobileTransactionData.type === 'receive'
                 || mobileTransactionData.subtype === 'receive'
                 || mobileTransactionData.type === 'open'
               )
