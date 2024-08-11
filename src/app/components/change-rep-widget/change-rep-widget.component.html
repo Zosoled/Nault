@@ -1,15 +1,13 @@
 <div class="nav-representative-info" *ngIf="(displayedRepresentatives.length > 0) else noRepresentatives">
   <div class="representative" *ngFor="let rep of displayedRepresentatives; let repIdx = index" (mouseover)="showRepHelp=rep.id" (mouseout)="showRepHelp=null">
-    <h2>{{
-        (repIdx !== 0)
-      ? (
-          'change-rep-widget.representative-for-account' | transloco: { account: (
-            rep.accounts[0].addressBookName
-          ? ( '"' + rep.accounts[0].addressBookName + '"' )
-          : ( rep.accounts[0].id.slice(0, 10) + '...' )
+    <h2>{{ repIdx === 0
+      ? ('general.representative' | transloco)
+      : ('change-rep-widget.representative-for-account' | transloco: { account: (
+        rep.accounts[0]?.addressBookName
+          ? ( '"' + rep.accounts[0]?.addressBookName + '"' )
+          : ( rep.accounts[0]?.id.slice(0, 10) + '...' )
         )}
       )
-      : ('general.representative' | transloco)
     }}</h2>
     <div class="representative-name-row">
       <a (click)="showRepSelectionForSpecificRep(rep)" class="name">{{ rep.label || ('change-rep-widget.unknown-rep' | transloco) }}</a>
