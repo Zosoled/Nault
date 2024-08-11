@@ -96,13 +96,13 @@ export class RepresentativeService {
 
       // If we have high weight, low uptime or marked as warn, then we need to change
       if (
-            rep.status.highWeight
-          || rep.status.veryHighWeight
-          || rep.status.lowUptime
-          || rep.status.veryLowUptime
-          || rep.status.warn
-        ) {
-          needsChange.push(rep);
+        rep.status.highWeight
+        || rep.status.veryHighWeight
+        || rep.status.lowUptime
+        || rep.status.veryLowUptime
+        || rep.status.warn
+      ) {
+        needsChange.push(rep);
       }
     }
 
