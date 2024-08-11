@@ -178,11 +178,11 @@ function createWindow () {
     y: mainWindowStateKeeper.y,
     width: mainWindowStateKeeper.width,
     height: mainWindowStateKeeper.height,
-    webPreferences:
-    {
-      webSecurity: false,
+    webPreferences: {
+      webSecurity: true,
       devTools: true,
-      nodeIntegration: true
+      nodeIntegration: true,
+      contextIsolation: false
     }
   });
 

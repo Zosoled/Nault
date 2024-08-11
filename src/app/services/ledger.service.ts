@@ -192,8 +192,6 @@ export class LedgerService {
 
   }
 
-
-
   async getLedgerAccountDesktop(accountIndex, showOnScreen) {
     if (this.queryingDesktopLedger) {
       throw new Error(`Already querying desktop device, please wait`);
@@ -266,7 +264,7 @@ export class LedgerService {
 
 
   /**
-   * Main ledger loading function.  Can be called multiple times to attempt a reconnect.
+   * Main ledger loading function. Can be called multiple times to attempt a reconnect.
    * @param {boolean} hideNotifications
    * @returns {Promise<any>}
    */
