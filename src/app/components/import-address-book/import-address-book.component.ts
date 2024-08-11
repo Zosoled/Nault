@@ -84,11 +84,11 @@ export class ImportAddressBookComponent implements OnInit {
         if (!importEntry.originalName) {
           this.newEntries++;
         } else if (
-              (importEntry.originalName === entryName)
-            && (importEntry.originalTrackBalance === importEntry.trackBalance)
-            && (importEntry.originalTrackTransactions === importEntry.trackTransactions)
-          ) {
-            this.existingEntries++;
+          importEntry.originalName === entryName
+          && importEntry.originalTrackBalance === importEntry.trackBalance
+          && importEntry.originalTrackTransactions === importEntry.trackTransactions
+        ) {
+          this.existingEntries++;
         } else {
           this.conflictingEntries++;
         }

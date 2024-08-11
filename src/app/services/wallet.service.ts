@@ -153,21 +153,21 @@ export class WalletService {
       const walletAccountIDs = this.wallet.accounts.map(a => a.id);
 
       const isConfirmedIncomingTransactionForOwnWalletAccount = (
-          (transaction.block.type === 'state')
-        && (transaction.block.subtype === 'send')
-        && ( walletAccountIDs.includes(transaction.block.link_as_account) === true )
+        transaction.block.type === 'state'
+        && transaction.block.subtype === 'send'
+        && walletAccountIDs.includes(transaction.block.link_as_account)
       );
 
       const isConfirmedSendTransactionFromOwnWalletAccount = (
-          (transaction.block.type === 'state')
-        && (transaction.block.subtype === 'send')
-        && ( walletAccountIDs.includes(transaction.block.account) === true )
+        transaction.block.type === 'state'
+        && transaction.block.subtype === 'send'
+        && walletAccountIDs.includes(transaction.block.account)
       );
 
       const isConfirmedReceiveTransactionFromOwnWalletAccount = (
-          (transaction.block.type === 'state')
-        && (transaction.block.subtype === 'receive')
-        && ( walletAccountIDs.includes(transaction.block.account) === true )
+        transaction.block.type === 'state'
+        && transaction.block.subtype === 'receive'
+        && walletAccountIDs.includes(transaction.block.account)
       );
 
       if (isConfirmedIncomingTransactionForOwnWalletAccount === true) {
@@ -243,15 +243,15 @@ export class WalletService {
       // won't the balance be incorrect if relying only on the websocket? / Json
 
       const shouldReloadBalances = (
-          (shouldNotify === true)
+        shouldNotify
         && (
-            (isConfirmedIncomingTransactionForOwnWalletAccount === true)
-          || (isConfirmedSendTransactionFromOwnWalletAccount === true)
-          || (isConfirmedReceiveTransactionFromOwnWalletAccount === true)
+          isConfirmedIncomingTransactionForOwnWalletAccount
+          || isConfirmedSendTransactionFromOwnWalletAccount
+          || isConfirmedReceiveTransactionFromOwnWalletAccount
         )
       );
 
-      if (shouldReloadBalances === true) {
+      if (shouldReloadBalances) {
         await this.reloadBalances();
       }
     });
