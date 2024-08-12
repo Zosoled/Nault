@@ -3,7 +3,16 @@
 	"version": "1.18.3",
 	"license": "(MIT AND GPL-3.0-or-later)",
 	"description": "Wallet for interacting with nano",
-	"author": "The Nano Community / Andrew Steele",
+	"author": "The Nano Community",
+	"contributors": [
+		{
+			"name": "Andrew Steele"
+		},
+		{
+			"name": "Zosoled",
+			"email": "zosoled@codecow.xyz"
+		}
+	],
 	"main": "desktop-app/dist/desktop-app.js",
 	"scripts": {
 		"start": "ng serve",
