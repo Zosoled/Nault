@@ -1,7 +1,7 @@
 {
 	"name": "nault",
 	"version": "1.18.3",
-	"license": "MIT",
+	"license": "(MIT AND GPL-3.0-or-later)",
 	"description": "Wallet for interacting with nano",
 	"author": "The Nano Community / Andrew Steele",
 	"main": "desktop-app/dist/desktop-app.js",
