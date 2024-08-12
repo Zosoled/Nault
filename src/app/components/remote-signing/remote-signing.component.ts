@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NotificationService } from '../../services/notification.service';
 import { RemoteSignService } from '../../services/remote-sign.service';
 import { QrModalService } from '../../services/qr-modal.service';
-import { AddressBookService } from 'app/services/address-book.service';
+import { AddressBookService } from '../../services/address-book.service';
 import {BehaviorSubject} from 'rxjs';
 
 @Component({
