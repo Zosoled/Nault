@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {UtilService} from '../../services/util.service';
 import { Router } from '@angular/router';
-import { NotificationService } from '../../services/notification.service';
-import { RemoteSignService } from '../../services/remote-sign.service';
-import { QrModalService } from '../../services/qr-modal.service';
+import { BehaviorSubject } from 'rxjs';
 import { AddressBookService } from '../../services/address-book.service';
-import {BehaviorSubject} from 'rxjs';
+import { NotificationService } from '../../services/notification.service';
+import { QrModalService } from '../../services/qr-modal.service';
+import { RemoteSignService } from '../../services/remote-sign.service';
+import { UtilService } from '../../services/util.service';
 
 @Component({
   selector: 'app-send',
