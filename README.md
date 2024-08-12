@@ -42,6 +42,11 @@ If you visit [nault.cc](https://nault.cc) in your phone you will be given the op
 * Android: Click on "Install Nault for Android" in the menu
 * iOS (Safari only): 1 - Tap the share button. 2 - Select "+ Add to home screen". 3 - Open Nault from the home screen
 
+## License
+Portions of this code were originally released and licensed under the MIT License, the text of which can be found under LICENSES/MIT.txt. Specifically, this version of Nault was forked at commit c9ed1cca08833e406f9ceb58973e3198d5d66f81, and all content up to and including that commit are licensed under the MIT License.
+
+All additions and modifications included in code commits thereafter are licensed under the GNU Public License v3 or later, the text of which can be found under LICENSES/GPL-3.0-or-later.txt.
+
 ## How To Help
 
 Thanks for your interest in contributing! There are many ways to contribute to this project. [Get started here at CONTRIBUTING.md](CONTRIBUTING.md).
