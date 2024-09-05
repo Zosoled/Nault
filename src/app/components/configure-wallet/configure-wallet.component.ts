@@ -5,7 +5,7 @@ import * as bip39 from 'bip39'
 import { LedgerService, LedgerStatus } from '../../services/ledger.service'
 import { QrModalService } from '../../services/qr-modal.service'
 import { UtilService } from '../../services/util.service'
-import { Bip44Wallet } from 'nanocurrency-web'
+import { Bip44Wallet } from 'xno'
 import { TranslocoService } from '@jsverse/transloco'
 
 enum panels {
