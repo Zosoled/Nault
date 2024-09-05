@@ -8,7 +8,7 @@ import { WorkPoolService } from '../../services/work-pool.service'
 import { AppSettingsService } from '../../services/app-settings.service'
 import { NanoBlockService } from '../../services/nano-block.service'
 import * as nanocurrency from 'nanocurrency'
-import { Bip44Wallet } from 'nanocurrency-web'
+import { Bip44Wallet } from 'xno'
 import * as bip39 from 'bip39'
 import { Router } from '@angular/router'
 
