@@ -166,7 +166,7 @@ export class ApiService {
 			return await this.request('account_history', { account, count, raw, offset, reverse }, false)
 		}
 	}
-	async accountInfo (account): Promise<WalletApiAccount> {
+	async accountInfo (account): Promise<any> {
 		return await this.request('account_info', { account, pending: true, representative: true, weight: true }, false)
 	}
 	async pending (account, count): Promise<any> {
