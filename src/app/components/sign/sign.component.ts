@@ -5,8 +5,7 @@ import BigNumber from 'bignumber.js'
 import hermes from 'hermes-channel'
 import * as QRCode from 'qrcode'
 import * as bip39 from 'bip39'
-import { Bip44Wallet } from 'xno'
-import * as nanocurrency from 'nanocurrency'
+import { Account, Bip44Wallet } from 'xno'
 import { AddressBookService } from '../../services/address-book.service'
 import { WalletService } from '../../services/wallet.service'
 import { NotificationService } from '../../services/notification.service'
@@ -1151,7 +1150,7 @@ export class SignComponent implements OnInit {
 			console.log('Started multisig using block hash: ' + this.blockHash)
 			// Combine output with public key
 			const output = this.activeStep + ':' + this.util.hex.fromUint8(result.outbuf.subarray(33)) +
-				nanocurrency.derivePublicKey(this.privateKey)
+				Account.fromSecretKey(this.privateKey).publicKey
 			this.activeStep = this.activeStep + 1
 			this.outputMultisigData = output.toUpperCase()
 			this.generateOutputQR()
