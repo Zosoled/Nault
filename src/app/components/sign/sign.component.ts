@@ -452,7 +452,7 @@ export class SignComponent implements OnInit {
 		// multiplier has changed, clear the cache and recalculate
 		if (this.selectedThreshold !== this.selectedThresholdOld) {
 			const workBlock = this.txType === TxType.open
-				? this.util.account.getAccountPublicKey(this.toAccountID)
+				? new Account(this.toAccountID).publicKey
 				: this.currentBlock.previous
 			this.workPool.removeFromCache(workBlock)
 			console.log('PoW multiplier changed: Clearing cache')
@@ -465,7 +465,7 @@ export class SignComponent implements OnInit {
 		if (this.toAccountID) {
 			console.log('Precomputing work...')
 			const workBlock = this.txType === TxType.open
-				? this.util.account.getAccountPublicKey(this.toAccountID)
+				? new Account(this.toAccountID).publicKey
 				: this.currentBlock.previous
 			this.workPool.addWorkToCache(workBlock, this.selectedThreshold)
 		}
@@ -576,7 +576,7 @@ export class SignComponent implements OnInit {
 			if (this.shouldGenWork) {
 				// For open blocks which don't have a frontier, use the public key of the account
 				const workBlock = this.txType === TxType.open
-					? this.util.account.getAccountPublicKey(this.multisigAccount)
+					? new Account(this.multisigAccount).publicKey
 					: block.previous
 				if (!this.workPool.workExists(workBlock)) {
 					this.notificationService.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 })
@@ -634,7 +634,7 @@ export class SignComponent implements OnInit {
 	async confirmBlock () {
 		this.confirmingTransaction = true
 		const workBlock = this.txType === TxType.open
-			? this.util.account.getAccountPublicKey(this.toAccountID)
+			? new Account(this.toAccountID).publicKey
 			: this.currentBlock.previous
 		if (this.shouldGenWork) {
 			// For open blocks which don't have a frontier, use the public key of the account

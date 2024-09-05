@@ -13,7 +13,7 @@ import * as QRCode from 'qrcode'
 import BigNumber from 'bignumber.js'
 import { RepresentativeService } from '../../services/representative.service'
 import { BehaviorSubject } from 'rxjs'
-import { SendBlock, ReceiveBlock, ChangeBlock } from 'xno'
+import { Account, SendBlock, ReceiveBlock, ChangeBlock } from 'xno'
 import { NinjaService } from '../../services/ninja.service'
 import { QrModalService } from '../../services/qr-modal.service'
 import { TranslocoService } from '@jsverse/transloco'
@@ -997,7 +997,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		const block = new SendBlock(
 			this.accountID,
 			from.balance,
-			this.util.account.getAccountPublicKey(this.toAccountID),
+			new Account(this.toAccountID).publicKey,
 			this.rawAmount.toFixed(0),
 			representative,
 			from.frontier

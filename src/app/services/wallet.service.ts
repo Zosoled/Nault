@@ -12,6 +12,7 @@ import { NotificationService } from './notification.service'
 import { AppSettingsService } from './app-settings.service'
 import { PriceService } from './price.service'
 import { LedgerService } from './ledger.service'
+import { Account } from 'xno'
 
 export type WalletType = 'seed' | 'ledger' | 'privateKey' | 'expandedKey'
 
@@ -842,7 +843,7 @@ export class WalletService {
 						if (walletAccount.pending.gt(0)) {
 							console.log('Adding single pending account within limit to work cache')
 							// Use frontier or public key if open block
-							const hash = walletAccount.frontier || this.util.account.getAccountPublicKey(walletAccount.id)
+							const hash = walletAccount.frontier || new Account(walletAccount.id).publicKey
 							// Technically should be 1/64 multiplier here but since we don't know if the pending will be received before
 							// a send or change block is made it's safer to use 1x PoW threshold to be sure the cache will work.
 							// On the other hand, it may be more efficient to use 1/64 and simply let the work cache rework
@@ -876,7 +877,7 @@ export class WalletService {
 		// Make sure any frontiers are in the work pool
 		// If they have no frontier, we want to use their pub key?
 		const hashes = this.wallet.accounts.filter(account => (account.receivePow === false)).
-			map(account => account.frontier || this.util.account.getAccountPublicKey(account.id))
+			map(account => account.frontier || new Account(account.id).publicKey)
 		console.log('Adding non-pending frontiers to work cache')
 		hashes.forEach(hash => this.workPool.addWorkToCache(hash, 1)) // use high pow here since we don't know what tx type will be next
 
