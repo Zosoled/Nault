@@ -13,7 +13,7 @@ import * as QRCode from 'qrcode'
 import BigNumber from 'bignumber.js'
 import { RepresentativeService } from '../../services/representative.service'
 import { BehaviorSubject } from 'rxjs'
-import * as nanocurrency from 'nanocurrency'
+import { SendBlock, ReceiveBlock, ChangeBlock } from 'xno'
 import { NinjaService } from '../../services/ninja.service'
 import { QrModalService } from '../../services/qr-modal.service'
 import { TranslocoService } from '@jsverse/transloco'
@@ -979,8 +979,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		const to = await this.api.accountInfo(this.toAccountID)
 		if (!from) return this.notifications.sendError(`From account not found`)
 
-		from.balanceBN = new BigNumber(from.balance || 0)
-		to.balanceBN = new BigNumber(to.balance || 0)
+		const bigBalanceFrom = new BigNumber(from.balance || 0)
+		const bigBalanceTo = new BigNumber(to.balance || 0)
 
 		this.fromAccount = from
 		this.toAccount = to
@@ -991,7 +991,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		const nanoAmount = this.rawAmount.div(this.nano)
 
 		if (this.amount < 0 || rawAmount.isLessThan(0)) return this.notifications.sendWarning(`Amount is invalid`)
-		if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notifications.sendError(`From account does not have enough XNO`)
+		if (bigBalanceFrom.minus(rawAmount).isLessThan(0)) return this.notifications.sendError(`From account does not have enough XNO`)
 
 		// Determine a proper raw amount to show in the UI, if a decimal was entered
 		this.amountRaw = this.rawAmount.mod(this.nano)
@@ -1004,25 +1004,20 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 		const defaultRepresentative = this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative()
 		const representative = from.representative || defaultRepresentative
-		const blockData = {
-			account: this.accountID.replace('xrb_', 'nano_').toLowerCase(),
-			previous: from.frontier,
-			representative: representative,
-			balance: remainingDecimal,
-			link: this.util.account.getAccountPublicKey(this.toAccountID),
-		}
-		this.blockHash = nanocurrency.hashBlock({
-			account: blockData.account,
-			link: blockData.link,
-			previous: blockData.previous,
-			representative: blockData.representative,
-			balance: blockData.balance
-		})
-		console.log('Created block', blockData)
+		const block = new SendBlock(
+			this.accountID,
+			from.balance,
+			this.util.account.getAccountPublicKey(this.toAccountID),
+			this.rawAmount.toFixed(0),
+			representative,
+			from.frontier
+		)
+		this.blockHash = this.util.uint8.toHex(await block.hash())
+		console.log('Created block', block)
 		console.log('Block hash: ' + this.blockHash)
 
 		// Previous block info
-		const previousBlockInfo = await this.api.blockInfo(blockData.previous)
+		const previousBlockInfo = await this.api.blockInfo(block.previous)
 		if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`)
 		const jsonBlock = JSON.parse(previousBlockInfo.contents)
 		const blockDataPrevious = {
@@ -1035,7 +1030,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		}
 
 		// Nano signing standard
-		this.qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}'
+		this.qrString = `nanosign:{"block":${block.json()},"previous":${JSON.stringify(blockDataPrevious)}}`
 		const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 })
 		this.qrCodeImageBlock = qrCode
 	}
@@ -1064,28 +1059,23 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 			: new BigNumber(toAcct.balance).plus(srcAmount)
 		const newBalanceDecimal = newBalance.toString(10)
 
-		const blockData = {
-			account: this.accountID.replace('xrb_', 'nano_').toLowerCase(),
-			previous: previousBlock,
-			representative: representative,
-			balance: newBalanceDecimal,
-			link: pendingHash,
-		}
+		const block = new ReceiveBlock(
+			this.accountID,
+			toAcct.balance,
+			pendingHash,
+			srcAmount.toFixed(0),
+			representative,
+			previousBlock
+		)
 
-		this.blockHashReceive = nanocurrency.hashBlock({
-			account: blockData.account,
-			link: blockData.link,
-			previous: blockData.previous,
-			representative: blockData.representative,
-			balance: blockData.balance
-		})
-		console.log('Created block', blockData)
+		this.blockHashReceive = this.util.uint8.toHex(await block.hash())
+		console.log('Created block', block)
 		console.log('Block hash: ' + this.blockHashReceive)
 
 		// Previous block info
 		let blockDataPrevious = null
 		if (!openEquiv) {
-			const previousBlockInfo = await this.api.blockInfo(blockData.previous)
+			const previousBlockInfo = await this.api.blockInfo(block.previous)
 			if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`)
 			const jsonBlock = JSON.parse(previousBlockInfo.contents)
 			blockDataPrevious = {
@@ -1101,12 +1091,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		let qrData
 		if (blockDataPrevious) {
 			qrData = {
-				block: blockData,
+				block: block.json(),
 				previous: blockDataPrevious
 			}
 		} else {
 			qrData = {
-				block: blockData
+				block: block.json()
 			}
 		}
 
@@ -1129,27 +1119,20 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 		const balance = new BigNumber(account.balance)
 		const balanceDecimal = balance.toString(10)
-		const blockData = {
-			account: this.accountID.replace('xrb_', 'nano_').toLowerCase(),
-			previous: account.frontier,
-			representative: this.representativeModel,
-			balance: balanceDecimal,
-			link: this.zeroHash,
-		}
 
-		this.blockHash = nanocurrency.hashBlock({
-			account: blockData.account,
-			link: blockData.link,
-			previous: blockData.previous,
-			representative: blockData.representative,
-			balance: blockData.balance
-		})
+		const block = new ChangeBlock(
+			this.accountID,
+			balanceDecimal,
+			this.representativeModel,
+			account.frontier
+		)
+		this.blockHash = this.util.uint8.toHex(await block.hash())
 
-		console.log('Created block', blockData)
+		console.log('Created block', block)
 		console.log('Block hash: ' + this.blockHash)
 
 		// Previous block info
-		const previousBlockInfo = await this.api.blockInfo(blockData.previous)
+		const previousBlockInfo = await this.api.blockInfo(block.previous)
 		if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`)
 		const jsonBlock = JSON.parse(previousBlockInfo.contents)
 		const blockDataPrevious = {
@@ -1162,7 +1145,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		}
 
 		// Nano signing standard
-		this.qrString = 'nanosign:{"block":' + JSON.stringify(blockData) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}'
+		this.qrString = 'nanosign:{"block":' + block.json() + ',"previous":' + JSON.stringify(blockDataPrevious) + '}'
 		const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 })
 		this.qrCodeImageBlock = qrCode
 	}
