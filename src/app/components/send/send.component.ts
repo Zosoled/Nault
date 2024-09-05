@@ -15,7 +15,7 @@ import { QrModalService } from '../../services/qr-modal.service'
 import { environment } from '../../../environments/environment'
 import { TranslocoService } from '@jsverse/transloco'
 import { HttpClient } from '@angular/common/http'
-import * as nanocurrency from 'nanocurrency'
+import { Tools } from 'xno'
 
 const nacl = window['nacl']
 
@@ -198,7 +198,7 @@ export class SendComponent implements OnInit {
 		this.amount = nanoAmount.toNumber()
 	}
 
-	onDestinationAddressInput () {
+	async onDestinationAddressInput () {
 		this.addressBookMatch = ''
 
 		this.searchAddressBook()
@@ -216,12 +216,7 @@ export class SendComponent implements OnInit {
 
 				const amountAsXNO = (
 					amountAsRaw
-						? nanocurrency.convert(
-							amountAsRaw, {
-							from: nanocurrency.Unit.raw,
-							to: nanocurrency.Unit.NANO
-						}
-						).toString()
+						? await Tools.convert(amountAsRaw, 'raw', 'nano').toString()
 						: null
 				)
 
