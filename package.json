@@ -69,7 +69,7 @@
 		"hw-app-nano": "^1.3.0",
 		"nano-base32": "^1.0.1",
 		"nanocurrency": "^2.5.0",
-		"nanocurrency-web": "file:../xno",
+		"xno": "file:../xno",
 		"ngx-clipboard": "^16.0.0",
 		"pbkdf2": "^3.1.2",
 		"qrcode": "^1.5.3",
