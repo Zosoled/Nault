@@ -8,7 +8,7 @@ import { WorkPoolService } from '../../services/work-pool.service'
 import { AppSettingsService } from '../../services/app-settings.service'
 import { NanoBlockService } from '../../services/nano-block.service'
 import * as nanocurrency from 'nanocurrency'
-import { Bip44Wallet } from 'xno'
+import { Account, Bip44Wallet, Blake2bWallet } from 'xno'
 import * as bip39 from 'bip39'
 import { Router } from '@angular/router'
 
@@ -249,12 +249,11 @@ export class SweeperComponent implements OnInit {
 
 	// Process final send block
 	async processSend (privKey, previous, sendCallback) {
-		const pubKey = nanocurrency.derivePublicKey(privKey)
-		const address = nanocurrency.deriveAddress(pubKey, { useNanoPrefix: true })
+		const account = Account.fromSecretKey(privKey)
 
 		// make an extra check on valid destination
 		if (this.validDestination && nanocurrency.checkAddress(this.destinationAccount)) {
-			this.appendLog('Transfer started: ' + address)
+			this.appendLog('Transfer started: ' + account.address)
 			const work = await this.workPool.getWork(previous, 1) // send threshold
 			// create the block with the work found
 			const block = nanocurrency.createBlock(privKey, {
@@ -273,7 +272,7 @@ export class SweeperComponent implements OnInit {
 				this.totalSwept = this.util.big.add(this.totalSwept, nanoAmountSent)
 
 				this.notificationService.sendInfo(
-					`Account ${address} was swept and ${'Ӿ' + nanoAmountSent.toString(10)} transferred to ${this.destinationAccount}`,
+					`Account ${account.address} was swept and ${'Ӿ' + nanoAmountSent.toString(10)} transferred to ${this.destinationAccount}`,
 					{ length: 15000 }
 				)
 				this.appendLog(`Funds transferred (Ӿ${nanoAmountSent.toString(10)}): ${data.hash}`)
@@ -419,8 +418,8 @@ export class SweeperComponent implements OnInit {
 			return
 		}
 
-		this.pubKey = nanocurrency.derivePublicKey(privKey)
-		const address = nanocurrency.deriveAddress(this.pubKey, { useNanoPrefix: true })
+		const account = Account.fromSecretKey(privKey)
+		this.pubKey = account.publicKey
 
 		// get account info required to build the block
 		let balance = 0 // balance will be 0 if open block
@@ -430,7 +429,7 @@ export class SweeperComponent implements OnInit {
 		let subType = 'open'
 
 		// retrive from RPC
-		const accountInfo = await this.api.accountInfo(address)
+		const accountInfo = await this.api.accountInfo(account.address)
 		let validResponse = false
 		// if frontier is returned it means the account has been opened and we create a receive block
 		if (accountInfo.frontier) {
@@ -447,7 +446,7 @@ export class SweeperComponent implements OnInit {
 		}
 		if (validResponse) {
 			// create and publish all pending
-			this.createPendingBlocks(privKey, address, balance, previous, subType, function (previous_) {
+			this.createPendingBlocks(privKey, account.address, balance, previous, subType, function (previous_) {
 				// the previous is the last received block and will be used to create the final send block
 				if (parseInt(this.adjustedBalance, 10) > 0) {
 					this.processSend(privKey, previous_, () => {
@@ -518,9 +517,12 @@ export class SweeperComponent implements OnInit {
 					const privKeys = []
 					// start with blake2b derivation (but not if the mnemonic is anything other than 24 words)
 					if (keyType !== 'bip39_seed' && seed.length === 64) {
-						for (let i = parseInt(this.startIndex, 10); i <= parseInt(this.endIndex, 10); i++) {
-							privKey = nanocurrency.deriveSecretKey(seed, i)
-							privKeys.push([privKey, 'blake2b', i])
+						const start = parseInt(this.startIndex, 10)
+						const end = parseInt(this.endIndex, 10)
+						const wallet = await Blake2bWallet.fromSeed(seed)
+						const accounts = await wallet.accounts(start, end)
+						for (const account of accounts) {
+							privKeys.push([account.secretKey, 'blake2b', account.index])
 						}
 					}
 					// also check all indexes using bip39/44 derivation
@@ -528,7 +530,7 @@ export class SweeperComponent implements OnInit {
 					if (keyType === 'bip39_seed') {
 						bip39Seed = this.sourceWallet
 					} else if (seed.length === 64) {
-						const bip39 = await Bip44Wallet.fromSeed(seed)
+						const bip39 = await Bip44Wallet.fromEntropy(seed)
 						bip39Seed = bip39.seed
 					}
 
