@@ -438,15 +438,6 @@ function shuffle (array) {
 	return array
 }
 
-function array_crop (array) {
-	const length = array.length - 1
-	const cropped_array = new Uint8Array(length)
-	for (let i = 0; i < length; i++) {
-		cropped_array[i] = array[i + 1]
-	}
-	return cropped_array
-}
-
 function equalArrays (array1, array2) {
 	if (array1.length !== array2.length) {
 		return false
