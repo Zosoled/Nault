@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
-import { ApiService } from './api.service';
-import { UtilService, StateBlock, TxType } from './util.service';
-import { WorkPoolService } from './work-pool.service';
-import BigNumber from 'bignumber.js';
-import { NotificationService } from './notification.service';
-import { AppSettingsService } from './app-settings.service';
-import { LedgerService } from './ledger.service';
-import { WalletAccount } from './wallet.service';
-import { BehaviorSubject } from 'rxjs';
-const nacl = window['nacl'];
+import { Injectable } from '@angular/core'
+import { ApiService } from './api.service'
+import { UtilService, StateBlock, TxType } from './util.service'
+import { WorkPoolService } from './work-pool.service'
+import BigNumber from 'bignumber.js'
+import { NotificationService } from './notification.service'
+import { AppSettingsService } from './app-settings.service'
+import { LedgerService } from './ledger.service'
+import { WalletAccount } from './wallet.service'
+import { BehaviorSubject } from 'rxjs'
+import { Account } from 'xno'
+const nacl = window['nacl']
 
 @Injectable()
 export class NanoBlockService {
@@ -68,37 +69,38 @@ export class NanoBlockService {
 				previousBlock: toAcct.frontier,
 				representative: representativeAccount,
 				balance: balanceDecimal,
-			};
+			}
 			try {
-				this.sendLedgerNotification();
-				await this.ledgerService.updateCache(walletAccount.index, toAcct.frontier);
-				const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
-				this.clearLedgerNotification();
-				blockData.signature = sig.signature;
+				this.sendLedgerNotification()
+				await this.ledgerService.updateCache(walletAccount.index, toAcct.frontier)
+				const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock)
+				this.clearLedgerNotification()
+				blockData.signature = sig.signature
 			} catch (err) {
-				this.clearLedgerNotification();
-				this.sendLedgerDeniedNotification();
-				return;
+				this.clearLedgerNotification()
+				this.sendLedgerDeniedNotification()
+				return
 			}
 		} else {
-			this.signStateBlock(walletAccount, blockData);
+			this.validateAccount(toAcct)
+			this.signStateBlock(walletAccount, blockData)
 		}
 
 		if (!this.workPool.workExists(toAcct.frontier)) {
-			this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
+			this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 })
 		}
 
-		blockData.work = await this.workPool.getWork(toAcct.frontier, 1);
-		this.notifications.removeNotification('pow');
+		blockData.work = await this.workPool.getWork(toAcct.frontier, 1)
+		this.notifications.removeNotification('pow')
 
-		const processResponse = await this.api.process(blockData, TxType.change);
+		const processResponse = await this.api.process(blockData, TxType.change)
 		if (processResponse && processResponse.hash) {
-			walletAccount.frontier = processResponse.hash;
-			this.workPool.addWorkToCache(processResponse.hash, 1); // Add new hash into the work pool, high PoW threshold for change block
-			this.workPool.removeFromCache(toAcct.frontier);
-			return processResponse.hash;
+			walletAccount.frontier = processResponse.hash
+			this.workPool.addWorkToCache(processResponse.hash, 1) // Add new hash into the work pool, high PoW threshold for change block
+			this.workPool.removeFromCache(toAcct.frontier)
+			return processResponse.hash
 		} else {
-			return null;
+			return null
 		}
 	}
 
@@ -161,7 +163,7 @@ export class NanoBlockService {
 	//       previous: fromAccount.frontier,
 	//       representative: representative,
 	//       balance: remainingDecimal,
-	//       link: this.util.account.getAccountPublicKey(toAccountID),
+	//       link: new Account(toAccountID).publicKey,
 	//       work: await this.workPool.getWork(fromAccount.frontier),
 	//       signature: signature,
 	//     };
@@ -208,10 +210,10 @@ export class NanoBlockService {
 			previous: fromAccount.frontier,
 			representative: representative,
 			balance: remainingDecimal,
-			link: this.util.account.getAccountPublicKey(toAccountID),
+			link: new Account(toAccountID).publicKey,
 			work: null,
 			signature: null,
-		};
+		}
 
 		if (ledger) {
 			const ledgerBlock = {
@@ -219,37 +221,38 @@ export class NanoBlockService {
 				representative: representative,
 				balance: remainingDecimal,
 				recipient: toAccountID,
-			};
+			}
 			try {
-				this.sendLedgerNotification();
-				await this.ledgerService.updateCache(walletAccount.index, fromAccount.frontier);
-				const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
-				this.clearLedgerNotification();
-				blockData.signature = sig.signature;
+				this.sendLedgerNotification()
+				await this.ledgerService.updateCache(walletAccount.index, fromAccount.frontier)
+				const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock)
+				this.clearLedgerNotification()
+				blockData.signature = sig.signature
 			} catch (err) {
-				this.clearLedgerNotification();
-				this.sendLedgerDeniedNotification(err);
-				return;
+				this.clearLedgerNotification()
+				this.sendLedgerDeniedNotification(err)
+				return
 			}
 		} else {
-			this.signStateBlock(walletAccount, blockData);
+			this.validateAccount(fromAccount)
+			this.signStateBlock(walletAccount, blockData)
 		}
 
 		if (!this.workPool.workExists(fromAccount.frontier)) {
-			this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
+			this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 })
 		}
 
-		blockData.work = await this.workPool.getWork(fromAccount.frontier, 1);
-		this.notifications.removeNotification('pow');
+		blockData.work = await this.workPool.getWork(fromAccount.frontier, 1)
+		this.notifications.removeNotification('pow')
 
-		const processResponse = await this.api.process(blockData, TxType.send);
-		if (!processResponse || !processResponse.hash) throw new Error(processResponse.error || `Node returned an error`);
+		const processResponse = await this.api.process(blockData, TxType.send)
+		if (!processResponse || !processResponse.hash) throw new Error(processResponse.error || `Node returned an error`)
 
-		walletAccount.frontier = processResponse.hash;
-		this.workPool.addWorkToCache(processResponse.hash, 1); // Add new hash into the work pool, high PoW threshold for send block
-		this.workPool.removeFromCache(fromAccount.frontier);
+		walletAccount.frontier = processResponse.hash
+		this.workPool.addWorkToCache(processResponse.hash, 1) // Add new hash into the work pool, high PoW threshold for send block
+		this.workPool.removeFromCache(fromAccount.frontier)
 
-		return processResponse.hash;
+		return processResponse.hash
 	}
 
 	async generateReceive (walletAccount, sourceBlock, ledger = false) {
@@ -290,58 +293,59 @@ export class NanoBlockService {
 				representative: representative,
 				balance: newBalanceDecimal,
 				sourceBlock: sourceBlock,
-			};
+			}
 			if (!openEquiv) {
-				ledgerBlock.previousBlock = toAcct.frontier;
+				ledgerBlock.previousBlock = toAcct.frontier
 			}
 			try {
-				this.sendLedgerNotification();
+				this.sendLedgerNotification()
 				// On new accounts, we do not need to cache anything
 				if (!openEquiv) {
-					await this.ledgerService.updateCache(walletAccount.index, toAcct.frontier);
+					await this.ledgerService.updateCache(walletAccount.index, toAcct.frontier)
 				}
-				const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
-				this.notifications.removeNotification('ledger-sign');
-				blockData.signature = sig.signature.toUpperCase();
+				const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock)
+				this.notifications.removeNotification('ledger-sign')
+				blockData.signature = sig.signature.toUpperCase()
 			} catch (err) {
-				this.notifications.removeNotification('ledger-sign');
-				this.notifications.sendWarning(err.message || `Transaction denied on Ledger device`);
-				return;
+				this.notifications.removeNotification('ledger-sign')
+				this.notifications.sendWarning(err.message || `Transaction denied on Ledger device`)
+				return
 			}
 		} else {
-			this.signStateBlock(walletAccount, blockData);
+			this.validateAccount(toAcct)
+			this.signStateBlock(walletAccount, blockData)
 		}
 
 		workBlock = openEquiv
-			? this.util.account.getAccountPublicKey(walletAccount.id)
-			: previousBlock;
+			? new Account(walletAccount.id).publicKey
+			: previousBlock
 		if (!this.workPool.workExists(workBlock)) {
-			this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
+			this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 })
 		}
 
-		console.log('Get work for receive block');
-		blockData.work = await this.workPool.getWork(workBlock, 1 / 64); // low PoW threshold since receive block
-		this.notifications.removeNotification('pow');
+		console.log('Get work for receive block')
+		blockData.work = await this.workPool.getWork(workBlock, 1 / 64) // low PoW threshold since receive block
+		this.notifications.removeNotification('pow')
 		const processResponse = await this.api.process(
 			blockData,
 			openEquiv
 				? TxType.open
 				: TxType.receive
-		);
+		)
 		if (processResponse && processResponse.hash) {
-			walletAccount.frontier = processResponse.hash;
+			walletAccount.frontier = processResponse.hash
 			// Add new hash into the work pool, high PoW threshold since we don't know what the next one will be
 			// Skip adding new work cache directly, let reloadBalances() check for pending and decide instead
 			// this.workPool.addWorkToCache(processResponse.hash, 1);
-			this.workPool.removeFromCache(workBlock);
+			this.workPool.removeFromCache(workBlock)
 
 			// update the rep view via subscription
 			if (openEquiv) {
-				this.informNewRep();
+				this.informNewRep()
 			}
-			return processResponse.hash;
+			return processResponse.hash
 		} else {
-			return null;
+			return null
 		}
 	}
 
@@ -349,123 +353,105 @@ export class NanoBlockService {
 	async signOfflineBlock (walletAccount: WalletAccount, block: StateBlock, prevBlock: StateBlock,
 		type: TxType, genWork: boolean, multiplier: number, ledger = false) {
 		// special treatment if open block
-		const openEquiv = type === TxType.open;
-		console.log('Signing block of subtype: ' + TxType[type]);
+		const openEquiv = type === TxType.open
+		console.log('Signing block of subtype: ' + TxType[type])
 
 		if (ledger) {
-			let ledgerBlock = null;
+			let ledgerBlock = null
 			if (type === TxType.send) {
 				ledgerBlock = {
 					previousBlock: block.previous,
 					representative: block.representative,
 					balance: block.balance,
 					recipient: this.util.account.getPublicAccountID(this.util.hex.toUint8(block.link)),
-				};
+				}
 			} else if (type === TxType.receive || type === TxType.open) {
 				ledgerBlock = {
 					representative: block.representative,
 					balance: block.balance,
 					sourceBlock: block.link,
-				};
+				}
 				if (!openEquiv) {
-					ledgerBlock.previousBlock = block.previous;
+					ledgerBlock.previousBlock = block.previous
 				}
 			} else if (type === TxType.change) {
 				ledgerBlock = {
 					previousBlock: block.previous,
 					representative: block.representative,
 					balance: block.balance,
-				};
+				}
 			}
 			try {
-				this.sendLedgerNotification();
+				this.sendLedgerNotification()
 				// On new accounts, we do not need to cache anything
 				if (!openEquiv) {
 					try {
 						// await this.ledgerService.updateCache(walletAccount.index, block.previous);
-						await this.ledgerService.updateCacheOffline(walletAccount.index, prevBlock);
-					} catch (err) { console.log(err); }
+						await this.ledgerService.updateCacheOffline(walletAccount.index, prevBlock)
+					} catch (err) { console.log(err) }
 				}
-				const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock);
-				this.clearLedgerNotification();
-				block.signature = sig.signature;
+				const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock)
+				this.clearLedgerNotification()
+				block.signature = sig.signature
 			} catch (err) {
-				this.clearLedgerNotification();
-				this.sendLedgerDeniedNotification(err);
-				return null;
+				this.clearLedgerNotification()
+				this.sendLedgerDeniedNotification(err)
+				return null
 			}
 		} else {
-			this.signStateBlock(walletAccount, block);
+			this.signStateBlock(walletAccount, block)
 		}
 
 		if (genWork) {
 			// For open blocks which don't have a frontier, use the public key of the account
 			const workBlock = openEquiv
-				? this.util.account.getAccountPublicKey(walletAccount.id)
-				: block.previous;
+				? new Account(walletAccount.id).publicKey
+				: block.previous
 			if (!this.workPool.workExists(workBlock)) {
-				this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
+				this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 })
 			}
 
-			block.work = await this.workPool.getWork(workBlock, multiplier);
-			this.notifications.removeNotification('pow');
-			this.workPool.removeFromCache(workBlock);
+			block.work = await this.workPool.getWork(workBlock, multiplier)
+			this.notifications.removeNotification('pow')
+			this.workPool.removeFromCache(workBlock)
 		}
-		return block; // return signed block (with or without work)
+		return block // return signed block (with or without work)
 	}
 
-	async validateAccount (accountInfoUntrusted, accountPublicKey) {
-		if (!accountInfoUntrusted) return;
+	async validateAccount (accountInfo, accountPublicKey) {
+		if (!accountInfo) return;
 
-		if (!accountInfoUntrusted.frontier || accountInfoUntrusted.frontier === this.zeroHash) {
-			if (accountInfoUntrusted.balance && accountInfoUntrusted.balance !== '0') {
+		if (!accountInfo.frontier || accountInfo.frontier === this.zeroHash) {
+			if (accountInfo.balance && accountInfo.balance !== '0') {
 				throw new Error(`Frontier not set, but existing account balance is nonzero`);
 			}
 
-			if (accountInfoUntrusted.representative) {
+			if (accountInfo.representative) {
 				throw new Error(`Frontier not set, but existing account representative is set`);
 			}
-
 			return;
 		}
+		const blockResponse = await this.api.blocksInfo([accountInfo.frontier]);
+		const blockData = blockResponse.blocks[accountInfo.frontier];
+		if (!blockData) throw new Error(`Unable to load frontier block data`);
+		blockData.contents = JSON.parse(blockData.contents);
 
-		const frontierBlockResponseUntrusted =
-			await this.api.blocksInfo([accountInfoUntrusted.frontier]);
-
-		const frontierBlockDataUntrusted =
-			frontierBlockResponseUntrusted.blocks[accountInfoUntrusted.frontier];
-
-		if (!frontierBlockDataUntrusted) throw new Error(`Unable to load frontier block data`);
-
-		frontierBlockDataUntrusted.contents = JSON.parse(frontierBlockDataUntrusted.contents);
-
-		const isFrontierBlockMatchingAccountInfo = (
-			(frontierBlockDataUntrusted.contents.balance === accountInfoUntrusted.balance)
-			&& (frontierBlockDataUntrusted.contents.representative === accountInfoUntrusted.representative)
-		);
-
-		if (isFrontierBlockMatchingAccountInfo !== true) {
-			throw new Error(`Frontier block data doesn't match account info`);
+		if (accountInfo.balance !== blockData.contents.balance || accountInfo.representative !== blockData.contents.representative) {
+			throw new Error(`Frontier block data doesn't match account info`)
 		}
 
-		if (frontierBlockDataUntrusted.contents.type !== 'state') {
+		if (blockData.contents.type !== 'state') {
 			throw new Error(`Frontier block wasn't a state block, which shouldn't be possible`);
 		}
-
-		const isComputedBlockHashMatchingAccountFrontierHash = (
-			this.util.hex.fromUint8(this.util.nano.hashStateBlock(frontierBlockDataUntrusted.contents))
-			=== accountInfoUntrusted.frontier
-		);
-
-		if (isComputedBlockHashMatchingAccountFrontierHash !== true) {
-			throw new Error(`Frontier hash didn't match block data`);
+		if (this.util.hex.fromUint8(this.util.nano.hashStateBlock(blockData.contents)) !== accountInfo.frontier) {
+			throw new Error(`Frontier hash didn't match block data`)
 		}
 
-		if (frontierBlockDataUntrusted.subtype === 'epoch') {
+		if (blockData.subtype === 'epoch') {
 			const isEpochV2BlockSignatureValid =
 				nanocurrencyWebTools.verifyBlock(
 					this.util.account.getAccountPublicKey(this.epochV2SignerAccount),
-					frontierBlockDataUntrusted.contents
+					blockData.contents
 				);
 
 			if (isEpochV2BlockSignatureValid !== true) {
@@ -473,7 +459,7 @@ export class NanoBlockService {
 			}
 		} else {
 			const isFrontierBlockSignatureValid =
-				nanocurrencyWebTools.verifyBlock(accountPublicKey, frontierBlockDataUntrusted.contents);
+				nanocurrencyWebTools.verifyBlock(accountPublicKey, blockData.contents);
 
 			if (isFrontierBlockSignatureValid !== true) {
 				throw new Error(`Node provided an untrusted frontier block that was signed by someone else`);
@@ -483,30 +469,30 @@ export class NanoBlockService {
 
 	// Sign a state block, and insert the signature into the block.
 	signStateBlock (walletAccount, blockData) {
-		const hashBytes = this.util.nano.hashStateBlock(blockData);
-		const privKey = walletAccount.keyPair.secretKey;
-		const signed = nacl.sign.detached(hashBytes, privKey, walletAccount.keyPair.expanded);
-		blockData.signature = this.util.hex.fromUint8(signed);
+		const hashBytes = this.util.nano.hashStateBlock(blockData)
+		const privKey = walletAccount.keyPair.secretKey
+		const signed = nacl.sign.detached(hashBytes, privKey, walletAccount.keyPair.expanded)
+		blockData.signature = this.util.hex.fromUint8(signed)
 	}
 
 	sendLedgerDeniedNotification (err = null) {
-		this.notifications.sendWarning(err && err.message || `Transaction denied on Ledger device`);
+		this.notifications.sendWarning(err && err.message || `Transaction denied on Ledger device`)
 	}
 	sendLedgerNotification () {
-		this.notifications.sendInfo(`Waiting for confirmation on Ledger Device...`, { identifier: 'ledger-sign', length: 0 });
+		this.notifications.sendInfo(`Waiting for confirmation on Ledger Device...`, { identifier: 'ledger-sign', length: 0 })
 	}
 	clearLedgerNotification () {
-		this.notifications.removeNotification('ledger-sign');
+		this.notifications.removeNotification('ledger-sign')
 	}
 
 	getRandomRepresentative () {
-		return this.representativeAccounts[Math.floor(Math.random() * this.representativeAccounts.length)];
+		return this.representativeAccounts[Math.floor(Math.random() * this.representativeAccounts.length)]
 	}
 
 	// Subscribable event when a new open block and we should update the rep info
 	informNewRep () {
-		this.newOpenBlock$.next(true);
-		this.newOpenBlock$.next(false);
+		this.newOpenBlock$.next(true)
+		this.newOpenBlock$.next(false)
 	}
 
 }
