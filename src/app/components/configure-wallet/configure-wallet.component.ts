@@ -86,7 +86,7 @@ export class ConfigureWalletComponent implements OnInit {
 	}
 
 	async ngOnInit () {
-		const exampleSeedBytes = this.util.account.generateSeedBytes()
+		const exampleSeedBytes = globalThis.crypto.getRandomValues(new Uint8Array(32))
 		const exampleSeedFull = this.util.hex.fromUint8(exampleSeedBytes)
 
 		let exampleSeedTrimmed = ''
@@ -285,7 +285,7 @@ export class ConfigureWalletComponent implements OnInit {
 	}
 
 	async createNewWallet () {
-		const seedBytes = this.util.account.generateSeedBytes()
+		const seedBytes = globalThis.crypto.getRandomValues(new Uint8Array(32))
 		this.newWalletSeed = this.util.hex.fromUint8(seedBytes)
 		this.newWalletMnemonic = bip39.entropyToMnemonic(this.newWalletSeed)
 

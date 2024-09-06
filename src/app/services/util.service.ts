@@ -58,7 +58,6 @@ export class UtilService {
 		generateAccountSecretKeyBytes: generateAccountSecretKeyBytes,
 		generateAccountKeyPair: generateAccountKeyPair,
 		getPublicAccountID: getPublicAccountID,
-		generateSeedBytes: generateSeedBytes,
 		getAccountChecksum: getAccountChecksum,
 		setPrefix: setPrefix,
 		isValidAccount: isValidAccount,
@@ -468,10 +467,6 @@ function findWithAttr (array, attr, value) {
 	return -1
 }
 
-function generateSeedBytes () {
-	return nacl.randomBytes(32)
-}
-
 const util = {
 	hex: {
 		toUint4: hexToUint4,
@@ -505,7 +500,6 @@ const util = {
 		generateAccountSecretKeyBytes: generateAccountSecretKeyBytes,
 		generateAccountKeyPair: generateAccountKeyPair,
 		getPublicAccountID: getPublicAccountID,
-		generateSeedBytes: generateSeedBytes,
 		getAccountChecksum: getAccountChecksum,
 		setPrefix: setPrefix,
 		isValidAccount: isValidAccount,
