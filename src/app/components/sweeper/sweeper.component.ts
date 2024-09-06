@@ -249,7 +249,7 @@ export class SweeperComponent implements OnInit {
 
 	// Process final send block
 	async processSend (privKey, previous, sendCallback) {
-		const account = Account.fromSecretKey(privKey)
+		const account = await Account.fromSecretKey(privKey)
 
 		// make an extra check on valid destination
 		if (this.validDestination && nanocurrency.checkAddress(this.destinationAccount)) {
@@ -418,7 +418,7 @@ export class SweeperComponent implements OnInit {
 			return
 		}
 
-		const account = Account.fromSecretKey(privKey)
+		const account = await Account.fromSecretKey(privKey)
 		this.pubKey = account.publicKey
 
 		// get account info required to build the block
