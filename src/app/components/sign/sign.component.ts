@@ -32,7 +32,7 @@ export class SignComponent implements OnInit {
 	paramsString = '';
 	activePanel = 'error';
 	shouldSign: boolean = null; // if a block has been scanned for signing (or if it is a block to process)
-	accounts = this.walletService.wallet.accounts;
+	accounts
 	addressBookResults$ = new BehaviorSubject([]);
 	showAddressBook = false;
 	addressBookMatch = '';
@@ -125,7 +125,9 @@ export class SignComponent implements OnInit {
 		private util: UtilService,
 		private qrModalService: QrModalService,
 		private musigService: MusigService,
-		public price: PriceService) { }
+		public price: PriceService) {
+		this.accounts = this.walletService.wallet.accounts
+	}
 
 	@ViewChild('dataAddFocus') _el: ElementRef
 
