@@ -798,7 +798,7 @@ export class SignComponent implements OnInit {
 			}
 			const wallet = await Bip44Wallet.fromSeed(bip39Seed)
 			const accounts = await wallet.accounts(index)
-			privKey2 = accounts[0].secretKey
+			privKey2 = accounts[0].privateKey
 		}
 
 		// Match given block account with any of the private keys extracted
@@ -1139,8 +1139,8 @@ export class SignComponent implements OnInit {
 		}
 	}
 
-	multiSign () {
-		const result = this.musigService.runMultiSign(this.privateKey, this.blockHash, this.inputMultisigData)
+	async multiSign () {
+		const result = await this.musigService.runMultiSign(this.privateKey, this.blockHash, this.inputMultisigData)
 		// used for validation when the final nano block is created
 		if (result && result.multisig !== '') {
 			this.multisigAccount = result.multisig
@@ -1150,7 +1150,7 @@ export class SignComponent implements OnInit {
 			console.log('Started multisig using block hash: ' + this.blockHash)
 			// Combine output with public key
 			const output = this.activeStep + ':' + this.util.hex.fromUint8(result.outbuf.subarray(33)) +
-				Account.fromSecretKey(this.privateKey).publicKey
+				(await Account.fromPrivateKey(this.privateKey)).publicKey
 			this.activeStep = this.activeStep + 1
 			this.outputMultisigData = output.toUpperCase()
 			this.generateOutputQR()

@@ -249,7 +249,7 @@ export class SweeperComponent implements OnInit {
 
 	// Process final send block
 	async processSend (privKey, previous, sendCallback) {
-		const account = await Account.fromSecretKey(privKey)
+		const account = await Account.fromPrivateKey(privKey)
 
 		// make an extra check on valid destination
 		if (this.validDestination && nanocurrency.checkAddress(this.destinationAccount)) {
@@ -418,7 +418,7 @@ export class SweeperComponent implements OnInit {
 			return
 		}
 
-		const account = await Account.fromSecretKey(privKey)
+		const account = await Account.fromPrivateKey(privKey)
 		this.pubKey = account.publicKey
 
 		// get account info required to build the block
@@ -522,7 +522,7 @@ export class SweeperComponent implements OnInit {
 						const wallet = await Blake2bWallet.fromSeed(seed)
 						const accounts = await wallet.accounts(start, end)
 						for (const account of accounts) {
-							privKeys.push([account.secretKey, 'blake2b', account.index])
+							privKeys.push([account.privateKey, 'blake2b', account.index])
 						}
 					}
 					// also check all indexes using bip39/44 derivation
@@ -539,7 +539,7 @@ export class SweeperComponent implements OnInit {
 					const accounts = await wallet.accounts(this.startIndex, this.endIndex)
 					let k = 0
 					for (let i = parseInt(this.startIndex, 10); i <= parseInt(this.endIndex, 10); i++) {
-						privKey = accounts[k].secretKey
+						privKey = accounts[k].privateKey
 						k += 1
 						privKeys.push([privKey, 'bip39/44', i])
 					}
