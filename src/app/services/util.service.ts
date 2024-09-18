@@ -302,7 +302,12 @@ function getPublicAccountID (accountPublicKeyBytes, prefix = 'nano') {
 }
 
 function isValidAccount (account: string): boolean {
-	return Account.validate(account)
+	try {
+		Account.validate(account)
+		return true
+	} catch (err) {
+		return false
+	}
 }
 
 // Check if a string is a numeric and larger than 0 but less than nano supply

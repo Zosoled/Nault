@@ -5,7 +5,7 @@ import * as bip39 from 'bip39'
 import { LedgerService, LedgerStatus } from '../../services/ledger.service'
 import { QrModalService } from '../../services/qr-modal.service'
 import { UtilService } from '../../services/util.service'
-import { Bip44Wallet } from 'xno'
+import { Bip44Wallet, LedgerWallet } from 'xno'
 import { TranslocoService } from '@jsverse/transloco'
 
 enum panels {
@@ -273,7 +273,7 @@ export class ConfigureWalletComponent implements OnInit {
 					Number(this.importSeedBip39MnemonicIndexModel),
 					Number(this.importSeedBip39MnemonicIndexModel)
 				)
-				this.keyString = accounts[0].secretKey
+				this.keyString = accounts[0].privateKey
 				this.isExpanded = false
 			}
 		}
