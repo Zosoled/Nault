@@ -18,11 +18,27 @@ enum panels {
 }
 
 LedgerWallet.create()
-	.then(wallet => wallet.ledger.openApp()
-		.then(() => wallet.ledger.version()
-			.then(() => wallet.ledger.closeApp())
-		)
-	)
+	.then(wallet => {
+		wallet.ledger.openApp()
+			.then(() => wallet.ledger.version()
+				.then(() => wallet.ledger.closeApp()
+					.then(() => console.log('done!'))
+					.catch(err => {
+						wallet.ledger.closeApp()
+							.then(() => console.log('close reattempt succeeded'))
+							.catch(err => console.log('close reattempt failed', err))
+					}))
+				.catch(err => {
+					wallet.ledger.version()
+						.then(() => console.log('version reattempt succeeded'))
+						.catch(err => console.log('version reattempt failed', err))
+				}))
+			.catch(err => {
+				wallet.ledger.openApp()
+					.then(() => console.log('openApp reattempt succeeded'))
+					.catch(err => console.log('openApp reattempt failed', err))
+			})
+	})
 
 const INDEX_MAX = 4294967295 // seed index
 
