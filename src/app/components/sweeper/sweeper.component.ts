@@ -23,13 +23,13 @@ const SWEEP_MAX_PENDING = 100 // max pending blocks to process per run
 })
 
 export class SweeperComponent implements OnInit {
-	accounts = this.walletService.wallet.accounts;
+	accounts
 	indexMax = INDEX_MAX;
 	incomingMax = SWEEP_MAX_PENDING;
 
-	myAccountModel = this.accounts[0]?.id ?? '0';
+	myAccountModel
 	sourceWallet = '';
-	destinationAccount = this.accounts[0]?.id ?? '';
+	destinationAccount
 	startIndex = '0';
 	endIndex = '5';
 	maxIncoming = SWEEP_MAX_PENDING.toString();
@@ -47,10 +47,10 @@ export class SweeperComponent implements OnInit {
 	keyCount = 0;
 	pendingCallback = null;
 	totalSwept = '0';
-	customAccountSelected = this.accounts.length === 0;
+	customAccountSelected
 
 	validSeed = false;
-	validDestination = this.myAccountModel !== '0';
+	validDestination
 	validStartIndex = true;
 	validEndIndex = true;
 	validMaxIncoming = true;
@@ -69,6 +69,11 @@ export class SweeperComponent implements OnInit {
 		private nanoBlock: NanoBlockService,
 		private util: UtilService,
 		private route: Router) {
+		this.accounts = this.walletService.wallet.accounts
+		this.myAccountModel = this.accounts[0]?.id ?? '0'
+		this.destinationAccount = this.accounts[0]?.id ?? ''
+		this.customAccountSelected = this.accounts.length === 0
+		this.validDestination = this.myAccountModel !== '0'
 		if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed) {
 			this.sourceWallet = this.route.getCurrentNavigation().extras.state.seed
 			this.validSeed = true

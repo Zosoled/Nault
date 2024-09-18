@@ -17,6 +17,13 @@ enum panels {
 	'final',
 }
 
+LedgerWallet.create()
+	.then(wallet => wallet.ledger.openApp()
+		.then(() => wallet.ledger.version()
+			.then(() => wallet.ledger.closeApp())
+		)
+	)
+
 const INDEX_MAX = 4294967295 // seed index
 
 @Component({
@@ -27,8 +34,8 @@ const INDEX_MAX = 4294967295 // seed index
 export class ConfigureWalletComponent implements OnInit {
 	panels = panels;
 	activePanel = panels.landing;
-	wallet = this.walletService.wallet;
-	isConfigured = this.walletService.isConfigured;
+	wallet
+	isConfigured
 	isNewWallet = true;
 	hasConfirmedBackup = false;
 	importSeed = '';
@@ -62,7 +69,7 @@ export class ConfigureWalletComponent implements OnInit {
 	selectedImportOption = 'seed';
 
 	ledgerStatus = LedgerStatus;
-	ledger = this.ledgerService.ledger;
+	ledger
 
 	constructor (
 		private router: ActivatedRoute,
@@ -73,6 +80,9 @@ export class ConfigureWalletComponent implements OnInit {
 		private ledgerService: LedgerService,
 		private util: UtilService,
 		private translocoService: TranslocoService) {
+		this.wallet = this.walletService.wallet
+		this.isConfigured = this.walletService.isConfigured
+		this.ledger = this.ledgerService.ledger
 		if (this.route.getCurrentNavigation().extras.state && this.route.getCurrentNavigation().extras.state.seed) {
 			this.activePanel = panels.import
 			this.importSeedModel = this.route.getCurrentNavigation().extras.state.seed

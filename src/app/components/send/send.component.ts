@@ -26,12 +26,9 @@ const nacl = window['nacl']
 })
 export class SendComponent implements OnInit {
 	nano = 1000000000000000000000000;
-
 	activePanel = 'send';
 	sendDestinationType = 'external-address';
-
-	accounts = this.walletService.wallet.accounts;
-
+	accounts
 	addressBookResults$ = new BehaviorSubject([]);
 	showAddressBook = false;
 	addressBookMatch = '';
@@ -73,7 +70,9 @@ export class SendComponent implements OnInit {
 		private util: UtilService,
 		private qrModalService: QrModalService,
 		private http: HttpClient,
-		private translocoService: TranslocoService) { }
+		private translocoService: TranslocoService) {
+		this.accounts = this.walletService.wallet.accounts
+	}
 
 	async ngOnInit () {
 		const params = this.route.snapshot.queryParams
