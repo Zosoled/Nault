@@ -8,7 +8,7 @@ import { AppSettingsService } from './app-settings.service'
 import { LedgerService } from './ledger.service'
 import { WalletAccount } from './wallet.service'
 import { BehaviorSubject } from 'rxjs'
-import { Account } from 'xno'
+import { Account, LedgerWallet } from 'xno'
 const nacl = window['nacl']
 
 @Injectable()
@@ -382,17 +382,19 @@ export class NanoBlockService {
 				}
 			}
 			try {
+				const wallet = await LedgerWallet.create()
 				this.sendLedgerNotification()
 				// On new accounts, we do not need to cache anything
 				if (!openEquiv) {
 					try {
-						// await this.ledgerService.updateCache(walletAccount.index, block.previous);
+						// await wallet.ledger.updateCache(walletAccount.index, prevBlock)
 						await this.ledgerService.updateCacheOffline(walletAccount.index, prevBlock)
 					} catch (err) { console.log(err) }
 				}
-				const sig = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock)
+				// const sig = await wallet.ledger.sign(walletAccount.index, ledgerBlock)
+				const { signature } = await this.ledgerService.signBlock(walletAccount.index, ledgerBlock)
 				this.clearLedgerNotification()
-				block.signature = sig.signature
+				block.signature = signature
 			} catch (err) {
 				this.clearLedgerNotification()
 				this.sendLedgerDeniedNotification(err)
