@@ -97,8 +97,10 @@ export class WalletWidgetComponent implements OnInit {
     try {
       await this.ledgerService.loadLedger()
       this.notificationService.removeNotification('ledger-status')
-      if (this.ledgerStatus.status === LedgerStatus.READY) {
+      if (this.ledgerStatus.status === 'CONNECTED') {
         this.notificationService.sendSuccess(`Successfully connected to Ledger device`)
+      } else if (this.ledgerStatus.status === 'LOCKED') {
+        this.notificationService.sendError(`Ledger device locked. Unlock and try again.`)
       }
     } catch (err) {
       console.log(`Got error when loading ledger! `, err)
