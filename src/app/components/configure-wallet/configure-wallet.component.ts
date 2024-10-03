@@ -5,7 +5,7 @@ import * as bip39 from 'bip39'
 import { LedgerService, LedgerStatus } from '../../services/ledger.service'
 import { QrModalService } from '../../services/qr-modal.service'
 import { UtilService } from '../../services/util.service'
-import { Bip44Wallet } from 'xno'
+import { Bip44Wallet } from 'libnemo'
 import { TranslocoService } from '@jsverse/transloco'
 
 enum panels {
@@ -272,7 +272,7 @@ export class ConfigureWalletComponent implements OnInit {
 					this.util.string.mnemonicToSeedSync(this.importSeedBip39MnemonicModel).toString('hex')
 
 				// derive private key from bip39 seed using the account index provided
-				const wallet = await Bip44Wallet.fromSeed(bip39Seed)
+				const wallet = await Bip44Wallet.fromSeed('', bip39Seed)
 				const accounts = await wallet.accounts(
 					Number(this.importSeedBip39MnemonicIndexModel),
 					Number(this.importSeedBip39MnemonicIndexModel)

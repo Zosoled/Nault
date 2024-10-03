@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import hermes from 'hermes-channel'
 import * as QRCode from 'qrcode'
 import * as bip39 from 'bip39'
-import { Account, Bip44Wallet } from 'xno'
+import { Account, Bip44Wallet } from 'libnemo'
 import { AddressBookService } from '../../services/address-book.service'
 import { WalletService } from '../../services/wallet.service'
 import { NotificationService } from '../../services/notification.service'
@@ -795,10 +795,10 @@ export class SignComponent implements OnInit {
 			if (keyType === 'bip39_seed') {
 				bip39Seed = input
 			} else {
-				const bip39 = await Bip44Wallet.fromSeed(seed)
+				const bip39 = await Bip44Wallet.fromSeed('', seed)
 				bip39Seed = bip39.seed
 			}
-			const wallet = await Bip44Wallet.fromSeed(bip39Seed)
+			const wallet = await Bip44Wallet.fromSeed('', bip39Seed)
 			const accounts = await wallet.accounts(index)
 			privKey2 = accounts[0].privateKey
 		}

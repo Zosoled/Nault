@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import * as blake from 'blakejs'
 import { BigNumber } from 'bignumber.js'
 import * as nanocurrency from 'nanocurrency'
-import { Account } from 'xno'
+import { Account } from 'libnemo'
 
 const nacl = window['nacl']
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006'
