@@ -10,7 +10,7 @@ import { NotificationService } from './notification.service'
 import { environment } from '../../environments/environment'
 import { DesktopService } from './desktop.service'
 import { AppSettingsService } from './app-settings.service'
-import { LedgerWallet } from 'xno'
+import { LedgerWallet } from 'libnemo'
 
 export const STATUS_CODES = {
   SECURITY_STATUS_NOT_SATISFIED: 0x6982,

@@ -12,7 +12,7 @@ import { NotificationService } from './notification.service'
 import { AppSettingsService } from './app-settings.service'
 import { PriceService } from './price.service'
 import { LedgerService } from './ledger.service'
-import { Account } from 'xno'
+import { Account } from 'libnemo'
 
 export type WalletType = 'seed' | 'ledger' | 'privateKey' | 'expandedKey'
 

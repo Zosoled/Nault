@@ -8,7 +8,7 @@ import { WorkPoolService } from '../../services/work-pool.service'
 import { AppSettingsService } from '../../services/app-settings.service'
 import { NanoBlockService } from '../../services/nano-block.service'
 import * as nanocurrency from 'nanocurrency'
-import { Account, Bip44Wallet, Blake2bWallet } from 'xno'
+import { Account, Bip44Wallet, Blake2bWallet } from 'libnemo'
 import * as bip39 from 'bip39'
 import { Router } from '@angular/router'
 
@@ -524,7 +524,7 @@ export class SweeperComponent implements OnInit {
 					if (keyType !== 'bip39_seed' && seed.length === 64) {
 						const start = parseInt(this.startIndex, 10)
 						const end = parseInt(this.endIndex, 10)
-						const wallet = await Blake2bWallet.fromSeed(seed)
+						const wallet = await Blake2bWallet.fromSeed('', seed)
 						const accounts = await wallet.accounts(start, end)
 						for (const account of accounts) {
 							privKeys.push([account.privateKey, 'blake2b', account.index])
@@ -535,12 +535,12 @@ export class SweeperComponent implements OnInit {
 					if (keyType === 'bip39_seed') {
 						bip39Seed = this.sourceWallet
 					} else if (seed.length === 64) {
-						const bip39 = await Bip44Wallet.fromEntropy(seed)
+						const bip39 = await Bip44Wallet.fromEntropy('', seed)
 						bip39Seed = bip39.seed
 					}
 
 					if (bip39Seed.length !== 128) return this.notificationService.sendError(`Invalid input format! Please check.`)
-					const wallet = await Bip44Wallet.fromSeed(bip39Seed)
+					const wallet = await Bip44Wallet.fromSeed('', bip39Seed)
 					const accounts = await wallet.accounts(this.startIndex, this.endIndex)
 					let k = 0
 					for (let i = parseInt(this.startIndex, 10); i <= parseInt(this.endIndex, 10); i++) {

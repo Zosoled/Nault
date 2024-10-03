@@ -15,7 +15,7 @@ import { QrModalService } from '../../services/qr-modal.service'
 import { environment } from '../../../environments/environment'
 import { TranslocoService } from '@jsverse/transloco'
 import { HttpClient } from '@angular/common/http'
-import { Tools } from 'xno'
+import { Tools } from 'libnemo'
 
 const nacl = window['nacl']
 

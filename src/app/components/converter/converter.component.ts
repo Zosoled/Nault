@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { UtilService } from '../../services/util.service'
 import { AppSettingsService } from '../../services/app-settings.service'
-import { Tools } from 'xno'
+import { Tools } from 'libnemo'
 import { PriceService } from '../../services/price.service'
 import { BigNumber } from 'bignumber.js'
 import { NotificationService } from '../../services/notification.service'

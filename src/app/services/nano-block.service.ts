@@ -8,7 +8,7 @@ import { AppSettingsService } from './app-settings.service'
 import { LedgerService } from './ledger.service'
 import { WalletAccount } from './wallet.service'
 import { BehaviorSubject } from 'rxjs'
-import { Account, LedgerWallet } from 'xno'
+import { Account, LedgerWallet } from 'libnemo'
 const nacl = window['nacl']
 
 @Injectable()
