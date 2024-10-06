@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core'
 import { WalletService, NotificationService, RepresentativeService } from '../../services'
 import { ActivatedRoute, Router } from '@angular/router'
-import * as bip39 from 'bip39'
 import { LedgerService, LedgerStatus } from '../../services/ledger.service'
 import { QrModalService } from '../../services/qr-modal.service'
 import { UtilService } from '../../services/util.service'
-import { Bip44Wallet } from 'libnemo'
+import { Bip44Wallet, Blake2bWallet } from 'libnemo'
 import { TranslocoService } from '@jsverse/transloco'
 
 enum panels {
@@ -111,7 +110,9 @@ export class ConfigureWalletComponent implements OnInit {
 		this.exampleExpandedPrivateKey = exampleSeedFull.slice(trimIdx + 12, trimIdx + 18) + '...'
 
 		// array of mnemonic words
-		this.exampleMnemonicWords = bip39.entropyToMnemonic(exampleSeedFull).split(' ')
+		const exampleWallet = await Bip44Wallet.fromEntropy('tmp', exampleSeedFull)
+		await exampleWallet.unlock('tmp')
+		this.exampleMnemonicWords = exampleWallet.mnemonic.split(' ')
 	}
 
 	async importExistingWallet () {
@@ -226,7 +227,9 @@ export class ConfigureWalletComponent implements OnInit {
 
 					// Try and decode the mnemonic
 					try {
-						const newSeed = bip39.mnemonicToEntropy(mnemonic)
+						const newWallet = await Blake2bWallet.fromMnemonic('tmp', mnemonic)
+						await newWallet.unlock('tmp')
+						const newSeed = newWallet.seed
 						if (!newSeed || newSeed.length !== 64 || !this.util.nano.isValidSeed(newSeed)) return this.notifications.sendError(`Mnemonic is invalid, double check it!`)
 						this.importSeed = newSeed.toUpperCase() // Force uppercase, for consistency
 					} catch (err) {
@@ -259,8 +262,11 @@ export class ConfigureWalletComponent implements OnInit {
 				}
 			} else if (this.selectedImportOption === 'bip39-mnemonic') {
 				// If bip39, import wallet as a single private key
-				if (!bip39.validateMnemonic(this.importSeedBip39MnemonicModel)) {
-					return this.notifications.sendError(`Mnemonic is invalid, double check it!`)
+				try {
+					const wallet = await Bip44Wallet.fromMnemonic('tmp', this.importSeedBip39MnemonicModel)
+					await wallet.unlock('tmp')
+				} catch (err) {
+					return this.notifications.sendError(err.message)
 				}
 				if (!this.validIndex) {
 					return this.notifications.sendError(`The account index is invalid, double check it!`)
@@ -289,9 +295,10 @@ export class ConfigureWalletComponent implements OnInit {
 	}
 
 	async createNewWallet () {
-		const seedBytes = globalThis.crypto.getRandomValues(new Uint8Array(32))
-		this.newWalletSeed = this.util.hex.fromUint8(seedBytes)
-		this.newWalletMnemonic = bip39.entropyToMnemonic(this.newWalletSeed)
+		const newWallet = await Bip44Wallet.fromEntropy('tmp', this.newWalletSeed)
+		await newWallet.unlock('tmp')
+		this.newWalletSeed = newWallet.seed
+		this.newWalletMnemonic = newWallet.mnemonic
 
 		// Split the seed up so we can show 4 per line
 		const words = this.newWalletMnemonic.split(' ')
