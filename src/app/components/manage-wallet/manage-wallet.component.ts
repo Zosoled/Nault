@@ -6,7 +6,6 @@ import { ApiService } from '../../services/api.service'
 import { UtilService } from '../../services/util.service'
 import { AppSettingsService } from '../../services/app-settings.service'
 import * as QRCode from 'qrcode'
-import * as bip from 'bip39'
 import { formatDate } from '@angular/common'
 
 @Component({
@@ -118,9 +117,9 @@ export class ManageWalletComponent implements OnInit {
     this.notifications.sendSuccess(`Wallet seed copied to clipboard!`, { identifier: 'success-copied' })
   }
 
-  seedMnemonic () {
-    if (this.wallet && this.wallet.seed) {
-      return bip.entropyToMnemonic(this.wallet.seed)
+  async seedMnemonic () {
+    if (this.wallet?.mnemonic) {
+      return this.wallet.mnemonic
     }
   }
 
