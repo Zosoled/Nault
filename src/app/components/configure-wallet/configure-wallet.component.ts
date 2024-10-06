@@ -262,9 +262,10 @@ export class ConfigureWalletComponent implements OnInit {
 				}
 			} else if (this.selectedImportOption === 'bip39-mnemonic') {
 				// If bip39, import wallet as a single private key
+				let bipWallet
 				try {
-					const wallet = await Bip44Wallet.fromMnemonic('tmp', this.importSeedBip39MnemonicModel)
-					await wallet.unlock('tmp')
+					bipWallet = await Bip44Wallet.fromMnemonic('tmp', this.importSeedBip39MnemonicModel)
+					await bipWallet.unlock('tmp')
 				} catch (err) {
 					return this.notifications.sendError(err.message)
 				}
@@ -278,8 +279,7 @@ export class ConfigureWalletComponent implements OnInit {
 					this.util.string.mnemonicToSeedSync(this.importSeedBip39MnemonicModel).toString('hex')
 
 				// derive private key from bip39 seed using the account index provided
-				const wallet = await Bip44Wallet.fromSeed('', bip39Seed)
-				const accounts = await wallet.accounts(
+				const accounts = await bipWallet.accounts(
 					Number(this.importSeedBip39MnemonicIndexModel),
 					Number(this.importSeedBip39MnemonicIndexModel)
 				)
