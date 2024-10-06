@@ -12,7 +12,7 @@ import { NotificationService } from './notification.service'
 import { AppSettingsService } from './app-settings.service'
 import { PriceService } from './price.service'
 import { LedgerService } from './ledger.service'
-import { Account } from 'libnemo'
+import { Account, Bip44Wallet, Blake2bWallet } from 'libnemo'
 
 export type WalletType = 'seed' | 'ledger' | 'privateKey' | 'expandedKey'
 
@@ -50,6 +50,7 @@ export interface FullWallet {
 	type: WalletType
 	seedBytes: any
 	seed: string | null
+	mnemonic: string | null
 	balance: BigNumber
 	pending: BigNumber
 	balanceRaw: BigNumber
@@ -100,6 +101,7 @@ export class WalletService {
 		type: 'seed',
 		seedBytes: null,
 		seed: '',
+		mnemonic: '',
 		balance: new BigNumber(0),
 		pending: new BigNumber(0),
 		balanceRaw: new BigNumber(0),
@@ -340,6 +342,7 @@ export class WalletService {
 		const walletType = walletJson.type || 'seed'
 		this.wallet.type = walletType
 		if (walletType === 'seed' || walletType === 'privateKey' || walletType === 'expandedKey') {
+			this.wallet.mnemonic = walletJson.mnemonic
 			this.wallet.seed = walletJson.seed
 			this.wallet.seedBytes = this.util.hex.toUint8(walletJson.seed)
 			this.wallet.locked = true
@@ -445,12 +448,14 @@ export class WalletService {
 
 		return true
 	}
-	unlockWallet (password: string) {
+	async unlockWallet (password: string) {
 		try {
 			const decryptedBytes = CryptoJS.AES.decrypt(this.wallet.seed, password)
 			const decryptedSeed = decryptedBytes.toString(CryptoJS.enc.Utf8)
 			if (!decryptedSeed || decryptedSeed.length !== 64) return false
 
+			const wallet = await Blake2bWallet.fromSeed('tmp', decryptedSeed)
+			await wallet.unlock('tmp')
 			this.wallet.seed = decryptedSeed
 			this.wallet.seedBytes = this.util.hex.toUint8(this.wallet.seed)
 			this.wallet.accounts.forEach(a => {
@@ -475,6 +480,7 @@ export class WalletService {
 
 			return true
 		} catch (err) {
+			console.warn(err)
 			return false
 		}
 	}
