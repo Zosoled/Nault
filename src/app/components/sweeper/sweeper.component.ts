@@ -9,7 +9,6 @@ import { AppSettingsService } from '../../services/app-settings.service'
 import { NanoBlockService } from '../../services/nano-block.service'
 import * as nanocurrency from 'nanocurrency'
 import { Account, Bip44Wallet, Blake2bWallet } from 'libnemo'
-import * as bip39 from 'bip39'
 import { Router } from '@angular/router'
 
 const INDEX_MAX = 4294967295 // seed index
@@ -221,7 +220,7 @@ export class SweeperComponent implements OnInit {
 	}
 
 	// Validate type of master key. Seed and private key can't be differentiated
-	checkMasterKey (key) {
+	async checkMasterKey (key) {
 		// validate nano seed or private key
 		if (key.length === 64) {
 			if (nanocurrency.checkSeed(key)) {
@@ -235,10 +234,12 @@ export class SweeperComponent implements OnInit {
 			}
 		}
 		// validate mnemonic
-		if (bip39.validateMnemonic(key)) {
+		try {
+			await Blake2bWallet.fromMnemonic('tmp', key)
 			return 'mnemonic'
+		} catch (err) {
+			return null
 		}
-		return false
 	}
 
 	// Append row to log output
@@ -494,13 +495,15 @@ export class SweeperComponent implements OnInit {
 		this.sweeping = true
 		this.totalSwept = '0'
 
-		const keyType = this.checkMasterKey(this.sourceWallet)
+		const keyType = await this.checkMasterKey(this.sourceWallet)
 		if (this.validEndIndex && this.validStartIndex && this.validMaxIncoming) {
 			let seed = '', privKey
 			let bip39Seed = ''
 			// input is mnemonic
 			if (keyType === 'mnemonic') {
-				seed = bip39.mnemonicToEntropy(this.sourceWallet).toUpperCase()
+				const wallet = await Blake2bWallet.fromMnemonic('tmp', this.sourceWallet)
+				await wallet.unlock('tmp')
+				seed = wallet.seed
 				bip39Seed = this.util.string.mnemonicToSeedSync(this.sourceWallet).toString('hex')
 				// Seed must be 64 for regular nano blake derivation to happen
 				// For other lengths, only bip39/44 derivation is possible
@@ -535,8 +538,8 @@ export class SweeperComponent implements OnInit {
 					if (keyType === 'bip39_seed') {
 						bip39Seed = this.sourceWallet
 					} else if (seed.length === 64) {
-						const bip39 = await Bip44Wallet.fromEntropy('', seed)
-						bip39Seed = bip39.seed
+						const wallet = await Bip44Wallet.fromEntropy('', seed)
+						bip39Seed = wallet.seed
 					}
 
 					if (bip39Seed.length !== 128) return this.notificationService.sendError(`Invalid input format! Please check.`)
