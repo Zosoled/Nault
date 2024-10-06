@@ -4,8 +4,7 @@ import { BehaviorSubject } from 'rxjs'
 import BigNumber from 'bignumber.js'
 import hermes from 'hermes-channel'
 import * as QRCode from 'qrcode'
-import * as bip39 from 'bip39'
-import { Account, Bip44Wallet } from 'libnemo'
+import { Account, Bip44Wallet, Blake2bWallet } from 'libnemo'
 import { AddressBookService } from '../../services/address-book.service'
 import { WalletService } from '../../services/wallet.service'
 import { NotificationService } from '../../services/notification.service'
@@ -411,7 +410,7 @@ export class SignComponent implements OnInit {
 		this.addressBookResults$.next(matches)
 	}
 
-	signTypeChange () {
+	async signTypeChange () {
 		this.signatureMessage = ''
 		this.signatureMessageSuccess = ''
 		let params = this.paramsString
@@ -428,7 +427,7 @@ export class SignComponent implements OnInit {
 				break
 
 			case this.signTypes[1]:
-				this.seedChange(this.sourceSecret)
+				await this.seedChange(this.sourceSecret)
 				break
 
 			case this.signTypes[2]:
@@ -496,7 +495,7 @@ export class SignComponent implements OnInit {
 		}
 
 		if (this.shouldSign) {
-			this.signTypeChange()
+			await this.signTypeChange()
 		}
 	}
 
@@ -707,8 +706,8 @@ export class SignComponent implements OnInit {
 		}
 	}
 
-	seedChange (input) {
-		const keyType = this.checkMasterKey(input)
+	async seedChange (input) {
+		const keyType = await this.checkMasterKey(input)
 		this.validSeed = keyType !== null
 		if (this.validSeed && this.validIndex) {
 			this.verifyKey(keyType, input, Number(this.index))
@@ -741,7 +740,7 @@ export class SignComponent implements OnInit {
 		this.privateKey = ''
 	}
 
-	indexChange (index) {
+	async indexChange (index) {
 		this.validIndex = true
 		if (this.util.string.isNumeric(index) && index % 1 === 0) {
 			index = parseInt(index, 10)
@@ -756,7 +755,7 @@ export class SignComponent implements OnInit {
 		}
 
 		if (this.validSeed && this.validIndex) {
-			const keyType = this.checkMasterKey(this.sourceSecret)
+			const keyType = await this.checkMasterKey(this.sourceSecret)
 			this.verifyKey(keyType, this.sourceSecret, Number(this.index))
 		} else {
 			this.signatureMessage = ''
@@ -771,7 +770,9 @@ export class SignComponent implements OnInit {
 
 		// input is mnemonic
 		if (keyType === 'mnemonic') {
-			seed = bip39.mnemonicToEntropy(input).toUpperCase()
+			const blakeWallet = await Blake2bWallet.fromMnemonic('tmp', input)
+			await blakeWallet.unlock('tmp')
+			seed = blakeWallet.seed
 			// seed must be 64 or the nano wallet can't be created.
 			// This is the reason 12-words can't be used because the seed would be 32 in length
 			if (seed.length !== 64) {
@@ -824,7 +825,7 @@ export class SignComponent implements OnInit {
 	}
 
 	// Validate type of master key
-	checkMasterKey (key) {
+	async checkMasterKey (key) {
 		// validate nano seed
 		if (key.length === 64) {
 			if (this.util.nano.isValidSeed(key)) {
@@ -838,10 +839,12 @@ export class SignComponent implements OnInit {
 			}
 		}
 		// validate mnemonic
-		if (bip39.validateMnemonic(key)) {
+		try {
+			await Blake2bWallet.fromMnemonic('tmp', key)
 			return 'mnemonic'
+		} catch (err) {
+			return null
 		}
-		return null
 	}
 
 	convertPrivateKey (key) {
@@ -859,11 +862,11 @@ export class SignComponent implements OnInit {
 	// open qr reader modal
 	openQR (reference, type) {
 		const qrResult = this.qrModalService.openQR(reference, type)
-		qrResult.then((data) => {
+		qrResult.then(async (data) => {
 			switch (data.reference) {
 				case 'seed1':
 					this.sourceSecret = data.content
-					this.seedChange(data.content)
+					await this.seedChange(data.content)
 					break
 				case 'priv1':
 					this.sourcePriv = data.content
