@@ -16,7 +16,7 @@ import { BehaviorSubject } from 'rxjs'
 import { Account, SendBlock, ReceiveBlock, ChangeBlock, Tools } from 'libnemo'
 import { NinjaService } from '../../services/ninja.service'
 import { QrModalService } from '../../services/qr-modal.service'
-import { TranslocoService } from '@jsverse/transloco'
+import { translate } from '@jsverse/transloco'
 
 @Component({
 	selector: 'app-account-details',
@@ -110,15 +110,14 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		private addressBook: AddressBookService,
 		private api: ApiService,
 		private price: PriceService,
-		private repService: RepresentativeService,
-		private notifications: NotificationService,
+		private repSvc: RepresentativeService,
+		private notify: NotificationService,
 		private wallet: WalletService,
 		private util: UtilService,
 		public settings: AppSettingsService,
 		private nanoBlock: NanoBlockService,
-		private qrModalService: QrModalService,
-		private ninja: NinjaService,
-		private translocoService: TranslocoService) {
+		private qrModalSvc: QrModalService,
+		private ninja: NinjaService) {
 		// to detect when the account changes if the view is already active
 		route.events.subscribe((val) => {
 			if (val instanceof NavigationEnd) {
@@ -168,7 +167,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 		this.populateRepresentativeList()
 
-		this.repService.walletReps$.subscribe(async reps => {
+		this.repSvc.walletReps$.subscribe(async reps => {
 			if (reps[0] === null) {
 				// initial state from new BehaviorSubject([null])
 				return
@@ -181,7 +180,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 	async populateRepresentativeList () {
 		// add trusted/regular local reps to the list
-		const localReps = this.repService.getSortedRepresentatives()
+		const localReps = this.repSvc.getSortedRepresentatives()
 		this.representativeList.push(...localReps.filter(rep => (!rep.warn)))
 
 		if (this.settings.settings.serverAPI) {
@@ -256,7 +255,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		this.repVotingWeight = new BigNumber(0)
 		this.repDonationAddress = null
 
-		const knownRepresentative = this.repService.getRepresentative(this.account.representative)
+		const knownRepresentative = this.repSvc.getRepresentative(this.account.representative)
 
 		if (knownRepresentative != null) {
 			this.repLabel = knownRepresentative.name
@@ -548,7 +547,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 			return defaultLabel
 		}
 
-		return (this.translocoService.translate('general.account') + ' #' + walletAccount.index)
+		return (translate('general.account') + ' #' + walletAccount.index)
 	}
 
 	ngOnDestroy () {
@@ -692,7 +691,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 			// Check for deleting an entry in the address book
 			if (this.addressBookEntry) {
 				this.addressBook.deleteAddress(this.accountID)
-				this.notifications.sendSuccess(this.translocoService.translate('address-book.successfully-deleted-address-book-entry'))
+				this.notify.sendSuccess(translate('address-book.successfully-deleted-address-book-entry'))
 				this.addressBookEntry = null
 			}
 
@@ -700,16 +699,16 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 			return
 		}
 
-		const regexp = new RegExp('^(Account|' + this.translocoService.translate('general.account') + ') #\\d+$', 'g')
+		const regexp = new RegExp('^(Account|' + translate('general.account') + ') #\\d+$', 'g')
 		if (regexp.test(this.addressBookModel) === true) {
-			return this.notifications.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-wallet-accounts-without-a-label'))
+			return this.notify.sendError(translate('address-book.this-name-is-reserved-for-wallet-accounts-without-a-label'))
 		}
 
 		// Make sure no other entries are using that name
 		const accountIdWithSameName = this.addressBook.getAccountIdByName(this.addressBookModel)
 
 		if ((accountIdWithSameName !== null) && (accountIdWithSameName !== this.accountID)) {
-			return this.notifications.sendError(this.translocoService.translate('address-book.this-name-is-already-in-use-please-use-a-unique-name'))
+			return this.notify.sendError(translate('address-book.this-name-is-already-in-use-please-use-a-unique-name'))
 		}
 
 		try {
@@ -717,11 +716,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 			const currentTransactionTracking = this.addressBook.getTransactionTrackingById(this.accountID)
 			await this.addressBook.saveAddress(this.accountID, this.addressBookModel, currentBalanceTracking, currentTransactionTracking)
 		} catch (err) {
-			this.notifications.sendError(this.translocoService.translate('address-book.unable-to-save-entry', { message: err.message }))
+			this.notify.sendError(translate('address-book.unable-to-save-entry', { message: err.message }))
 			return
 		}
 
-		this.notifications.sendSuccess(this.translocoService.translate('address-book.address-book-entry-saved-successfully'))
+		this.notify.sendSuccess(translate('address-book.address-book-entry-saved-successfully'))
 
 		this.addressBookEntry = this.addressBookModel
 		this.showEditAddressBook = false
@@ -759,7 +758,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 			return
 		}
 
-		const rep = this.repService.getRepresentative(this.representativeModel)
+		const rep = this.repSvc.getRepresentative(this.representativeModel)
 		const ninjaRep = await this.ninja.getAccount(this.representativeModel)
 
 		if (rep) {
@@ -772,8 +771,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	copied () {
-		this.notifications.removeNotification('success-copied')
-		this.notifications.sendSuccess(this.translocoService.translate('general.successfully-copied-to-clipboard'), { identifier: 'success-copied' })
+		this.notify.removeNotification('success-copied')
+		this.notify.sendSuccess(translate('general.successfully-copied-to-clipboard'), { identifier: 'success-copied' })
 	}
 
 	// Remote signing methods
@@ -878,7 +877,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	showMobileMenuForTransaction (transaction) {
-		this.notifications.removeNotification('success-copied')
+		this.notify.removeNotification('success-copied')
 
 		this.mobileTransactionData = transaction
 		this.mobileTransactionMenuModal.show()
@@ -911,13 +910,13 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		if (createdReceiveBlockHash) {
 			receivableBlock.received = true
 			this.mobileTransactionMenuModal.hide()
-			this.notifications.removeNotification('success-receive')
-			this.notifications.sendSuccess(`Successfully received nano!`, { identifier: 'success-receive' })
+			this.notify.removeNotification('success-receive')
+			this.notify.sendSuccess(`Successfully received nano!`, { identifier: 'success-receive' })
 			// clear the list of pending blocks. Updated again with reloadBalances()
 			this.wallet.clearPendingBlocks()
 		} else {
 			if (!this.wallet.isLedgerWallet()) {
-				this.notifications.sendError(`There was a problem receiving the transaction, try manually!`, { length: 10000 })
+				this.notify.sendError(`There was a problem receiving the transaction, try manually!`, { length: 10000 })
 			}
 		}
 
@@ -930,17 +929,17 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 	async generateSend () {
 		if (!this.accountID || !this.toAccountID) {
-			return this.notifications.sendWarning(`From and to account are required`)
+			return this.notify.sendWarning(`From and to account are required`)
 		}
 		const isValid = this.util.account.isValidAccount(this.toAccountID)
-		if (!isValid) return this.notifications.sendWarning(`To account address is not valid`)
-		if (!this.validateAmount()) return this.notifications.sendWarning(`Invalid XNO Amount`)
+		if (!isValid) return this.notify.sendWarning(`To account address is not valid`)
+		if (!this.validateAmount()) return this.notify.sendWarning(`Invalid XNO Amount`)
 
 		this.qrCodeImageBlock = null
 
 		const from = await this.api.accountInfo(this.accountID)
 		const to = await this.api.accountInfo(this.toAccountID)
-		if (!from) return this.notifications.sendError(`From account not found`)
+		if (!from) return this.notify.sendError(`From account not found`)
 
 		const bigBalanceFrom = new BigNumber(from.balance || 0)
 
@@ -950,8 +949,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		const rawAmount = new BigNumber(await Tools.convert(this.amount, 'nano', 'raw'))
 		this.rawAmount = rawAmount.plus(this.amountRaw)
 
-		if (this.amount < 0 || rawAmount.isLessThan(0)) return this.notifications.sendWarning(`Amount is invalid`)
-		if (bigBalanceFrom.minus(rawAmount).isLessThan(0)) return this.notifications.sendError(`From account does not have enough XNO`)
+		if (this.amount < 0 || rawAmount.isLessThan(0)) return this.notify.sendWarning(`Amount is invalid`)
+		if (bigBalanceFrom.minus(rawAmount).isLessThan(0)) return this.notify.sendError(`From account does not have enough XNO`)
 
 		// Determine a proper raw amount to show in the UI, if a decimal was entered
 		this.amountRaw = this.rawAmount.mod(this.nano)
@@ -975,7 +974,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 		// Previous block info
 		const previousBlockInfo = await this.api.blockInfo(block.previous)
-		if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`)
+		if (!('contents' in previousBlockInfo)) return this.notify.sendError(`Previous block not found`)
 		const jsonBlock = JSON.parse(previousBlockInfo.contents)
 		const blockDataPrevious = {
 			account: jsonBlock.account.replace('xrb_', 'nano_').toLowerCase(),
@@ -1033,7 +1032,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		let blockDataPrevious = null
 		if (!openEquiv) {
 			const previousBlockInfo = await this.api.blockInfo(block.previous)
-			if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`)
+			if (!('contents' in previousBlockInfo)) return this.notify.sendError(`Previous block not found`)
 			const jsonBlock = JSON.parse(previousBlockInfo.contents)
 			blockDataPrevious = {
 				account: jsonBlock.account.replace('xrb_', 'nano_').toLowerCase(),
@@ -1065,14 +1064,14 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	async generateChange () {
-		if (!this.util.account.isValidAccount(this.representativeModel)) return this.notifications.sendError(`Not a valid representative account`)
+		if (!this.util.account.isValidAccount(this.representativeModel)) return this.notify.sendError(`Not a valid representative account`)
 		this.qrCodeImageBlock = null
 		this.blockHash = null
 		this.qrString = null
 
 		const account = await this.api.accountInfo(this.accountID)
 
-		if (!account || !('frontier' in account)) return this.notifications.sendError(`Account must be opened first!`)
+		if (!account || !('frontier' in account)) return this.notify.sendError(`Account must be opened first!`)
 
 		const balance = new BigNumber(account.balance)
 		const balanceDecimal = balance.toString(10)
@@ -1090,7 +1089,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 		// Previous block info
 		const previousBlockInfo = await this.api.blockInfo(block.previous)
-		if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`)
+		if (!('contents' in previousBlockInfo)) return this.notify.sendError(`Previous block not found`)
 		const jsonBlock = JSON.parse(previousBlockInfo.contents)
 		const blockDataPrevious = {
 			account: jsonBlock.account.replace('xrb_', 'nano_').toLowerCase(),
@@ -1120,7 +1119,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 	// open qr reader modal
 	openQR (reference, type) {
-		const qrResult = this.qrModalService.openQR(reference, type)
+		const qrResult = this.qrModalSvc.openQR(reference, type)
 		qrResult.then((data) => {
 			switch (data.reference) {
 				case 'account1':
