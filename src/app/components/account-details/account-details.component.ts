@@ -13,7 +13,7 @@ import * as QRCode from 'qrcode'
 import BigNumber from 'bignumber.js'
 import { RepresentativeService } from '../../services/representative.service'
 import { BehaviorSubject } from 'rxjs'
-import { Account, SendBlock, ReceiveBlock, ChangeBlock } from 'libnemo'
+import { Account, SendBlock, ReceiveBlock, ChangeBlock, Tools } from 'libnemo'
 import { NinjaService } from '../../services/ninja.service'
 import { QrModalService } from '../../services/qr-modal.service'
 import { TranslocoService } from '@jsverse/transloco'
@@ -80,12 +80,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	addressBookResults$ = new BehaviorSubject([]);
 	showAddressBook = false;
 	addressBookMatch = '';
-	amounts = [
-		{ name: 'XNO', shortName: 'XNO', value: 'mnano' },
-		{ name: 'knano', shortName: 'knano', value: 'knano' },
-		{ name: 'nano', shortName: 'nano', value: 'nano' },
-	];
-	selectedAmount = this.amounts[0];
 
 	amount = null;
 	amountRaw: BigNumber = new BigNumber(0);
@@ -221,7 +215,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	clearRemoteVars () {
-		this.selectedAmount = this.amounts[0]
 		this.amount = null
 		this.amountRaw = new BigNumber(0)
 		this.amountFiat = null
@@ -469,8 +462,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 			this.loadingIncomingTxList = true
 
 			if (this.settings.settings.minimumReceive) {
-				const minAmount = this.util.nano.mnanoToRaw(this.settings.settings.minimumReceive)
-				pending = await this.api.pendingLimitSorted(accountID, 50, minAmount.toString(10))
+				const minAmount = await Tools.convert(this.settings.settings.minimumReceive, 'mnano', 'raw')
+				pending = await this.api.pendingLimitSorted(accountID, 50, minAmount)
 			} else {
 				pending = await this.api.pendingSorted(accountID, 50)
 			}
@@ -787,7 +780,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	// An update to the Nano amount, sync the fiat value
 	syncFiatPrice () {
 		if (!this.validateAmount()) return
-		const rawAmount = this.getAmountBaseValue(this.amount || 0).plus(this.amountRaw)
+		const rawAmount = new BigNumber(this.amount ?? 0).plus(this.amountRaw)
 		if (rawAmount.lte(0)) {
 			this.amountFiat = 0
 			return
@@ -808,17 +801,15 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	// An update to the fiat amount, sync the nano value based on currently selected denomination
-	syncNanoPrice () {
+	async syncNanoPrice () {
 		if (!this.amountFiat) {
 			this.amount = ''
 			return
 		}
 		if (!this.util.string.isNumeric(this.amountFiat)) return
-		const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice))
-		const nanoVal = this.util.nano.rawToNano(rawAmount).decimalPlaces(0, 3)
-		const nanoAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal))
-
-		this.amount = nanoAmount.toNumber()
+		const fx = new BigNumber(this.amountFiat).div(this.price.price.lastPrice).toString()
+		const nanoPrice = await Tools.convert(fx, 'mnano', 'nano')
+		this.amount = new BigNumber(nanoPrice).decimalPlaces(0, 3).toNumber()
 	}
 
 	searchAddressBook () {
@@ -879,31 +870,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	setMaxAmount () {
+	async setMaxAmount () {
 		this.amountRaw = new BigNumber(this.account?.balance).mod(this.nano) ?? new BigNumber(0)
 		const nanoVal = this.util.nano.rawToNano(this.account?.balance).decimalPlaces(0, 3)
-		const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal))
-		this.amount = maxAmount.toNumber()
+		this.amount = parseInt(await Tools.convert(nanoVal.toString(), 'nano', 'mnano'))
 		this.syncFiatPrice()
-	}
-
-	getAmountBaseValue (value) {
-
-		switch (this.selectedAmount.value) {
-			default:
-			case 'nano': return this.util.nano.nanoToRaw(value)
-			case 'knano': return this.util.nano.knanoToRaw(value)
-			case 'mnano': return this.util.nano.mnanoToRaw(value)
-		}
-	}
-
-	getAmountValueFromBase (value) {
-		switch (this.selectedAmount.value) {
-			default:
-			case 'nano': return this.util.nano.rawToNano(value)
-			case 'knano': return this.util.nano.rawToKnano(value)
-			case 'mnano': return this.util.nano.rawToMnano(value)
-		}
 	}
 
 	showMobileMenuForTransaction (transaction) {
@@ -958,9 +929,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	async generateSend () {
+		if (!this.accountID || !this.toAccountID) {
+			return this.notifications.sendWarning(`From and to account are required`)
+		}
 		const isValid = this.util.account.isValidAccount(this.toAccountID)
 		if (!isValid) return this.notifications.sendWarning(`To account address is not valid`)
-		if (!this.accountID || !this.toAccountID) return this.notifications.sendWarning(`From and to account are required`)
 		if (!this.validateAmount()) return this.notifications.sendWarning(`Invalid XNO Amount`)
 
 		this.qrCodeImageBlock = null
@@ -970,15 +943,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		if (!from) return this.notifications.sendError(`From account not found`)
 
 		const bigBalanceFrom = new BigNumber(from.balance || 0)
-		const bigBalanceTo = new BigNumber(to.balance || 0)
 
 		this.fromAccount = from
 		this.toAccount = to
 
-		const rawAmount = this.getAmountBaseValue(this.amount || 0)
+		const rawAmount = new BigNumber(await Tools.convert(this.amount, 'nano', 'raw'))
 		this.rawAmount = rawAmount.plus(this.amountRaw)
-
-		const nanoAmount = this.rawAmount.div(this.nano)
 
 		if (this.amount < 0 || rawAmount.isLessThan(0)) return this.notifications.sendWarning(`Amount is invalid`)
 		if (bigBalanceFrom.minus(rawAmount).isLessThan(0)) return this.notifications.sendError(`From account does not have enough XNO`)
@@ -988,9 +958,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 		// Determine fiat value of the amount
 		this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber()
-
-		const remaining = new BigNumber(from.balance).minus(this.rawAmount)
-		const remainingDecimal = remaining.toString(10)
 
 		const defaultRepresentative = this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative()
 		const representative = from.representative || defaultRepresentative

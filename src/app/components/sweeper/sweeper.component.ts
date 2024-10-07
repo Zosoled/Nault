@@ -8,7 +8,7 @@ import { WorkPoolService } from '../../services/work-pool.service'
 import { AppSettingsService } from '../../services/app-settings.service'
 import { NanoBlockService } from '../../services/nano-block.service'
 import * as nanocurrency from 'nanocurrency'
-import { Account, Bip44Wallet, Blake2bWallet } from 'libnemo'
+import { Account, Bip44Wallet, Blake2bWallet, SendBlock } from 'libnemo'
 import { Router } from '@angular/router'
 
 const INDEX_MAX = 4294967295 // seed index
@@ -256,22 +256,26 @@ export class SweeperComponent implements OnInit {
 	// Process final send block
 	async processSend (privKey, previous, sendCallback) {
 		const account = await Account.fromPrivateKey(privKey)
+		const destinationAccount = new Account(this.destinationAccount)
 
 		// make an extra check on valid destination
-		if (this.validDestination && nanocurrency.checkAddress(this.destinationAccount)) {
+		if (this.validDestination) {
 			this.appendLog('Transfer started: ' + account.address)
 			const work = await this.workPool.getWork(previous, 1) // send threshold
 			// create the block with the work found
-			const block = nanocurrency.createBlock(privKey, {
-				balance: '0', representative: this.representative,
-				work: work, link: this.destinationAccount, previous: previous
-			})
-			// replace xrb with nano (old library)
-			block.block.account = block.block.account.replace('xrb', 'nano')
-			block.block.link_as_account = block.block.link_as_account.replace('xrb', 'nano')
+			const block = new SendBlock(
+				account.address,
+				'0',
+				destinationAccount.address,
+				'0',
+				this.representative,
+				previous,
+				work
+			)
+			block.sign(account.privateKey)
 
 			// publish block for each iteration
-			const data = await this.api.process(block.block, TxType.send)
+			const data = await this.api.process(block.json(), TxType.send)
 			if (data.hash) {
 				const blockInfo = await this.api.blockInfo(data.hash)
 				const nanoAmountSent = this.util.nano.rawToMnano(blockInfo?.amount) ?? 0

@@ -132,7 +132,8 @@ export class MusigService {
 		let addresses = []
 		if (runWithPubkeys && this.savedPublicKeys?.length > 1) {
 			for (const pubKey of this.savedPublicKeys) {
-				addresses.push((await Account.fromPublicKey(pubKey)).address)
+				const account = await Account.fromPublicKey(pubKey)
+				addresses.push(account.address)
 			}
 		} else {
 			addresses = storedAccounts
@@ -267,7 +268,8 @@ export class MusigService {
 					this.savedPublicKeys.push(input.substring(66, 130).toLowerCase())
 				}
 				// Add the public key from self
-				const pub = (await Account.fromPrivateKey(privateKey)).publicKey
+				const account = await Account.fromPrivateKey(privateKey)
+				const pub = account.publicKey
 				if (this.savedPublicKeys.includes(pub.toLowerCase())) {
 					throw new Error('You must use different private keys for each participant!')
 				}

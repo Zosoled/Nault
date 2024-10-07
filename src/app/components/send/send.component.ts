@@ -33,13 +33,6 @@ export class SendComponent implements OnInit {
 	showAddressBook = false;
 	addressBookMatch = '';
 
-	amounts = [
-		{ name: 'XNO', shortName: 'XNO', value: 'mnano' },
-		{ name: 'knano', shortName: 'knano', value: 'knano' },
-		{ name: 'nano', shortName: 'nano', value: 'nano' },
-	];
-	selectedAmount = this.amounts[0];
-
 	amount = null;
 	amountExtraRaw = new BigNumber(0);
 	amountFiat: number | null = null;
@@ -160,12 +153,18 @@ export class SendComponent implements OnInit {
 	}
 
 	// An update to the Nano amount, sync the fiat value
-	syncFiatPrice () {
+	async syncFiatPrice () {
+		console.log(`syncFiatPrice()`)
+		console.log(`this.amountFiat: ${this.amount}`)
+		console.log(`this.price.price.lastPrice: ${this.price.price.lastPrice}`)
 		if (!this.validateAmount() || Number(this.amount) === 0) {
 			this.amountFiat = null
 			return
 		}
-		const rawAmount = this.getAmountBaseValue(this.amount || 0).plus(this.amountExtraRaw)
+
+		console.log(`sendTransaction() this.amount: ${this.amount}`)
+		console.log(typeof this.amount)
+		const rawAmount = new BigNumber(await Tools.convert(this.amount, 'nano', 'raw')).plus(this.amountExtraRaw)
 		if (rawAmount.lte(0)) {
 			this.amountFiat = null
 			return
@@ -184,17 +183,18 @@ export class SendComponent implements OnInit {
 	}
 
 	// An update to the fiat amount, sync the nano value based on currently selected denomination
-	syncNanoPrice () {
+	async syncNanoPrice () {
+		console.log(`syncNanoPrice()`)
+		console.log(`this.amountFiat: ${this.amountFiat}`)
+		console.log(`this.price.price.lastPrice: ${this.price.price.lastPrice}`)
 		if (!this.amountFiat) {
 			this.amount = ''
 			return
 		}
 		if (!this.util.string.isNumeric(this.amountFiat)) return
-		const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice))
-		const nanoVal = this.util.nano.rawToNano(rawAmount).decimalPlaces(0, 3)
-		const nanoAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal))
-
-		this.amount = nanoAmount.toNumber()
+		const fx = this.amountFiat / this.price.price.lastPrice
+		const nanoPrice = await Tools.convert(fx.toString(), 'mnano', 'nano')
+		this.amount = fx.toFixed(3)
 	}
 
 	async onDestinationAddressInput () {
@@ -359,7 +359,7 @@ export class SendComponent implements OnInit {
 		this.fromAccount = from
 		this.toAccount = to
 
-		const rawAmount = this.getAmountBaseValue(this.amount || 0)
+		const rawAmount = new BigNumber(await Tools.convert(this.amount, 'nano', 'raw'))
 		this.rawAmount = rawAmount.plus(this.amountExtraRaw)
 
 		const nanoAmount = this.rawAmount.div(this.nano)
@@ -416,7 +416,7 @@ export class SendComponent implements OnInit {
 
 			if (newHash) {
 				this.notificationService.removeNotification('success-send')
-				this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`, { identifier: 'success-send' })
+				this.notificationService.sendSuccess(`Successfully sent ${this.amount} XNO!`, { identifier: 'success-send' })
 				this.activePanel = 'send'
 				this.amount = null
 				this.amountFiat = null
@@ -440,7 +440,7 @@ export class SendComponent implements OnInit {
 		this.confirmingTransaction = false
 	}
 
-	setMaxAmount () {
+	async setMaxAmount () {
 		const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.fromAccountID)
 		if (!walletAccount) {
 			return
@@ -448,33 +448,13 @@ export class SendComponent implements OnInit {
 
 		this.amountExtraRaw = walletAccount.balanceRaw
 
-		const nanoVal = this.util.nano.rawToNano(walletAccount.balance).decimalPlaces(0, 3)
-		const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal))
-		this.amount = maxAmount.toNumber()
+		const nanoBalance = await Tools.convert(walletAccount.balance.toString(), 'raw', 'nano')
+		this.amount = +(new BigNumber(nanoBalance).toFixed(6))
 		this.syncFiatPrice()
 	}
 
 	resetRaw () {
 		this.amountExtraRaw = new BigNumber(0)
-	}
-
-	getAmountBaseValue (value) {
-
-		switch (this.selectedAmount.value) {
-			default:
-			case 'nano': return this.util.nano.nanoToRaw(value)
-			case 'knano': return this.util.nano.knanoToRaw(value)
-			case 'mnano': return this.util.nano.mnanoToRaw(value)
-		}
-	}
-
-	getAmountValueFromBase (value) {
-		switch (this.selectedAmount.value) {
-			default:
-			case 'nano': return this.util.nano.rawToNano(value)
-			case 'knano': return this.util.nano.rawToKnano(value)
-			case 'mnano': return this.util.nano.rawToMnano(value)
-		}
 	}
 
 	// open qr reader modal

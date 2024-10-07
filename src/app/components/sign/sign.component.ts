@@ -1153,9 +1153,10 @@ export class SignComponent implements OnInit {
 
 		if (result?.stage === 0) {
 			console.log('Started multisig using block hash: ' + this.blockHash)
+			const account = await Account.fromPrivateKey(this.privateKey)
 			// Combine output with public key
 			const output = this.activeStep + ':' + this.util.hex.fromUint8(result.outbuf.subarray(33)) +
-				(await Account.fromPrivateKey(this.privateKey)).publicKey
+				account.publicKey
 			this.activeStep = this.activeStep + 1
 			this.outputMultisigData = output.toUpperCase()
 			this.generateOutputQR()
