@@ -35,6 +35,7 @@ export class ApiService {
 					}
 				)
 		}
+		console.log(data)
 		return await this.http.post(apiUrl, data, options).toPromise()
 			.then(res => {
 				if (typeof validateResponse === 'function') {
