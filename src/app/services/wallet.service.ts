@@ -806,9 +806,9 @@ export class WalletService {
 
 			if (this.appSettings.settings.minimumReceive) {
 				const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive)
-				pending = await this.api.accountsPendingLimitSorted(this.wallet.accounts.map(a => a.id), minAmount.toString(10))
+				pending = await this.api.accountsReceivableLimitSorted(this.wallet.accounts.map(a => a.id), minAmount.toString(10))
 			} else {
-				pending = await this.api.accountsPendingSorted(this.wallet.accounts.map(a => a.id))
+				pending = await this.api.accountsReceivableSorted(this.wallet.accounts.map(a => a.id))
 			}
 
 			if (pending && pending.blocks) {

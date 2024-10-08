@@ -377,16 +377,16 @@ export class SweeperComponent implements OnInit {
 		if (this.appSettings.settings.minimumReceive) {
 			const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive).toString(10)
 			if (this.appSettings.settings.pendingOption === 'amount') {
-				data = await this.api.pendingLimitSorted(address, this.maxIncoming, minAmount)
+				data = await this.api.receivableLimitSorted(address, this.maxIncoming, minAmount)
 			} else {
-				data = await this.api.pendingLimit(address, this.maxIncoming, minAmount)
+				data = await this.api.receivableLimit(address, this.maxIncoming, minAmount)
 			}
 
 		} else {
 			if (this.appSettings.settings.pendingOption === 'amount') {
-				data = await this.api.pendingSorted(address, this.maxIncoming)
+				data = await this.api.receivableSorted(address, this.maxIncoming)
 			} else {
-				data = await this.api.pending(address, this.maxIncoming)
+				data = await this.api.receivable(address, this.maxIncoming)
 			}
 		}
 

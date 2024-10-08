@@ -462,9 +462,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 			if (this.settings.settings.minimumReceive) {
 				const minAmount = await Tools.convert(this.settings.settings.minimumReceive, 'mnano', 'raw')
-				pending = await this.api.pendingLimitSorted(accountID, 50, minAmount)
+				pending = await this.api.receivableLimitSorted(accountID, 50, minAmount)
 			} else {
-				pending = await this.api.pendingSorted(accountID, 50)
+				pending = await this.api.receivableSorted(accountID, 50)
 			}
 
 			if (accountID !== this.accountID) {
