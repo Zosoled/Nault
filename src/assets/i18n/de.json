@@ -11,7 +11,12 @@
     "unknown-status": "Unbekannter Status"
   },
   "configure-app": {
-    "language": "Sprache"
+    "language": "Sprache",
+    "pow-options": {
+      "external-custom-server": "Extern - benutzerdefinierte Arbeitserver verwenden",
+      "external-selected-server": "Extern - Verwenden Sie den ausgewählten Knoten",
+      "internal-client": "Intern - benutze mein Gerät"
+    }
   },
   "general": {
     "account": "Konto",

@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import {WalletService} from '../../services/wallet.service';
 import {NotificationService} from '../../services/notification.service';
-import {AppSettingsService} from '../../services/app-settings.service';
+import {AppSettingsService, PoWSource} from '../../services/app-settings.service';
 import {PriceService} from '../../services/price.service';
 import {PowService} from '../../services/pow.service';
 import {WorkPoolService} from '../../services/work-pool.service';
@@ -121,12 +121,10 @@ export class ConfigureAppComponent implements OnInit {
   ];
   selectedInactivityMinutes = this.inactivityOptions[4].value;
 
-  powOptions = [
-    { name: this.translocoService.translate('configure-app.pow-options.best-option-available'), value: 'best' },
-    { name: this.translocoService.translate('configure-app.pow-options.client-side-gpu-webgl'), value: 'clientWebGL' },
-    { name: this.translocoService.translate('configure-app.pow-options.client-side-cpu-slowest'), value: 'clientCPU' },
+  powOptions: { name: string, value: PoWSource; }[] = [
     { name: this.translocoService.translate('configure-app.pow-options.external-selected-server'), value: 'server' },
     { name: this.translocoService.translate('configure-app.pow-options.external-custom-server'), value: 'custom' },
+    { name: this.translocoService.translate('configure-app.pow-options.internal-client'), value: 'client' },
   ];
   selectedPoWOption = this.powOptions[0].value;
 
@@ -396,27 +394,18 @@ export class ConfigureAppComponent implements OnInit {
     }
 
     if (this.appSettings.settings.powSource !== newPoW) {
-      if (newPoW === 'clientWebGL' && !this.pow.hasWebGLSupport()) {
-        this.notifications.sendWarning(this.translocoService.translate('configure-app.webgl-support-not-available-set-pow-to-best'));
-        newPoW = 'best';
-      }
-      if (newPoW === 'clientCPU' && !this.pow.hasWorkerSupport()) {
-        this.notifications.sendWarning(this.translocoService.translate('configure-app.cpu-worker-support-not-available-set-pow-to-best'));
-        newPoW = 'best';
-      }
       // reset multiplier when not using it to avoid user mistake
-      if (newPoW !== 'clientWebGL' && newPoW !== 'clientCPU' && newPoW !== 'custom') {
+      if (newPoW !== 'client' && newPoW !== 'custom') {
         this.selectedMultiplierOption = this.multiplierOptions[0].value;
       }
       // Cancel ongoing PoW if the old method was local PoW
-      if (this.appSettings.settings.powSource === 'clientWebGL' || this.appSettings.settings.powSource === 'clientCPU') {
+      if (this.appSettings.settings.powSource === 'client') {
         // Check if work is ongoing, and cancel it
         if (this.pow.cancelAllPow(false)) {
           reloadPending = true; // force reload balance => re-work pow
         }
       }
-    } else if ((newPoW === 'clientWebGL' || newPoW === 'clientCPU') &&
-      newMultiplier < this.appSettings.settings.multiplierSource) {
+    } else if (newPoW === 'client' && newMultiplier < this.appSettings.settings.multiplierSource) {
       // Cancel pow and re-work if multiplier is lower than earlier
       if (this.pow.cancelAllPow(false)) {
         reloadPending = true;
@@ -424,12 +413,7 @@ export class ConfigureAppComponent implements OnInit {
     }
 
     // reset work cache so that the new PoW will be used but only if larger than before
-    if (
-      newMultiplier > this.appSettings.settings.multiplierSource &&
-      newMultiplier > 1 &&
-      ((newPoW === 'clientWebGL' && this.pow.hasWebGLSupport()) ||
-      (newPoW === 'clientCPU' && this.pow.hasWorkerSupport()))
-    ) {
+    if (newPoW === 'client' && newMultiplier > this.appSettings.settings.multiplierSource) {
       // if user accept to reset cache
       if (await this.clearWorkCache()) {
         reloadPending = true; // force reload balance => re-work pow
@@ -573,7 +557,7 @@ export class ConfigureAppComponent implements OnInit {
   }
 
   getRemotePoWOptionName() {
-    const optionName = 'External - Selected Server';
+    const optionName = this.translocoService.translate('configure-app.pow-options.external-selected-server');
 
     if ( (this.selectedServer === 'random') || (this.selectedServer === 'offline') ) {
       return optionName;

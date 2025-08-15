@@ -209,11 +209,9 @@
     },
     "pow-multiplier": "PoW Multiplier",
     "pow-options": {
-      "best-option-available": "Best Option Available",
-      "client-side-cpu-slowest": "Client-side - CPU (Slowest)",
-      "client-side-gpu-webgl": "Client-side - GPU/WebGL",
-      "external-custom-server": "External - Custom Server",
-      "external-selected-server": "External - Selected Server"
+      "external-custom-server": "External - Use custom work server",
+      "external-selected-server": "External - Use selected node",
+      "internal-client": "Internal - Use my device"
     },
     "pow-source": "PoW Source",
     "random-server": "Random Server",
