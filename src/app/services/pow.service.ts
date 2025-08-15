@@ -181,42 +181,36 @@ export class PowService {
   /**
    * Generate proof-of-work using NanoPow
    */
-  getPowFromClient(hash, multiplier) {
+  async getPowFromClient(blockhash, multiplier) {
     this.checkPowProcessLength(); // start alert timer
     const newThreshold = this.util.nano.difficultyFromMultiplier(multiplier, baseThreshold);
-    console.log(`NanoPow: Generating work with multiplier ${multiplier} at threshold ${newThreshold} for hash: ${hash}`);
+    console.log(`NanoPow: Generating work with multiplier ${multiplier} at threshold ${newThreshold} for hash: ${blockhash}`);
 
     const response = this.getDeferredPromise();
 
+    const timeout = setInterval(() => {
+      if (this.shouldAbortGpuPow) {
+        clearInterval(timeout);
+        this.shouldAbortGpuPow = false;
+        response.reject(workState.cancelled);
+        return true;
+      }
+    }, 1000);
+
     try {
-      const timeout = setInterval(() => {
-        if (this.shouldAbortGpuPow) {
-          clearInterval(timeout);
-          this.shouldAbortGpuPow = false;
-          response.reject(workState.cancelled);
-          return true;
-        }
-      }, 1000);
       const start = performance.now();
-      NanoPow.work_generate(hash, { difficulty: newThreshold, effort: workerCount })
-        .then(result => {
-          if ('error' in result) {
-            response.reject(result.error);
-          } else {
-            const { hash, work, difficulty } = result;
-            console.log(`NanoPow: Found work (${work}) for ${hash} after ${((performance.now() - start) / 1000).toPrecision(3)} seconds`);
-            response.resolve(work);
-          }
-        })
-        .catch(err => {
-          response.reject(err.message);
-        })
-        .finally(() => {
-          clearInterval(timeout)
-        });
+      const result = await NanoPow.work_generate(blockhash, { difficulty: newThreshold, effort: workerCount })
+      if ('error' in result) {
+        throw new Error(result.error);
+      }
+      const { hash, work, difficulty } = result;
+      console.log(`NanoPow: Found work (${work}) for ${hash} after ${((performance.now() - start) / 1000).toPrecision(3)} seconds`);
+      response.resolve(work);
     } catch (error) {
       console.warn(error.message);
       response.reject(workState.error);
+    } finally {
+      clearInterval(timeout)
     }
 
     return response.promise;
