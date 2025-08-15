@@ -255,7 +255,6 @@
     "update-wallet-settings": "Update Wallet Settings",
     "use-if-the-api-requires-authentication": "Use if the API requires authentication",
     "wallet-settings": "Wallet Settings",
-    "webgl-support-not-available-set-pow-to-best": "WebGL support not available, set PoW to Best",
     "websocket-server": "WebSocket Server",
     "work-server": "Work Server",
     "you-are-about-to-delete-all-locally-cached-proof-of-work": "You are about to delete all locally cached Proof of Work values.",
