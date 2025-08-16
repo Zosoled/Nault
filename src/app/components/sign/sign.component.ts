@@ -78,10 +78,7 @@ export class SignComponent implements OnInit {
   // With v21 the 1x is the old 8x and max will be 8x due to the webgl threshold is max ffffffff00000000
   // Note: with NanoPow integration, max threshold is now full 64-bit ffffffffffffffff
   thresholds = [
-    { name: '1x', value: 1 },
-    { name: '2x', value: 2 },
-    { name: '4x', value: 4 },
-    { name: '8x', value: 8 }
+    { name: '1x', value: 1 }
   ];
   selectedThreshold = this.thresholds[0].value;
   selectedThresholdOld = this.selectedThreshold;
