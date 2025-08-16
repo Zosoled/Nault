@@ -201,7 +201,7 @@
     },
     "node-stats": "Node Stats",
     "note-since-this-server-only-notifies-about-new-transactions": "Note: Since this server only notifies about new transactions, most of the wallet functions fine without it.",
-    "optional-increased-work-for-transaction-priority-during": "Optional increased work for transaction priority during network saturation. Overrides both default SEND 1x and RECEIVE 1/64x difficulties.",
+    "optional-increased-work-for-transaction-priority-during": "Deprecated since v22.0",
     "pending-options": {
       "automatic-largest-amount-first": "Automatic - Largest Amount First",
       "automatic-oldest-transaction-first": "Automatic - Oldest Transaction First",

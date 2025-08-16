@@ -129,13 +129,7 @@ export class ConfigureAppComponent implements OnInit {
   selectedPoWOption = this.powOptions[0].value;
 
   multiplierOptions = [
-    { name: this.translocoService.translate('configure-app.multiplier-options.default-1x-or-1-64x'), value: 1 },
-    { name: '2x', value: 2 },
-    { name: '4x', value: 4 },
-    { name: '8x', value: 8 },
-    { name: '16x', value: 16 },
-    { name: '32x', value: 32 },
-    { name: '64x', value: 64 },
+    {name: this.translocoService.translate('configure-app.multiplier-options.default-1x-or-1-64x'), value: 1}
   ];
   selectedMultiplierOption: number = this.multiplierOptions[0].value;
 

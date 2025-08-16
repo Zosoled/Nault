@@ -12,6 +12,7 @@
   },
   "configure-app": {
     "language": "Sprache",
+    "optional-increased-work-for-transaction-priority-during": "Veraltet seit V22.0",
     "pow-options": {
       "external-custom-server": "Extern - benutzerdefinierte Arbeitserver verwenden",
       "external-selected-server": "Extern - Verwenden Sie den ausgewählten Knoten",

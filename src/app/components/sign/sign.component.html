@@ -151,7 +151,7 @@
             </div>
           </div>
           <br><br>
-          <span><strong>Proof of Work </strong></span><span uk-icon="icon: info;" uk-tooltip title="Proof of Work (PoW) can be optionally generated now and included in the block, or it will be added for you before the block is published. The threshold of 1x is normally ok but you may need higher if the network is saturated with transactions and you want it prioritized. Custom multiplier only works for local PoW source CPU/GPU."></span><br>
+          <span><strong>Proof of Work </strong></span><span uk-icon="icon: info;" uk-tooltip title="Proof of Work (PoW) can be optionally generated now and included in the block, or it will be added for you before the block is published."></span><br>
           <div class="uk-inline uk-width-auto">
             <select class="uk-select" [(ngModel)]="selectedThreshold" (change)="changeThreshold()">
               <option *ngFor="let option of thresholds" [value]="option.value">{{ option.name }}</option>
