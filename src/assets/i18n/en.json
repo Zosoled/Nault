@@ -36,8 +36,8 @@
 		"ledger-device-must-be-ready": "Ledger device must be ready",
 		"missing-accounts": {
 			"1": "Missing accounts?",
-			"3": "to import a previously used address.",
-			"2-link": "Add new account"
+			"2-link": "Add new account",
+			"3": "to import a previously used address."
 		},
 		"simple-mode": "Simple Mode",
 		"successfully-created-new-account": "Successfully created new account {{ account }}",
@@ -52,8 +52,8 @@
 		"you-can-only-track-up-to-x-accounts-at-a-time": "You can only track up to {{ accounts }} accounts at a time.",
 		"you-dont-have-any-accounts-yet": {
 			"1": "You don't have any accounts yet,",
-			"3": ".",
-			"2-link": "click here to create one"
+			"2-link": "click here to create one",
+			"3": "."
 		}
 	},
 	"address-book": {
@@ -74,6 +74,7 @@
 		"export-address-book": "Export Address Book",
 		"export-all-address-book-entries-to-a-file-or-qr-code-url": "Export all address book entries to a file or QR Code/URL.",
 		"export-as-file": "Export As File",
+		"if-you-need-a-qr-use-fewer-entries-or-shorter-names": "If you need a QR, use fewer entries or shorter names.",
 		"import-address-book": "Import Address Book",
 		"import-address-book-entries-from-a-file": "Import address book entries from a file.",
 		"import-export": "Import / Export",
@@ -100,10 +101,9 @@
 		},
 		"you-do-not-have-any-address-book-entries-saved-yet": {
 			"1": "You do not have any address book entries saved yet,",
-			"3": ".",
-			"2-link": "click here to create one"
-		},
-		"if-you-need-a-qr-use-fewer-entries-or-shorter-names": "If you need a QR, use fewer entries or shorter names."
+			"2-link": "click here to create one",
+			"3": "."
+		}
 	},
 	"change-rep-widget": {
 		"acceptable-representative": "Acceptable Representative",
@@ -270,8 +270,8 @@
 			"recovery-phrases-alert": {
 				"1": {
 					"1": "Make sure to write down your seed and/or mnemonic or save it somewhere safe, and ",
-					"3": "!",
-					"2-strong": "never share it with anyone"
+					"2-strong": "never share it with anyone",
+					"3": "!"
 				},
 				"2": "It is the master key to all of your accounts, and the only way to recover your funds in an emergency."
 			},
@@ -390,30 +390,30 @@
 			"1": "Nault is a web application that can be used on most desktop and handheld devices.",
 			"2": {
 				"1": "You may also use the desktop application for Windows, Linux or Mac. It is available for download",
-				"3": ".",
-				"2-link-github-releases": "from the GitHub releases page"
+				"2-link-github-releases": "from the GitHub releases page",
+				"3": "."
 			},
 			"3": {
 				"1": "All code is open source and",
-				"3": ".",
-				"2-link-github": "available on GitHub"
+				"2-link-github": "available on GitHub",
+				"3": "."
 			},
 			"title": "Any Device, Anywhere"
 		},
 		"any-node-always-available": {
 			"1": {
 				"1": "Even if the official",
-				"3": "domain would become inaccessible, you would still be able to use the",
-				"5": "or",
-				"7": ".",
 				"2-link-nault": "nault.cc",
+				"3": "domain would become inaccessible, you would still be able to use the",
 				"4-link-github-releases": "desktop application",
-				"6-link-github-web-app": "host the web application yourself"
+				"5": "or",
+				"6-link-github-web-app": "host the web application yourself",
+				"7": "."
 			},
 			"2": {
 				"1": "In Nault there is no single source of truth. All information is provided by the server that's set in app settings. That also means there is no single point of failure – you may choose any public or self-hosted",
-				"3": "as the server.",
-				"2-link-nano-node": "nano node"
+				"2-link-nano-node": "nano node",
+				"3": "as the server."
 			},
 			"title": "Any Node, Always Available"
 		},
@@ -422,8 +422,8 @@
 		"secure-the-nano-network": {
 			"1": {
 				"1": "Nano uses",
-				"3": ", which allows users to be in control of how much voting power representatives have on the network.",
-				"2-link-orv": "ORV consensus"
+				"2-link-orv": "ORV consensus",
+				"3": ", which allows users to be in control of how much voting power representatives have on the network."
 			},
 			"2": "Nault will automatically check the status of your representatives and provide recommendations to ensure security and censorship resistance for all network participants.",
 			"title": "Secure the Nano Network"
