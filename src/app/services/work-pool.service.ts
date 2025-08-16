@@ -37,6 +37,7 @@ export class WorkPoolService {
   }
 
   public clearCache() {
+    localStorage.removeItem('NanoPowCache');
     this.workCache = [];
     this.saveWorkCache();
 
