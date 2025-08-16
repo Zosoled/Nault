@@ -1,8 +1,8 @@
 @import "components/_import.less";
 
-@nlt-intro-margin:                        40px;
+@nlt-intro-margin: 40px;
 
-@rep-label-color:                      #9A71D5;
+@rep-label-color: #9A71D5;
 
 // extensions
 // ========================================================================
@@ -11,19 +11,37 @@ body {
 	overflow: hidden;
 }
 
-h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list dt,
-.uk-table th, .uk-form-label, .uk-form-icon, .nano-card, .nav-representative-info,
-.accounts-dropdown, .nav-container .nav-action-receive, .left-nav > li, .mobile-top-bar,
+h1,
+h2,
+h3,
+h4,
+h5,
+.uk-text-lead,
+.uk-button,
+.uk-alert,
+.uk-description-list dt,
+.uk-table th,
+.uk-form-label,
+.uk-form-icon,
+.nano-card,
+.nav-representative-info,
+.accounts-dropdown,
+.nav-container .nav-action-receive,
+.left-nav>li,
+.mobile-top-bar,
 .uk-modal-dialog p {
 	font-family: @global-secondary-font-family;
 }
 
-.uk-card, .uk-card-default, .uk-table, .uk-list {
+.uk-card,
+.uk-card-default,
+.uk-table,
+.uk-list {
 	border-radius: @global-border-radius-medium;
 }
 
 * {
-	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 @media (max-width: 939px) {
@@ -32,7 +50,7 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	}
 
 	h2:not(.uk-card-title):not(.uk-modal-title) {
-		border-bottom: none!important;
+		border-bottom: none !important;
 	}
 }
 
@@ -41,11 +59,14 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	color: @global-color;
 }
 
-.uk-card-body > ul > li > a {
+.uk-card-body>ul>li>a {
 	color: @global-color;
 }
 
-.uk-button-default:disabled, .uk-button-primary:disabled, .uk-button-secondary:disabled, .uk-button-danger:disabled {
+.uk-button-default:disabled,
+.uk-button-primary:disabled,
+.uk-button-secondary:disabled,
+.uk-button-danger:disabled {
 	background-color: #ddd;
 	color: #999 !important;
 	border-color: #dce9f9;
@@ -59,11 +80,11 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 	transition: none;
 }
 
-.uk-iconnav > * > a {
+.uk-iconnav>*>a {
 	color: #676686;
 }
 
-.uk-list > li.uk-list-header {
+.uk-list>li.uk-list-header {
 	border-left: 1px solid #dce9f9;
 	border-right: 1px solid #dce9f9;
 	border-radius: 10px 10px 0 0;
@@ -86,7 +107,7 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 .nlt-inline-alert {
 	display: inline-flex;
 
-	> .icon-column {
+	>.icon-column {
 		display: flex;
 		flex-shrink: 0;
 		align-items: center;
@@ -95,7 +116,7 @@ h1, h2, h3, h4, h5, .uk-text-lead, .uk-button, .uk-alert, .uk-description-list d
 		padding-right: 20px;
 	}
 
-	> p {
+	>p {
 		margin-top: 0;
 	}
 
@@ -191,21 +212,21 @@ input[type=number] {
 	background-color: #22222A;
 	border-bottom: 1px solid #16161B;
 
-	> .button-column {
+	>.button-column {
 		padding-left: 0;
 
-		> .nav-button {
+		>.nav-button {
 			display: flex;
 			align-items: center;
 			margin: 9px 0 8px 14px;
 			cursor: pointer;
 
-			> .uk-icon {
+			>.uk-icon {
 				margin-right: 10px;
 				color: #5F5F77;
 			}
 
-			> .app-name {
+			>.app-name {
 				font-size: 22px;
 				font-weight: 600;
 				margin-top: -1px;
@@ -241,7 +262,7 @@ input[type=number] {
 	overflow-x: hidden;
 	overflow-y: scroll;
 
-	> *:last-child > .uk-grid > *:last-child {
+	>*:last-child>.uk-grid>*:last-child {
 		margin-bottom: 20px;
 	}
 
@@ -264,7 +285,7 @@ input[type=number] {
 				top: 0;
 				left: 0;
 
-				> * {
+				>* {
 					pointer-events: none;
 				}
 			}
@@ -333,12 +354,14 @@ input[type=number] {
 	border: 2px solid transparent;
 	transition: border-color 100ms ease-in-out;
 
-	&, &:hover {
+	&,
+	&:hover {
 		color: #515151;
 		text-decoration: none;
 	}
 
-	&.interactable:hover, &.blue {
+	&.interactable:hover,
+	&.blue {
 		.account-label-hover-styles();
 	}
 
@@ -376,7 +399,8 @@ input[type=number] {
 	transition: border-color 100ms ease-in-out;
 	padding-bottom: 2px;
 
-	&, &:hover {
+	&,
+	&:hover {
 		color: @global-color;
 		text-decoration: none;
 	}
@@ -392,7 +416,8 @@ input[type=number] {
 	border-bottom: 2px solid transparent;
 	transition: border-color 100ms ease-in-out;
 
-	&, &:hover {
+	&,
+	&:hover {
 		color: @global-primary-background;
 		text-decoration: none;
 	}
@@ -466,6 +491,7 @@ input[type=number] {
 .nano-prefix {
 	color: #557aa4;
 }
+
 .nano-address-middle {
 	min-width: 1.4em;
 
@@ -478,11 +504,12 @@ input[type=number] {
 		cursor: pointer;
 	}
 }
+
 .nano-address-suffix {
 	color: #D5AF4E;
 }
 
-.natricon-placeholder > img {
+.natricon-placeholder>img {
 	opacity: 0.2;
 }
 
@@ -565,11 +592,12 @@ input[type=number] {
 		background: rgba(0, 0, 0, 0);
 		transition: background-color 100ms ease-in-out;
 
-		&:hover, &:active {
+		&:hover,
+		&:active {
 			background: rgba(0, 0, 0, 0.2);
 		}
 
-		> .icon {
+		>.icon {
 			margin-right: 15px;
 			position: relative;
 
@@ -590,7 +618,7 @@ input[type=number] {
 				margin-right: 12px;
 			}
 
-			> .icon-inner {
+			>.icon-inner {
 				position: absolute;
 				left: 50%;
 				top: 50%;
@@ -599,7 +627,8 @@ input[type=number] {
 				&.icon-user {
 					padding-right: 1px;
 
-					circle, path {
+					circle,
+					path {
 						stroke-width: 2;
 					}
 				}
@@ -617,17 +646,17 @@ input[type=number] {
 	left: 11px;
 	width: calc(100% - 22px);
 	height: 160px;
-	background: linear-gradient( 0deg, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) ) 0%;
+	background: linear-gradient(0deg, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0)) 0%;
 	pointer-events: none;
 
-	> .actions-area {
+	>.actions-area {
 		display: flex;
 		width: 100%;
 		height: 66px;
 		padding: 40px 0 20px 0;
 		pointer-events: all;
 
-		> button {
+		>button {
 			flex: 1;
 			border: 0;
 			margin: 8px 12px;
@@ -641,14 +670,16 @@ input[type=number] {
 			cursor: pointer;
 			transition: background-color 100ms ease-in-out;
 
-			&:hover, &:active {
+			&:hover,
+			&:active {
 				background: #3883DC;
 			}
 		}
 	}
 }
 
-.nav-expanded .mobile-actions-fixed, .nav-animating .mobile-actions-fixed {
+.nav-expanded .mobile-actions-fixed,
+.nav-animating .mobile-actions-fixed {
 	display: none;
 }
 
@@ -664,7 +695,8 @@ input[type=number] {
 	background: #FFF9F4;
 }
 
-.password-input.uk-form-danger, .password-input.uk-form-danger::placeholder {
+.password-input.uk-form-danger,
+.password-input.uk-form-danger::placeholder {
 	color: #F79743;
 }
 
@@ -685,19 +717,24 @@ input[type=number] {
 		max-width: unset;
 		flex-basis: 100%;
 	}
+
 	@media (max-width: 849px) {
 		.force-one-per-row();
 	}
+
 	@media (min-width: 940px) and (max-width: 1200px) {
 		.force-one-per-row();
 	}
 
-	> .uk-card {
-		> .uk-card-header, > .uk-card-body {
+	>.uk-card {
+
+		>.uk-card-header,
+		>.uk-card-body {
 			padding: 10px 15px;
 		}
 
 		min-width: 235px;
+
 		&.identicons-enabled {
 			min-width: 305px;
 		}
@@ -747,7 +784,7 @@ input[type=number] {
 	}
 
 	@media (max-width: 349px) {
-		.nano-address-clickable > .uk-flex {
+		.nano-address-clickable>.uk-flex {
 			flex-wrap: wrap;
 			width: 125px;
 
@@ -786,7 +823,8 @@ input[type=number] {
 		margin-top: 2px;
 	}
 
-	.account-amounts-column, .compact-account-amounts {
+	.account-amounts-column,
+	.compact-account-amounts {
 		.account-amounts-primary {
 			margin-bottom: 3px;
 
@@ -828,21 +866,22 @@ input[type=number] {
 
 	.account-amounts-column {
 		.incoming-label {
+
 			/* Displaying 'New' label when under 1500px viewport */
-			> .text-full {
+			>.text-full {
 				display: none;
 			}
 
-			> .text-snippet {
+			>.text-snippet {
 				display: inline-block;
 			}
 
 			@media (min-width: 1500px) {
-				> .text-full {
+				>.text-full {
 					display: inline-block;
 				}
 
-				> .text-snippet {
+				>.text-snippet {
 					display: none;
 				}
 			}
@@ -854,11 +893,11 @@ input[type=number] {
 			margin-bottom: 7px;
 
 			/* Always displaying the amount */
-			> .text-full {
+			>.text-full {
 				display: inline-block;
 			}
 
-			> .text-snippet {
+			>.text-snippet {
 				display: none;
 			}
 		}
@@ -888,18 +927,22 @@ input[type=number] {
 		}
 	}
 
-	.compact-account-amounts, .compact-account-actions {
+	.compact-account-amounts,
+	.compact-account-actions {
 		display: none;
 	}
 
 	@media (max-width: 469px) {
-		.compact-account-amounts, .compact-account-actions {
+
+		.compact-account-amounts,
+		.compact-account-actions {
 			display: block;
 			margin-top: 5px;
 			margin-bottom: 15px;
 		}
 
-		.account-amounts-column, .account-actions-column {
+		.account-amounts-column,
+		.account-actions-column {
 			display: none;
 		}
 	}
@@ -913,7 +956,7 @@ input[type=number] {
 			display: none !important;
 		}
 
-		.nano-address-clickable > .uk-flex {
+		.nano-address-clickable>.uk-flex {
 			.nano-address-middle {
 				width: 0;
 			}
@@ -921,6 +964,7 @@ input[type=number] {
 
 		.account-amounts-column {
 			.account-amounts-primary {
+
 				.amount-integer,
 				.amount-fractional,
 				.currency-name {
@@ -990,7 +1034,8 @@ input[type=number] {
 			transition: background-color 100ms ease-in-out;
 			cursor: pointer;
 
-			&:hover, &:focus {
+			&:hover,
+			&:focus {
 				background: #d1e9ff;
 
 				.type-identicon-combined .type-icon-container {
@@ -1013,6 +1058,7 @@ input[type=number] {
 			}
 
 			&.transaction.identicons-enabled {
+
 				// identicons take up extra 10px
 				@media (max-width: 420px) {
 					.nano-address-prefix .nano-prefix {
@@ -1064,7 +1110,7 @@ input[type=number] {
 		min-width: 25px;
 		position: relative;
 
-		> .type {
+		>.type {
 			position: absolute;
 			top: calc(50% - 12px);
 			left: 13px;
@@ -1129,7 +1175,9 @@ input[type=number] {
 		white-space: nowrap;
 		text-align: right;
 
-		.amount-integer, .amount-fractional, .currency-name {
+		.amount-integer,
+		.amount-fractional,
+		.currency-name {
 			font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 			font-size: 16px;
 		}
@@ -1159,7 +1207,7 @@ input[type=number] {
 				padding: 8px 20px;
 			}
 
-			.button-container + .button-container {
+			.button-container+.button-container {
 				margin-top: 10px;
 			}
 
@@ -1180,7 +1228,7 @@ input[type=number] {
 			white-space: nowrap;
 		}
 
-		.button-container + .button-container {
+		.button-container+.button-container {
 			margin-top: 10px;
 		}
 	}
@@ -1225,12 +1273,13 @@ input[type=number] {
 		}
 
 		.account-column {
+
 			// Not on table headings
 			td& {
 				font-size: 0.8rem;
 			}
 
-			.nano-address-clickable > .uk-flex {
+			.nano-address-clickable>.uk-flex {
 				flex-wrap: wrap;
 				width: 125px;
 
@@ -1251,7 +1300,8 @@ input[type=number] {
 		td.amount-column {
 			font-size: 12px;
 
-			.amount-integer, .amount-fractional {
+			.amount-integer,
+			.amount-fractional {
 				font-size: 13px;
 				margin: 5px 0 -3px 0;
 			}
@@ -1266,7 +1316,8 @@ input[type=number] {
 				.transaction-date {
 					font-size: 14px;
 
-					.date, .time {
+					.date,
+					.time {
 						display: block;
 					}
 				}
@@ -1334,7 +1385,9 @@ input[type=number] {
 }
 
 // Send page
-.send-types-tab-active, .send-types-tab-active:focus, .send-types-tab-active:hover {
+.send-types-tab-active,
+.send-types-tab-active:focus,
+.send-types-tab-active:hover {
 	color: #555 !important;
 	background: #F4FAFF;
 }
@@ -1347,7 +1400,7 @@ input[type=number] {
 
 // Receive page
 .merchant-centered-container {
-    .identicon-name-row {
+	.identicon-name-row {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -1375,7 +1428,7 @@ input[type=number] {
 	border-bottom: none !important;
 }
 
-.delegating-account-row + .representative-row {
+.delegating-account-row+.representative-row {
 	border-top: 1px solid #DCE9F9 !important;
 }
 
@@ -1428,29 +1481,29 @@ input[type=number] {
 		grid-template-columns: 1fr 1fr;
 	}
 
-	> .feature {
+	>.feature {
 		display: flex;
 		flex-direction: column;
 		background: #FCFCFF;
 
-		> .icon {
+		>.icon {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			margin-bottom: 20px;
 
-			> svg {
+			>svg {
 				width: 60%;
 				max-width: 200px;
 				color: #4A90E2;
 
-				> * {
+				>* {
 					stroke: currentcolor;
 				}
 			}
 		}
 
-		> h2 {
+		>h2 {
 			color: #4A90E2;
 			margin: 0;
 			font-weight: 400;
@@ -1460,14 +1513,14 @@ input[type=number] {
 			text-align: center;
 		}
 
-		> p {
+		>p {
 			font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 			margin: 0;
 			line-height: 1.6;
 			font-size: 16px;
 		}
 
-		> p + p {
+		>p+p {
 			margin-top: 10px;
 		}
 	}
@@ -1478,7 +1531,7 @@ input[type=number] {
 	background: #FCFCFF;
 }
 
-.landing-container > div > .wallet-option {
+.landing-container>div>.wallet-option {
 	background: none;
 	border: 2px solid #4A90E2;
 
@@ -1494,42 +1547,42 @@ input[type=number] {
 		background: #4A90E2;
 		color: #FFF;
 
-		> .icon > .seed,
-		> .icon > .mnemonic > .mnemonic-row > .number,
-		> .icon > .mnemonic > .mnemonic-row > .word,
-		> .icon > .more-options {
+		>.icon>.seed,
+		>.icon>.mnemonic>.mnemonic-row>.number,
+		>.icon>.mnemonic>.mnemonic-row>.word,
+		>.icon>.more-options {
 			color: #FFF;
 		}
 
-		> h2 {
+		>h2 {
 			color: #FFF;
 		}
 
-		> p {
+		>p {
 			color: #FFF;
 		}
 	}
 
-	> .icon > .mnemonic > .mnemonic-row {
+	>.icon>.mnemonic>.mnemonic-row {
 		border-bottom: 1px dashed #AAA;
 	}
 
-	> .icon > svg {
+	>.icon>svg {
 		color: #373656;
 	}
 
-	> .icon > .seed,
-	> .icon > .mnemonic > .mnemonic-row > .number,
-	> .icon > .mnemonic > .mnemonic-row > .word,
-	> .icon > .more-options {
+	>.icon>.seed,
+	>.icon>.mnemonic>.mnemonic-row>.number,
+	>.icon>.mnemonic>.mnemonic-row>.word,
+	>.icon>.more-options {
 		color: #373656;
 	}
 
-	> h2 {
+	>h2 {
 		color: #373656;
 	}
 
-	> p {
+	>p {
 		color: #434355;
 	}
 }
@@ -1537,6 +1590,7 @@ input[type=number] {
 .import-panel-navigation .label {
 	border-bottom: 2px solid transparent;
 }
+
 .import-panel-navigation:hover .label {
 	border-bottom-color: #373656;
 }
@@ -1581,7 +1635,7 @@ input[type=number] {
 .password-helper {
 	font-size: 70%;
 	font-weight: 400;
-	color: #f0506e!important;
+	color: #f0506e !important;
 	margin-top: .25rem;
 	display: block;
 }
@@ -1637,7 +1691,7 @@ input[type=number] {
 }
 
 .d-block {
-	display: block!important;
+	display: block !important;
 }
 
 .modal-open .modal {
@@ -1673,7 +1727,7 @@ input[type=number] {
 	pointer-events: auto;
 	background-color: #fff;
 	background-clip: padding-box;
-	border: 1px solid rgba(0,0,0,.2);
+	border: 1px solid rgba(0, 0, 0, .2);
 	border-radius: .3rem;
 	outline: 0;
 }
@@ -1685,14 +1739,14 @@ input[type=number] {
 .scanner-modal .modal.fade .modal-dialog {
 	transition: -webkit-transform .3s ease-out;
 	transition: transform .3s ease-out;
-	transition: transform .3s ease-out,-webkit-transform .3s ease-out;
-	-webkit-transform: translate(0,-25%);
-	transform: translate(0,-25%);
+	transition: transform .3s ease-out, -webkit-transform .3s ease-out;
+	-webkit-transform: translate(0, -25%);
+	transform: translate(0, -25%);
 }
 
 .scanner-modal .modal.show .modal-dialog {
-	-webkit-transform: translate(0,0);
-	transform: translate(0,0);
+	-webkit-transform: translate(0, 0);
+	transform: translate(0, 0);
 }
 
 .scanner-modal .modal-header {
@@ -1744,4 +1798,5 @@ input[type=number] {
 		margin-top: 30px;
 	}
 }
+
 // ========================================================================

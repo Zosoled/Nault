@@ -382,9 +382,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 			this.mobileTransactionMenuModal.hide();
 			this.notificationService.removeNotification('success-receive');
 			this.notificationService.sendSuccess(this.translocoService.translate('receive.successfully-received-nano'), { identifier: 'success-receive' });
-			// pending has been processed, can be removed from the list
+			// receivable has been processed, can be removed from the list
 			// list also updated with reloadBalances but not if called too fast
-			this.walletService.removePendingBlock(receivableBlock.hash);
+			this.walletService.removeReceivableBlock(receivableBlock.hash);
 		} else {
 			if (hasShownErrorNotification === false) {
 				if (!this.walletService.isLedgerWallet()) {
