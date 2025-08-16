@@ -396,8 +396,10 @@ export class NanoBlockService {
       if (!this.workPool.workExists(workBlock)) {
         this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
       }
-
-      block.work = await this.workPool.getWork(workBlock, multiplier);
+      const difficulty = (type === TxType.receive || type === TxType.open)
+        ? 1 / 64
+        : multiplier
+      block.work = await this.workPool.getWork(workBlock, difficulty);
       this.notifications.removeNotification('pow');
       this.workPool.removeFromCache(workBlock);
     }

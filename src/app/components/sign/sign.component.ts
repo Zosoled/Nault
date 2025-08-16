@@ -413,7 +413,10 @@ export class SignComponent implements OnInit {
     if (this.toAccountID) {
       console.log('Precomputing work...');
       const workBlock = this.txType === TxType.open ? this.util.account.getAccountPublicKey(this.toAccountID) : this.currentBlock.previous;
-      this.workPool.addWorkToCache(workBlock, this.selectedThreshold);
+      const difficulty = (this.txType === TxType.receive || this.txType === TxType.open)
+        ? 1 / 64
+        : this.selectedThreshold
+      this.workPool.addWorkToCache(workBlock, difficulty);
     }
   }
 
@@ -509,7 +512,10 @@ export class SignComponent implements OnInit {
           this.notificationService.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 });
         }
 
-        const tempWork = await this.workPool.getWork(workBlock, this.selectedThreshold);
+        const difficulty = (this.txType === TxType.receive || this.txType === TxType.open)
+          ? 1/64
+          : this.selectedThreshold
+        const tempWork = await this.workPool.getWork(workBlock, difficulty);
         if (tempWork.length === 16 ) {
           block.work = tempWork;
         }
