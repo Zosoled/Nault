@@ -18,7 +18,7 @@ interface AppSettings {
   powSource: PoWSource;
   multiplierSource: number;
   customWorkServer: string;
-  pendingOption: string;
+  receivableOption: string;
   serverName: string;
   serverAPI: string | null;
   serverWS: string | null;
@@ -46,7 +46,7 @@ export class AppSettingsService {
     powSource: 'best',
     multiplierSource: 1,
     customWorkServer: '',
-    pendingOption: 'amount',
+    receivableOption: 'amount',
     serverName: 'random',
     serverAPI: null,
     serverWS: null,
@@ -222,7 +222,7 @@ export class AppSettingsService {
       powSource: 'best',
       multiplierSource: 1,
       customWorkServer: '',
-      pendingOption: 'amount',
+      receivableOption: 'amount',
       serverName: 'random',
       serverAPI: null,
       serverWS: null,

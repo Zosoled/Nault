@@ -197,7 +197,7 @@
 		"node-stats": "Estadísticas del nodo",
 		"note-since-this-server-only-notifies-about-new-transactions": "Nota: Dado que este servidor solo notifica sobre nuevas transacciones, la mayoría de las funciones de la billetera funcionan bien sin él.",
 		"optional-increased-work-for-transaction-priority-during": "Trabajo aumentado opcional para prioridad de transacción durante la saturación de la red. Anula las dificultades predeterminadas de ENVÍO 1x y RECEPCIÓN 1/64x.",
-		"pending-options": {
+		"receivable-options": {
 			"automatic-largest-amount-first": "Automático - Cantidad más grande primero",
 			"automatic-oldest-transaction-first": "Automático - Transacción más antigua primero",
 			"manual": "Manual"

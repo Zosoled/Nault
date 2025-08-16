@@ -28,7 +28,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	zeroHash = '0000000000000000000000000000000000000000000000000000000000000000';
 
 	accountHistory: any[] = [];
-	pendingBlocks = [];
+	receivableBlocks = [];
 	pageSize = 25;
 	maxPageSize = 200;
 
@@ -144,10 +144,10 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		})
 		this.priceSub = this.price.lastPrice$.subscribe(event => {
 			this.account.balanceFiat = this.util.nano.rawToMnano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber()
-			this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber()
+			this.account.receivableFiat = this.util.nano.rawToMnano(this.account.receivable || 0).times(this.price.price.lastPrice).toNumber()
 		})
 
-		this.wallet.wallet.pendingBlocksUpdate$.subscribe(async receivableBlockUpdate => {
+		this.wallet.wallet.receivableBlocksUpdate$.subscribe(async receivableBlockUpdate => {
 			this.onReceivableBlockUpdate(receivableBlockUpdate)
 		})
 
@@ -203,7 +203,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 	clearAccountVars () {
 		this.accountHistory = []
-		this.pendingBlocks = []
+		this.receivableBlocks = []
 		this.accountID = ''
 		this.addressBookEntry = null
 		this.addressBookModel = ''
@@ -277,7 +277,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 		const sourceHashToFind = receivableBlockUpdate.sourceHash
 
-		const alreadyInReceivableBlocks = this.pendingBlocks.some(knownReceivableBlock => {
+		const alreadyInReceivableBlocks = this.receivableBlocks.some(knownReceivableBlock => {
 			knownReceivableBlock.hash === sourceHashToFind
 		})
 
@@ -422,7 +422,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	async loadAccountDetails () {
 		this.onAccountDetailsLoadStart()
 
-		this.pendingBlocks = []
+		this.receivableBlocks = []
 
 		this.clearAccountVars()
 		this.loadingAccountDetails = true
@@ -451,20 +451,20 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 		this.updateRepresentativeInfo()
 
-		// If there is a pending balance, or the account is not opened yet, load pending transactions
-		if ((!this.account.error && this.account.pending > 0) || this.account.error) {
+		// If there is a receivable balance, or the account is not opened yet, load receivable transactions
+		if ((!this.account.error && this.account.receivable > 0) || this.account.error) {
 			// Take minimum receive into account
-			let pendingBalance = '0'
-			let pending
+			let receivableBalance = '0'
+			let receivable
 
-			this.pendingBlocks = []
+			this.receivableBlocks = []
 			this.loadingIncomingTxList = true
 
 			if (this.settings.settings.minimumReceive) {
 				const minAmount = await Tools.convert(this.settings.settings.minimumReceive, 'mnano', 'raw')
-				pending = await this.api.receivableLimitSorted(accountID, 50, minAmount)
+				receivable = await this.api.receivableLimitSorted(accountID, 50, minAmount)
 			} else {
-				pending = await this.api.receivableSorted(accountID, 50)
+				receivable = await this.api.receivableSorted(accountID, 50)
 			}
 
 			if (accountID !== this.accountID) {
@@ -475,12 +475,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 			this.loadingIncomingTxList = false
 
-			if (pending && pending.blocks) {
-				for (const block in pending.blocks) {
-					if (!pending.blocks.hasOwnProperty(block)) continue
-					const transaction = pending.blocks[block]
+			if (receivable?.blocks) {
+				for (const block in receivable.blocks) {
+					if (!receivable.blocks.hasOwnProperty(block)) continue
+					const transaction = receivable.blocks[block]
 
-					this.pendingBlocks.push({
+					this.receivableBlocks.push({
 						account: transaction.source,
 						amount: transaction.amount,
 						amountRaw: new BigNumber(transaction.amount || 0).mod(this.nano),
@@ -503,30 +503,30 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 						isReceivable: true,
 					})
 
-					pendingBalance = new BigNumber(pendingBalance).plus(transaction.amount).toString(10)
+					receivableBalance = new BigNumber(receivableBalance).plus(transaction.amount).toString(10)
 				}
 			}
 
-			this.account.pending = pendingBalance
+			this.account.receivable = receivableBalance
 		} else {
 			// Unset variable that may still be set to true from old request
 			this.loadingIncomingTxList = false
 		}
 
-		// If the account doesnt exist, set the pending balance manually
+		// If the account doesnt exist, set the receivable balance manually
 		if (this.account.error) {
-			const pendingRaw = this.pendingBlocks.reduce(
+			const receivableRaw = this.receivableBlocks.reduce(
 				(prev: BigNumber, current: any) => prev.plus(new BigNumber(current.amount)),
 				new BigNumber(0)
 			)
-			this.account.pending = pendingRaw
+			this.account.receivable = receivableRaw
 		}
 
 		// Set fiat values?
 		this.account.balanceRaw = new BigNumber(this.account.balance || 0).mod(this.nano)
-		this.account.pendingRaw = new BigNumber(this.account.pending || 0).mod(this.nano)
+		this.account.receivableRaw = new BigNumber(this.account.receivable || 0).mod(this.nano)
 		this.account.balanceFiat = this.util.nano.rawToMnano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber()
-		this.account.pendingFiat = this.util.nano.rawToMnano(this.account.pending || 0).times(this.price.price.lastPrice).toNumber()
+		this.account.receivableFiat = this.util.nano.rawToMnano(this.account.receivable || 0).times(this.price.price.lastPrice).toNumber()
 
 		await this.getAccountHistory(accountID)
 
@@ -611,7 +611,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 						// Remove a receivable block if this is a receive for it
 						const sourceHashToFind = h.link
 
-						this.pendingBlocks = this.pendingBlocks.filter(knownReceivableBlock => {
+						this.receivableBlocks = this.receivableBlocks.filter(knownReceivableBlock => {
 							knownReceivableBlock.hash !== sourceHashToFind
 						})
 					} else if (h.subtype === 'change') {
@@ -1001,7 +1001,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		this.qrCodeImageBlock = qrCode
 	}
 
-	async generateReceive (pendingHash) {
+	async generateReceive (receivableHash) {
 		this.qrCodeImageBlockReceive = null
 		this.qrString = null
 		this.blockHashReceive = null
@@ -1018,8 +1018,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		const defaultRepresentative = this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative()
 		const representative = toAcct.representative || defaultRepresentative
 
-		const srcBlockInfo = await this.api.blocksInfo([pendingHash])
-		const srcAmount = new BigNumber(srcBlockInfo.blocks[pendingHash].amount)
+		const srcBlockInfo = await this.api.blocksInfo([receivableHash])
+		const srcAmount = new BigNumber(srcBlockInfo.blocks[receivableHash].amount)
 		const newBalance = openEquiv
 			? srcAmount
 			: new BigNumber(toAcct.balance).plus(srcAmount)
@@ -1028,7 +1028,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		const block = new ReceiveBlock(
 			this.accountID,
 			toAcct.balance,
-			pendingHash,
+			receivableHash,
 			srcAmount.toFixed(0),
 			representative,
 			previousBlock

@@ -74,7 +74,7 @@ export class NinjaService {
     const options = {
       action: "account_info",
       account: account,
-      pending: true,
+      receivable: true,
       representative: true,
       weight: true
     }

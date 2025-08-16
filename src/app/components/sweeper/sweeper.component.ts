@@ -13,7 +13,7 @@ import { Router } from '@angular/router'
 
 const INDEX_MAX = 4294967295 // seed index
 const SWEEP_MAX_INDEX = 100 // max index keys to sweep
-const SWEEP_MAX_PENDING = 100 // max pending blocks to process per run
+const SWEEP_MAX_RECEIVABLE = 100 // max receivable blocks to process per run
 
 @Component({
 	selector: 'app-sweeper',
@@ -24,14 +24,14 @@ const SWEEP_MAX_PENDING = 100 // max pending blocks to process per run
 export class SweeperComponent implements OnInit {
 	accounts
 	indexMax = INDEX_MAX;
-	incomingMax = SWEEP_MAX_PENDING;
+	incomingMax = SWEEP_MAX_RECEIVABLE;
 
 	myAccountModel
 	sourceWallet = '';
 	destinationAccount
 	startIndex = '0';
 	endIndex = '5';
-	maxIncoming = SWEEP_MAX_PENDING.toString();
+	maxIncoming = SWEEP_MAX_RECEIVABLE.toString();
 
 	output = '';
 	sweeping = false;
@@ -131,9 +131,9 @@ export class SweeperComponent implements OnInit {
 		}
 	}
 
-	// set max value for pending limit
+	// set max value for receivable limit
 	setMaxIncoming () {
-		this.maxIncoming = SWEEP_MAX_PENDING.toString()
+		this.maxIncoming = SWEEP_MAX_RECEIVABLE.toString()
 	}
 
 	seedChange (seed) {
@@ -210,7 +210,7 @@ export class SweeperComponent implements OnInit {
 			return
 		} else {
 			value = parseInt(value, 10)
-			if (value > SWEEP_MAX_PENDING) {
+			if (value > SWEEP_MAX_RECEIVABLE) {
 				this.validMaxIncoming = false
 				return
 			}
@@ -298,8 +298,8 @@ export class SweeperComponent implements OnInit {
 		}
 	}
 
-	// For each pending block
-	async processPending (blocks, keys, keyCount) {
+	// For each receivable block
+	async processReceivable (blocks, keys, keyCount) {
 		const key = keys[keyCount]
 		this.blocks = blocks
 		this.keys = keys
@@ -336,18 +336,18 @@ export class SweeperComponent implements OnInit {
 					: TxType.receive
 			)
 			if (data.hash) {
-				this.appendLog(`Processed pending: ${data.hash}`)
+				this.appendLog(`Processed receivable: ${data.hash}`)
 
-				// continue with the next pending
+				// continue with the next receivable
 				this.keyCount += 1
 				if (this.keyCount < this.keys.length) {
 					// if last block was open, the next one will be a receive
 					if (this.subType === 'open') {
 						this.subType = 'receive'
 					}
-					this.processPending(this.blocks, this.keys, this.keyCount)
-				} else { // all pending done, now we process the final send block
-					this.appendLog('All pending processed!')
+					this.processReceivable(this.blocks, this.keys, this.keyCount)
+				} else { // all receivable done, now we process the final send block
+					this.appendLog('All receivable processed!')
 					this.pendingCallback(this.previous)
 				}
 			} else {
@@ -366,31 +366,31 @@ export class SweeperComponent implements OnInit {
 		}
 	}
 
-	// Create pending blocks based on current balance and previous block (or start with an open block)
-	async createPendingBlocks (privKey, address, balance, previous, subType, callback, accountCallback) {
+	// Create receivable blocks based on current balance and previous block (or start with an open block)
+	async createReceivableBlocks (privKey, address, balance, previous, subType, callback, accountCallback) {
 		this.privKey = privKey
 		this.previous = previous
 		this.subType = subType
 		this.pendingCallback = callback
-		// check for pending first
+		// check for receivable first
 		let data = null
 		if (this.appSettings.settings.minimumReceive) {
 			const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive).toString(10)
-			if (this.appSettings.settings.pendingOption === 'amount') {
+			if (this.appSettings.settings.receivableOption === 'amount') {
 				data = await this.api.receivableLimitSorted(address, this.maxIncoming, minAmount)
 			} else {
 				data = await this.api.receivableLimit(address, this.maxIncoming, minAmount)
 			}
 
 		} else {
-			if (this.appSettings.settings.pendingOption === 'amount') {
+			if (this.appSettings.settings.receivableOption === 'amount') {
 				data = await this.api.receivableSorted(address, this.maxIncoming)
 			} else {
 				data = await this.api.receivable(address, this.maxIncoming)
 			}
 		}
 
-		// if there are any pending, process them
+		// if there are any receivable, process them
 		if (data.blocks) {
 			// sum all raw amounts
 			let raw = '0'
@@ -398,19 +398,19 @@ export class SweeperComponent implements OnInit {
 				raw = this.util.big.add(raw, data.blocks[key].amount)
 			}.bind(this))
 			const nanoAmount = this.util.nano.rawToMnano(raw)
-			const pending = { count: Object.keys(data.blocks).length, raw: raw, XNO: nanoAmount, blocks: data.blocks }
-			const row = 'Found ' + pending.count + ' pending containing total ' + pending.XNO + ' XNO'
+			const receivable = { count: Object.keys(data.blocks).length, raw: raw, XNO: nanoAmount, blocks: data.blocks }
+			const row = 'Found ' + receivable.count + ' receivable containing total ' + receivable.XNO + ' XNO'
 			this.appendLog(row)
 
-			// create receive blocks for all pending
+			// create receive blocks for all receivable
 			const keys = []
 			// create an array with all keys to be used recurively
-			Object.keys(pending.blocks).forEach(function (key) {
+			Object.keys(receivable.blocks).forEach(function (key) {
 				keys.push(key)
 			})
 
-			this.processPending(pending.blocks, keys, 0)
-		} else { // no pending, create final block directly
+			this.processReceivable(receivable.blocks, keys, 0)
+		} else { // no receivable, create final block directly
 			if (parseInt(this.adjustedBalance, 10) > 0) {
 				this.processSend(this.privKey, this.previous, () => {
 					accountCallback() // tell that we are ok to continue with next step
@@ -455,8 +455,8 @@ export class SweeperComponent implements OnInit {
 			this.adjustedBalance = '0'
 		}
 		if (validResponse) {
-			// create and publish all pending
-			this.createPendingBlocks(privKey, account.address, balance, previous, subType, function (previous_) {
+			// create and publish all receivable
+			this.createReceivableBlocks(privKey, account.address, balance, previous, subType, function (previous_) {
 				// the previous is the last received block and will be used to create the final send block
 				if (parseInt(this.adjustedBalance, 10) > 0) {
 					this.processSend(privKey, previous_, () => {
@@ -481,7 +481,7 @@ export class SweeperComponent implements OnInit {
 		const privKey = privKeys[keyCount][0]
 		this.appendLog('Checking index ' + privKeys[keyCount][2] + ' using ' + privKeys[keyCount][1])
 		this.processAccount(privKey, function () {
-			// continue with the next pending
+			// continue with the next receivable
 			keyCount += 1
 			if (keyCount < privKeys.length) {
 				this.processIndexRecursive(privKeys, keyCount)

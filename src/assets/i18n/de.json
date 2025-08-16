@@ -197,7 +197,7 @@
 		"node-stats": "Node-Statistiken",
 		"note-since-this-server-only-notifies-about-new-transactions": "Hinweis: Da dieser Server nur über neue Transaktionen benachrichtigt, funktionieren die meisten Wallet-Funktionen auch ohne ihn einwandfrei.",
 		"optional-increased-work-for-transaction-priority-during": "Optionale erhöhte Arbeit für Transaktionspriorität während Netzwerksättigung. Überschreibt sowohl die Standard-SENDEN 1x als auch die EMPFANGEN 1/64x Schwierigkeiten.",
-		"pending-options": {
+		"receivable-options": {
 			"automatic-largest-amount-first": "Automatisch - Größter Betrag zuerst",
 			"automatic-oldest-transaction-first": "Automatisch - Älteste Transaktion zuerst",
 			"manual": "Manuell"

@@ -197,7 +197,7 @@
 		"node-stats": "Estatísticas do Nó",
 		"note-since-this-server-only-notifies-about-new-transactions": "Nota: Como este servidor só notifica sobre novas transações, a maioria das funções da carteira funciona bem sem ele.",
 		"optional-increased-work-for-transaction-priority-during": "Trabalho aumentado opcional para prioridade de transação durante a saturação da rede. Substitui as dificuldades padrão de ENVIO 1x e RECEBIMENTO 1/64x.",
-		"pending-options": {
+		"receivable-options": {
 			"automatic-largest-amount-first": "Automático - Maior Valor Primeiro",
 			"automatic-oldest-transaction-first": "Automático - Transação Mais Antiga Primeiro",
 			"manual": "Manual"

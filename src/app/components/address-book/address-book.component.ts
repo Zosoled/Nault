@@ -16,7 +16,7 @@ import { TranslocoService } from '@jsverse/transloco'
 export interface BalanceAccount {
 	balance: BigNumber
 	balanceRaw: BigNumber
-	pending: BigNumber
+	receivable: BigNumber
 	balanceFiat: number
 }
 
@@ -47,7 +47,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
 	totalTrackedBalance = new BigNumber(0);
 	totalTrackedBalanceRaw = new BigNumber(0);
 	totalTrackedBalanceFiat = 0;
-	totalTrackedPending = new BigNumber(0);
+	totalTrackedReceivable = new BigNumber(0);
 	fiatPrice = 0;
 	priceSub = null;
 	refreshSub = null;
@@ -92,17 +92,17 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
 						this.totalTrackedBalance = this.totalTrackedBalance.minus(this.accounts[entry.account].balance)
 						this.totalTrackedBalanceRaw = this.totalTrackedBalanceRaw.minus(this.accounts[entry.account].balanceRaw)
 						this.totalTrackedBalanceFiat = this.totalTrackedBalanceFiat - this.accounts[entry.account].balanceFiat
-						this.totalTrackedPending = this.totalTrackedPending.minus(this.accounts[entry.account].pending)
+						this.totalTrackedReceivable = this.totalTrackedReceivable.minus(this.accounts[entry.account].receivable)
 
 						this.accounts[entry.account].balance = walletAccount.balance
-						this.accounts[entry.account].pending = walletAccount.pending
+						this.accounts[entry.account].receivable = walletAccount.receivable
 						this.accounts[entry.account].balanceFiat = walletAccount.balanceFiat
 						this.accounts[entry.account].balanceRaw = walletAccount.balanceRaw
 
 						this.totalTrackedBalance = this.totalTrackedBalance.plus(walletAccount.balance)
 						this.totalTrackedBalanceRaw = this.totalTrackedBalanceRaw.plus(walletAccount.balanceRaw)
 						this.totalTrackedBalanceFiat = this.totalTrackedBalanceFiat + walletAccount.balanceFiat
-						this.totalTrackedPending = this.totalTrackedPending.plus(this.accounts[entry.account].pending)
+						this.totalTrackedReceivable = this.totalTrackedReceivable.plus(this.accounts[entry.account].receivable)
 					}
 				}
 				this.loadingBalances = false
@@ -161,7 +161,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.totalTrackedBalance = new BigNumber(0)
 		this.totalTrackedBalanceRaw = new BigNumber(0)
 		this.totalTrackedBalanceFiat = 0
-		this.totalTrackedPending = new BigNumber(0)
+		this.totalTrackedReceivable = new BigNumber(0)
 
 		// Get account balances for all account in address book not in wallet (which has tracking active)
 		const accountIDsWallet = this.walletService.wallet.accounts.map(a => a.id)
@@ -169,13 +169,13 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
 			a.trackBalance).map(a => a.account)
 		const apiAccounts = await this.api.accountsBalances(accountIDs)
 
-		// Fetch pending of all tracked accounts
-		let pending
+		// Fetch receivable of all tracked accounts
+		let receivable
 		if (this.appSettings.settings.minimumReceive) {
 			const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive)
-			pending = await this.api.accountsReceivableLimitSorted(accountIDs, minAmount.toString(10))
+			receivable = await this.api.accountsReceivableLimitSorted(accountIDs, minAmount.toString(10))
 		} else {
-			pending = await this.api.accountsReceivableSorted(accountIDs)
+			receivable = await this.api.accountsReceivableSorted(accountIDs)
 		}
 
 		// Save balances
@@ -185,14 +185,14 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
 			const balanceAccount: BalanceAccount = {
 				balance: new BigNumber(0),
 				balanceRaw: new BigNumber(0),
-				pending: new BigNumber(0),
+				receivable: new BigNumber(0),
 				balanceFiat: 0
 			}
 			// If the account exist in the wallet, take the info from there to save on RPC calls
 			const walletAccount = this.walletService.wallet.accounts.find(a => a.id === entry.account)
 			if (walletAccount) {
 				balanceAccount.balance = walletAccount.balance
-				balanceAccount.pending = walletAccount.pending
+				balanceAccount.receivable = walletAccount.receivable
 				balanceAccount.balanceFiat = walletAccount.balanceFiat
 				balanceAccount.balanceRaw = walletAccount.balanceRaw
 				// Add balances from RPC data
@@ -207,27 +207,27 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.accounts[entry.account] = balanceAccount
 		}
 
-		// Add pending from RPC data
-		if (pending && pending.blocks) {
-			for (const block in pending.blocks) {
-				if (!pending.blocks.hasOwnProperty(block)) {
+		// Add receivable from RPC data
+		if (receivable && receivable.blocks) {
+			for (const block in receivable.blocks) {
+				if (!receivable.blocks.hasOwnProperty(block)) {
 					continue
 				}
 
 				const targetAccount = this.accounts[block]
 
-				if (pending.blocks[block]) {
-					let accountPending = new BigNumber(0)
+				if (receivable.blocks[block]) {
+					let accountReceivable = new BigNumber(0)
 
-					for (const hash in pending.blocks[block]) {
-						if (!pending.blocks[block].hasOwnProperty(hash)) {
+					for (const hash in receivable.blocks[block]) {
+						if (!receivable.blocks[block].hasOwnProperty(hash)) {
 							continue
 						}
-						accountPending = accountPending.plus(pending.blocks[block][hash].amount)
+						accountReceivable = accountReceivable.plus(receivable.blocks[block][hash].amount)
 					}
 					if (targetAccount) {
-						targetAccount.pending = accountPending
-						this.totalTrackedPending = this.totalTrackedPending.plus(targetAccount.pending)
+						targetAccount.receivable = accountReceivable
+						this.totalTrackedReceivable = this.totalTrackedReceivable.plus(targetAccount.receivable)
 					}
 				}
 			}
