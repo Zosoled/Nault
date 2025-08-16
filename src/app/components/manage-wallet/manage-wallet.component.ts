@@ -9,278 +9,278 @@ import * as QRCode from 'qrcode'
 import { formatDate } from '@angular/common'
 
 @Component({
-  selector: 'app-manage-wallet',
-  templateUrl: './manage-wallet.component.html',
-  styleUrls: ['./manage-wallet.component.css']
+	selector: 'app-manage-wallet',
+	templateUrl: './manage-wallet.component.html',
+	styleUrls: ['./manage-wallet.component.css']
 })
 export class ManageWalletComponent implements OnInit {
-  wallet
-  accounts
-  newPassword = '';
-  confirmPassword = '';
-  validateNewPassword = false;
-  validateconfirmPassword = false;
+	wallet
+	accounts
+	newPassword = '';
+	confirmPassword = '';
+	validateNewPassword = false;
+	validateconfirmPassword = false;
 
-  showQRExport = false;
-  QRExportUrl = '';
-  QRExportImg = '';
+	showQRExport = false;
+	QRExportUrl = '';
+	QRExportImg = '';
 
-  csvExportStarted = false;
-  transactionHistoryLimit = 500; // if the backend server limit changes, change this too
-  selAccountInit = false;
-  invalidCsvCount = false;
-  invalidCsvOffset = false;
-  csvAccount
-  csvCount = this.transactionHistoryLimit.toString();
-  csvOffset = '';
-  beyondCsvLimit = false;
-  exportingCsv = false;
-  orderOptions = [
-    { name: 'Newest Transactions First', value: false },
-    { name: 'Oldest Transactions First', value: true },
-  ];
-  selectedOrder = this.orderOptions[0].value;
-  exportEnabled = true;
+	csvExportStarted = false;
+	transactionHistoryLimit = 500; // if the backend server limit changes, change this too
+	selAccountInit = false;
+	invalidCsvCount = false;
+	invalidCsvOffset = false;
+	csvAccount
+	csvCount = this.transactionHistoryLimit.toString();
+	csvOffset = '';
+	beyondCsvLimit = false;
+	exportingCsv = false;
+	orderOptions = [
+		{ name: 'Newest Transactions First', value: false },
+		{ name: 'Oldest Transactions First', value: true },
+	];
+	selectedOrder = this.orderOptions[0].value;
+	exportEnabled = true;
 
-  constructor (
-    public walletService: WalletService,
-    public notifications: NotificationService,
-    public settings: AppSettingsService,
-    private api: ApiService,
-    private util: UtilService,
-    private translocoService: TranslocoService
-  ) {
-    this.wallet = this.walletService.wallet
-    this.accounts = this.walletService.wallet.accounts
-    this.csvAccount = this.accounts[0]?.id ?? '0'
-  }
+	constructor (
+		public walletService: WalletService,
+		public notifications: NotificationService,
+		public settings: AppSettingsService,
+		private api: ApiService,
+		private util: UtilService,
+		private translocoService: TranslocoService
+	) {
+		this.wallet = this.walletService.wallet
+		this.accounts = this.walletService.wallet.accounts
+		this.csvAccount = this.accounts[0]?.id ?? '0'
+	}
 
-  async ngOnInit () {
-    this.wallet = this.walletService.wallet
+	async ngOnInit () {
+		this.wallet = this.walletService.wallet
 
-    // Update selected account if changed in the sidebar
-    this.walletService.wallet.selectedAccount$.subscribe(async acc => {
-      if (this.selAccountInit) {
-        this.csvAccount = acc?.id ?? this.accounts[0]?.id ?? '0'
-      }
-      this.selAccountInit = true
-    })
+		// Update selected account if changed in the sidebar
+		this.walletService.wallet.selectedAccount$.subscribe(async acc => {
+			if (this.selAccountInit) {
+				this.csvAccount = acc?.id ?? this.accounts[0]?.id ?? '0'
+			}
+			this.selAccountInit = true
+		})
 
-    // Set the account selected in the sidebar as default
-    if (this.walletService.wallet.selectedAccount !== null) {
-      this.csvAccount = this.walletService.wallet.selectedAccount.id
-    }
-  }
+		// Set the account selected in the sidebar as default
+		if (this.walletService.wallet.selectedAccount !== null) {
+			this.csvAccount = this.walletService.wallet.selectedAccount.id
+		}
+	}
 
-  async changePassword () {
-    if (this.newPassword.length < 6) {
-      return this.notifications.sendError(this.translocoService.translate('configure-wallet.set-wallet-password.errors.password-must-be-at-least-x-characters-long', { minCharacters: 6 }))
-    }
-    if (this.newPassword !== this.confirmPassword) {
-      return this.notifications.sendError(this.translocoService.translate('configure-wallet.set-wallet-password.errors.passwords-do-not-match'))
-    }
-    if (this.walletService.isLocked()) {
-      const wasUnlocked = await this.walletService.requestWalletUnlock()
+	async changePassword () {
+		if (this.newPassword.length < 6) {
+			return this.notifications.sendError(this.translocoService.translate('configure-wallet.set-wallet-password.errors.password-must-be-at-least-x-characters-long', { minCharacters: 6 }))
+		}
+		if (this.newPassword !== this.confirmPassword) {
+			return this.notifications.sendError(this.translocoService.translate('configure-wallet.set-wallet-password.errors.passwords-do-not-match'))
+		}
+		if (this.walletService.isLocked()) {
+			const wasUnlocked = await this.walletService.requestWalletUnlock()
 
-      if (wasUnlocked === false) {
-        return
-      }
-    }
+			if (wasUnlocked === false) {
+				return
+			}
+		}
 
-    this.walletService.wallet.password = this.newPassword
-    this.walletService.saveWalletExport()
+		this.walletService.wallet.password = this.newPassword
+		this.walletService.saveWalletExport()
 
-    this.newPassword = ''
-    this.confirmPassword = ''
-    this.notifications.sendSuccess(`Wallet password successfully updated`)
+		this.newPassword = ''
+		this.confirmPassword = ''
+		this.notifications.sendSuccess(`Wallet password successfully updated`)
 
-    this.showQRExport = false
-  }
+		this.showQRExport = false
+	}
 
-  async exportWallet () {
-    if (this.walletService.isLocked()) {
-      const wasUnlocked = await this.walletService.requestWalletUnlock()
+	async exportWallet () {
+		if (this.walletService.isLocked()) {
+			const wasUnlocked = await this.walletService.requestWalletUnlock()
 
-      if (wasUnlocked === false) {
-        return
-      }
-    }
+			if (wasUnlocked === false) {
+				return
+			}
+		}
 
-    const exportUrl = this.walletService.generateExportUrl()
-    this.QRExportUrl = exportUrl
-    this.QRExportImg = await QRCode.toDataURL(exportUrl, { errorCorrectionLevel: 'M', scale: 8 })
-    this.showQRExport = true
-  }
+		const exportUrl = this.walletService.generateExportUrl()
+		this.QRExportUrl = exportUrl
+		this.QRExportImg = await QRCode.toDataURL(exportUrl, { errorCorrectionLevel: 'M', scale: 8 })
+		this.showQRExport = true
+	}
 
-  copied () {
-    this.notifications.removeNotification('success-copied')
-    this.notifications.sendSuccess(`Wallet seed copied to clipboard!`, { identifier: 'success-copied' })
-  }
+	copied () {
+		this.notifications.removeNotification('success-copied')
+		this.notifications.sendSuccess(`Wallet seed copied to clipboard!`, { identifier: 'success-copied' })
+	}
 
-  async seedMnemonic () {
-    if (this.wallet?.mnemonic) {
-      return this.wallet.mnemonic
-    }
-  }
+	async seedMnemonic () {
+		if (this.wallet?.mnemonic) {
+			return this.wallet.mnemonic
+		}
+	}
 
-  triggerFileDownload (fileName, exportData, type) {
-    let blob
-    // first line, include columns for spreadsheet
-    let csvFile = 'account,type,amount,hash,height,time\n'
+	triggerFileDownload (fileName, exportData, type) {
+		let blob
+		// first line, include columns for spreadsheet
+		let csvFile = 'account,type,amount,hash,height,time\n'
 
-    switch (type) {
-      case 'json':
-        blob = new Blob([JSON.stringify(exportData)], { type: 'application/json' })
-        break
-      case 'csv':
-        // comma-separated attributes for each row
-        const processRow = function (row) {
-          let finalVal = ''
-          let j = 0
-          for (const [key, value] of Object.entries(row)) {
-            const innerValue = value?.toString() ?? ''
-            let result = innerValue.replace(/"/g, '""')
-            if (result.search(/("|,| |\n)/g) >= 0) {
-              result = '"' + result + '"'
-            }
-            if (j > 0) {
-              finalVal += ','
-            }
-            j++
-            finalVal += result
-          }
-          return finalVal + '\n'
-        }
-        for (let i = 0; i < exportData.length; i++) {
-          csvFile += processRow(exportData[i])
-        }
-        blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' })
-        break
-    }
+		switch (type) {
+			case 'json':
+				blob = new Blob([JSON.stringify(exportData)], { type: 'application/json' })
+				break
+			case 'csv':
+				// comma-separated attributes for each row
+				const processRow = function (row) {
+					let finalVal = ''
+					let j = 0
+					for (const [key, value] of Object.entries(row)) {
+						const innerValue = value?.toString() ?? ''
+						let result = innerValue.replace(/"/g, '""')
+						if (result.search(/("|,| |\n)/g) >= 0) {
+							result = '"' + result + '"'
+						}
+						if (j > 0) {
+							finalVal += ','
+						}
+						j++
+						finalVal += result
+					}
+					return finalVal + '\n'
+				}
+				for (let i = 0; i < exportData.length; i++) {
+					csvFile += processRow(exportData[i])
+				}
+				blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' })
+				break
+		}
 
-    // Check for iOS, which is weird with saving files
-    const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)
+		// Check for iOS, which is weird with saving files
+		const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)
 
-    const elem = window.document.createElement('a')
-    const objUrl = window.URL.createObjectURL(blob)
-    if (iOS) {
-      switch (type) {
-        case 'json':
-          elem.href = `data:attachment/file,${JSON.stringify(exportData)}`
-          break
-        case 'csv':
-          elem.href = `data:attachment/file,${csvFile}`
-          break
-      }
-    } else {
-      elem.href = objUrl
-    }
-    elem.download = fileName
-    document.body.appendChild(elem)
-    elem.click()
-    setTimeout(function () {
-      document.body.removeChild(elem)
-      window.URL.revokeObjectURL(objUrl)
-    }, 200)
-  }
+		const elem = window.document.createElement('a')
+		const objUrl = window.URL.createObjectURL(blob)
+		if (iOS) {
+			switch (type) {
+				case 'json':
+					elem.href = `data:attachment/file,${JSON.stringify(exportData)}`
+					break
+				case 'csv':
+					elem.href = `data:attachment/file,${csvFile}`
+					break
+			}
+		} else {
+			elem.href = objUrl
+		}
+		elem.download = fileName
+		document.body.appendChild(elem)
+		elem.click()
+		setTimeout(function () {
+			document.body.removeChild(elem)
+			window.URL.revokeObjectURL(objUrl)
+		}, 200)
+	}
 
-  async exportToFile () {
-    if (this.walletService.isLocked()) {
-      const wasUnlocked = await this.walletService.requestWalletUnlock()
+	async exportToFile () {
+		if (this.walletService.isLocked()) {
+			const wasUnlocked = await this.walletService.requestWalletUnlock()
 
-      if (wasUnlocked === false) {
-        return
-      }
-    }
+			if (wasUnlocked === false) {
+				return
+			}
+		}
 
-    const fileName = `Nault-Wallet.json`
-    const exportData = this.walletService.generateExportData()
-    this.triggerFileDownload(fileName, exportData, 'json')
+		const fileName = `Nault-Wallet.json`
+		const exportData = this.walletService.generateExportData()
+		this.triggerFileDownload(fileName, exportData, 'json')
 
-    this.notifications.sendSuccess(`Wallet export downloaded!`)
-  }
+		this.notifications.sendSuccess(`Wallet export downloaded!`)
+	}
 
-  csvCountChange (count) {
-    if (this.util.string.isNumeric(count) && count % 1 === 0 || count === '') {
-      // only allow beyond limit if using a custom server
-      if (this.settings.settings.serverName !== 'custom' &&
-        (parseInt(count, 10) > this.transactionHistoryLimit || count === '' || count === '0')) {
-        this.invalidCsvCount = true
-        this.beyondCsvLimit = true
-      } else {
-        if (parseInt(count, 10) < 0) {
-          this.invalidCsvCount = true
-          this.beyondCsvLimit = false
-        } else {
-          this.invalidCsvCount = false
-          this.beyondCsvLimit = false
-        }
-      }
-    } else {
-      this.invalidCsvCount = true
-    }
-  }
+	csvCountChange (count) {
+		if (this.util.string.isNumeric(count) && count % 1 === 0 || count === '') {
+			// only allow beyond limit if using a custom server
+			if (this.settings.settings.serverName !== 'custom' &&
+				(parseInt(count, 10) > this.transactionHistoryLimit || count === '' || count === '0')) {
+				this.invalidCsvCount = true
+				this.beyondCsvLimit = true
+			} else {
+				if (parseInt(count, 10) < 0) {
+					this.invalidCsvCount = true
+					this.beyondCsvLimit = false
+				} else {
+					this.invalidCsvCount = false
+					this.beyondCsvLimit = false
+				}
+			}
+		} else {
+			this.invalidCsvCount = true
+		}
+	}
 
-  csvOffsetChange (offset) {
-    if (this.util.string.isNumeric(offset) && offset % 1 === 0 || offset === '') {
-      if (parseInt(offset, 10) < 0) {
-        this.invalidCsvOffset = true
-      } else {
-        this.invalidCsvOffset = false
-      }
-    } else {
-      this.invalidCsvOffset = true
-    }
-  }
+	csvOffsetChange (offset) {
+		if (this.util.string.isNumeric(offset) && offset % 1 === 0 || offset === '') {
+			if (parseInt(offset, 10) < 0) {
+				this.invalidCsvOffset = true
+			} else {
+				this.invalidCsvOffset = false
+			}
+		} else {
+			this.invalidCsvOffset = true
+		}
+	}
 
-  csvInit () {
-    this.csvExportStarted = true
-  }
+	csvInit () {
+		this.csvExportStarted = true
+	}
 
-  async exportToCsv () {
-    // disable export for a period to reduce RPC calls
-    if (!this.exportEnabled) return
-    this.exportEnabled = false
-    setTimeout(() => this.exportEnabled = true, 3000)
+	async exportToCsv () {
+		// disable export for a period to reduce RPC calls
+		if (!this.exportEnabled) return
+		this.exportEnabled = false
+		setTimeout(() => this.exportEnabled = true, 3000)
 
-    if (this.invalidCsvCount) {
-      if (this.beyondCsvLimit) {
-        return this.notifications.sendWarning(`To export transactions above the limit, please use a custom Nault server`)
-      } else {
-        return this.notifications.sendWarning(`Invalid limit`)
-      }
-    }
-    if (this.invalidCsvOffset) {
-      return this.notifications.sendWarning(`Invalid offset`)
-    }
+		if (this.invalidCsvCount) {
+			if (this.beyondCsvLimit) {
+				return this.notifications.sendWarning(`To export transactions above the limit, please use a custom Nault server`)
+			} else {
+				return this.notifications.sendWarning(`Invalid limit`)
+			}
+		}
+		if (this.invalidCsvOffset) {
+			return this.notifications.sendWarning(`Invalid offset`)
+		}
 
-    this.exportingCsv = true
-    const transactionCount = parseInt(this.csvCount, 10) || 0
-    const transactionOffset = parseInt(this.csvOffset, 10) || 0
-    const history = await this.api.accountHistory(this.csvAccount, transactionCount, false, transactionOffset, this.selectedOrder)
-    this.exportingCsv = false // reset it here in case the file download fails (don't want spinning button forever)
+		this.exportingCsv = true
+		const transactionCount = parseInt(this.csvCount, 10) || 0
+		const transactionOffset = parseInt(this.csvOffset, 10) || 0
+		const history = await this.api.accountHistory(this.csvAccount, transactionCount, false, transactionOffset, this.selectedOrder)
+		this.exportingCsv = false // reset it here in case the file download fails (don't want spinning button forever)
 
-    // contruct the export data
-    const csvData = []
-    if (history && history.history && history.history.length > 0) {
-      history.history.forEach(a => {
-        csvData.push({
-          'account': a.account, 'type': a.type, 'amount': this.util.nano.rawToMnano(a.amount).toString(10),
-          'hash': a.hash, 'height': a.height, 'time': formatDate(a.local_timestamp * 1000, 'y-MM-d HH:mm:ss', 'en-US')
-        })
-      })
-    }
+		// contruct the export data
+		const csvData = []
+		if (history && history.history && history.history.length > 0) {
+			history.history.forEach(a => {
+				csvData.push({
+					'account': a.account, 'type': a.type, 'amount': this.util.nano.rawToMnano(a.amount).toString(10),
+					'hash': a.hash, 'height': a.height, 'time': formatDate(a.local_timestamp * 1000, 'y-MM-d HH:mm:ss', 'en-US')
+				})
+			})
+		}
 
-    if (csvData.length === 0) {
-      return this.notifications.sendWarning(`No transaction history found or bad server response!`)
-    }
+		if (csvData.length === 0) {
+			return this.notifications.sendWarning(`No transaction history found or bad server response!`)
+		}
 
-    // download file
-    const order = this.selectedOrder
-      ? '_oldestFirst'
-      : '_newestFirst'
-    const fileName = `${this.csvAccount}_offset=${this.csvOffset || 0}${order}.csv`
-    this.triggerFileDownload(fileName, csvData, 'csv')
-    this.notifications.sendSuccess(`Transaction history downloaded!`)
-  }
+		// download file
+		const order = this.selectedOrder
+			? '_oldestFirst'
+			: '_newestFirst'
+		const fileName = `${this.csvAccount}_offset=${this.csvOffset || 0}${order}.csv`
+		this.triggerFileDownload(fileName, csvData, 'csv')
+		this.notifications.sendSuccess(`Transaction history downloaded!`)
+	}
 }

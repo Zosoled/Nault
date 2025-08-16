@@ -1,61 +1,61 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, HostBinding, ViewChild } from '@angular/core';
-import { createIcon } from '../../../../assets/lib/nanoidenticons.min.js';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, HostBinding, ViewChild } from '@angular/core'
+import { createIcon } from '../../../../assets/lib/nanoidenticons.min.js'
 
 @Component({
-  selector: 'app-nano-identicon',
-  templateUrl: './nano-identicon.component.html',
-  styleUrls: ['./nano-identicon.component.css'],
+	selector: 'app-nano-identicon',
+	templateUrl: './nano-identicon.component.html',
+	styleUrls: ['./nano-identicon.component.css'],
 })
 export class NanoIdenticonComponent implements OnChanges, AfterViewInit {
 
-  @Input() accountID: string;
-  @Input() scale: number;
-  @Input() settingIdenticonsStyle: string;
+	@Input() accountID: string
+	@Input() scale: number
+	@Input() settingIdenticonsStyle: string
 
-  renderedIdenticon = '';
-  imageLoadErrorOccurred = false;
+	renderedIdenticon = '';
+	imageLoadErrorOccurred = false;
 
-  constructor() { }
+	constructor () { }
 
-  @ViewChild('canvasContainer') canvasContainer: ElementRef;
+	@ViewChild('canvasContainer') canvasContainer: ElementRef
 
-  ngOnChanges() {
-    this.renderNanoidenticon();
-  }
+	ngOnChanges () {
+		this.renderNanoidenticon()
+	}
 
-  ngAfterViewInit() {
-    this.renderNanoidenticon();
-  }
+	ngAfterViewInit () {
+		this.renderNanoidenticon()
+	}
 
-  renderNanoidenticon() {
-    if (
-          (this.canvasContainer == null)
-        || (this.settingIdenticonsStyle !== 'nanoidenticons')
-        || (this.renderedIdenticon === this.accountID)
-      ) {
-        return;
-    }
+	renderNanoidenticon () {
+		if (
+			(this.canvasContainer == null)
+			|| (this.settingIdenticonsStyle !== 'nanoidenticons')
+			|| (this.renderedIdenticon === this.accountID)
+		) {
+			return
+		}
 
-    this.renderedIdenticon = this.accountID;
+		this.renderedIdenticon = this.accountID
 
-    const scale =
-      Math.max(
-        Math.ceil(this.scale * window.devicePixelRatio),
-        this.scale
-      );
+		const scale =
+			Math.max(
+				Math.ceil(this.scale * window.devicePixelRatio),
+				this.scale
+			)
 
-    const canvas = createIcon({
-      seed: this.accountID,
-      scale,
-    });
+		const canvas = createIcon({
+			seed: this.accountID,
+			scale,
+		})
 
-    const canvasContainerNative = this.canvasContainer.nativeElement;
+		const canvasContainerNative = this.canvasContainer.nativeElement
 
-    while (canvasContainerNative.firstChild) {
-      canvasContainerNative.removeChild(canvasContainerNative.lastChild);
-    }
+		while (canvasContainerNative.firstChild) {
+			canvasContainerNative.removeChild(canvasContainerNative.lastChild)
+		}
 
-    canvasContainerNative.appendChild(canvas);
-  }
+		canvasContainerNative.appendChild(canvas)
+	}
 
 }

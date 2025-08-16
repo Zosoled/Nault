@@ -451,13 +451,7 @@
 				<ng-container *ngFor="let transaction of accountHistory; let transactionIdx = index;">
 					<div
 						class="date-header text-half-muted"
-						*ngIf="(
-                ( accountHistory[transactionIdx - 1] == null )
-              || (
-                  transaction.local_date_string
-                !== accountHistory[transactionIdx - 1].local_date_string
-              )
-            )"
+						*ngIf="(( accountHistory[transactionIdx - 1] == null ) || (transaction.local_date_string !== accountHistory[transactionIdx - 1].local_date_string))"
 					>{{
 						(transaction.local_date_string === dateStringToday)
 						? 'Today'
@@ -762,12 +756,12 @@
 							</div>
 						</ng-template>
 						<td [ngClass]="{
-            'amount-column': true,
-            'uk-text-middle': true,
-            'uk-text-success': (history.type == 'receive' || history.subtype == 'receive' || history.type == 'open' || history.subtype == 'open'),
-            'uk-text-danger': (history.type == 'send' || history.subtype == 'send'),
-            'rep-change': (history.type == 'change' || history.subtype == 'change')
-          }">
+							'amount-column': true,
+							'uk-text-middle': true,
+							'uk-text-success': (history.type == 'receive' || history.subtype == 'receive' || history.type == 'open' || history.subtype == 'open'),
+							'uk-text-danger': (history.type == 'send' || history.subtype == 'send'),
+							'rep-change': (history.type == 'change' || history.subtype == 'change')
+							}">
 							<span *ngIf="isNaN(history.amount)">
 								<span
 									class="uk-text-small"
@@ -1460,19 +1454,19 @@
 						class="menu-option"
 						routerLink="/send"
 						[queryParams]="{
-              to: mobileTransactionData.account,
-              amount: util.nano.rawToMnano(mobileTransactionData.amount)
-            }"
+							to: mobileTransactionData.account,
+							amount: util.nano.rawToMnano(mobileTransactionData.amount)
+						}"
 						(click)="mobileTransactionMenuModal.hide()"
 						*ngIf="(
-              walletAccount
-              && !isNaN(mobileTransactionData.amount)
-              && (
-                mobileTransactionData.type === 'receive'
-                || mobileTransactionData.subtype === 'receive'
-                || mobileTransactionData.type === 'open'
-              )
-            )"
+							walletAccount
+							&& !isNaN(mobileTransactionData.amount)
+							&& (
+								mobileTransactionData.type === 'receive'
+								|| mobileTransactionData.subtype === 'receive'
+								|| mobileTransactionData.type === 'open'
+							)
+						)"
 					>
 						<span
 							class="icon"
@@ -1517,16 +1511,16 @@
 						</ng-container>
 						<ng-container *ngIf="!isNaN(mobileTransactionData.amount)">
 							<ng-container *ngIf="(
-                  mobileTransactionData.type === 'receive'
-                || mobileTransactionData.subtype === 'receive'
-                || mobileTransactionData.type === 'open'
-              )">
+								mobileTransactionData.type === 'receive'
+								|| mobileTransactionData.subtype === 'receive'
+								|| mobileTransactionData.type === 'open'
+							)">
 								<span>{{ 'account-details.copy-senders-address' | transloco }}</span>
 							</ng-container>
 							<ng-container *ngIf="(
-                  mobileTransactionData.type === 'send'
-                || mobileTransactionData.subtype === 'send'
-              )">
+								mobileTransactionData.type === 'send'
+								|| mobileTransactionData.subtype === 'send'
+							)">
 								<span>{{ 'account-details.copy-recipients-address' | transloco }}</span>
 							</ng-container>
 						</ng-container>

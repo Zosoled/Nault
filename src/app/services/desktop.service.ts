@@ -1,36 +1,36 @@
-import { Injectable } from '@angular/core';
-import { IpcRenderer } from 'electron';
-import { NotificationService } from './notification.service';
+import { Injectable } from '@angular/core'
+import { IpcRenderer } from 'electron'
+import { NotificationService } from './notification.service'
 
 @Injectable()
 export class DesktopService {
 
-  private _ipc: IpcRenderer | undefined;
+	private _ipc: IpcRenderer | undefined
 
-  constructor(private notifications: NotificationService) {
-    if (window.require) {
-      try {
-        this._ipc = window.require('electron').ipcRenderer;
-        console.log('IPC loaded');
-      } catch (e) {
-        throw e;
-      }
-    }
-  }
+	constructor (private notifications: NotificationService) {
+		if (window.require) {
+			try {
+				this._ipc = window.require('electron').ipcRenderer
+				console.log('IPC loaded')
+			} catch (e) {
+				throw e
+			}
+		}
+	}
 
-  connect() {
-  }
+	connect () {
+	}
 
-  on(channel: string, listener) {
-    if (!this._ipc) return false;
-    this._ipc.on(channel, listener);
-    return true;
-  }
+	on (channel: string, listener) {
+		if (!this._ipc) return false
+		this._ipc.on(channel, listener)
+		return true
+	}
 
-  send(channel: string, ...args) {
-    if (!this._ipc) return false;
-    this._ipc.send(channel, ...args);
-    return true;
-  }
+	send (channel: string, ...args) {
+		if (!this._ipc) return false
+		this._ipc.send(channel, ...args)
+		return true
+	}
 
 }
