@@ -197,7 +197,7 @@
 		"node-stats": "节点统计",
 		"note-since-this-server-only-notifies-about-new-transactions": "注意：由于此服务器只通知新交易，大多数钱包功能无需它也能正常工作。",
 		"optional-increased-work-for-transaction-priority-during": "网络饱和时可选择增加工作量以提高交易优先级。覆盖默认的发送1x和接收1/64x难度。",
-		"pending-options": {
+		"receivable-options": {
 			"automatic-largest-amount-first": "自动 - 优先处理最大金额",
 			"automatic-oldest-transaction-first": "自动 - 优先处理最早交易",
 			"manual": "手动"

@@ -197,7 +197,7 @@
 		"node-stats": "Statistiques du nœud",
 		"note-since-this-server-only-notifies-about-new-transactions": "Note : Comme ce serveur ne notifie que les nouvelles transactions, la plupart des fonctions du portefeuille fonctionnent bien sans lui.",
 		"optional-increased-work-for-transaction-priority-during": "Travail optionnel augmenté pour la priorité des transactions pendant la saturation du réseau. Remplace à la fois les difficultés par défaut SEND 1x et RECEIVE 1/64x.",
-		"pending-options": {
+		"receivable-options": {
 			"automatic-largest-amount-first": "Automatique - Montant le plus élevé en premier",
 			"automatic-oldest-transaction-first": "Automatique - Transaction la plus ancienne en premier",
 			"manual": "Manuel"

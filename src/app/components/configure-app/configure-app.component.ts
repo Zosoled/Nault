@@ -42,8 +42,8 @@ export class ConfigureAppComponent implements OnInit {
   selectedPoWOption
   multiplierOptions
   selectedMultiplierOption
-  pendingOptions
-  selectedPendingOption
+  receivableOptions
+  selectedReceivableOption
 
   constructor (
     private walletService: WalletService,
@@ -162,12 +162,12 @@ export class ConfigureAppComponent implements OnInit {
     ]
     this.selectedMultiplierOption = this.multiplierOptions[0].value
 
-    this.pendingOptions = [
-      { name: this.translocoService.translate('configure-app.pending-options.automatic-largest-amount-first'), value: 'amount' },
-      { name: this.translocoService.translate('configure-app.pending-options.automatic-oldest-transaction-first'), value: 'date' },
-      { name: this.translocoService.translate('configure-app.pending-options.manual'), value: 'manual' },
+    this.receivableOptions = [
+      { name: this.translocoService.translate('configure-app.receivable-options.automatic-largest-amount-first'), value: 'amount' },
+      { name: this.translocoService.translate('configure-app.receivable-options.automatic-oldest-transaction-first'), value: 'date' },
+      { name: this.translocoService.translate('configure-app.receivable-options.manual'), value: 'manual' },
     ]
-    this.selectedPendingOption = this.pendingOptions[0].value
+    this.selectedReceivableOption = this.receivableOptions[0].value
   }
 
   serverOptions = [];
@@ -297,8 +297,8 @@ export class ConfigureAppComponent implements OnInit {
 
     this.customWorkServer = settings.customWorkServer
 
-    const matchingPendingOption = this.pendingOptions.find(d => d.value === settings.pendingOption)
-    this.selectedPendingOption = matchingPendingOption?.value ?? this.pendingOptions[0].value
+    const matchingReceivableOption = this.receivableOptions.find(d => d.value === settings.receivableOption)
+    this.selectedReceivableOption = matchingReceivableOption?.value ?? this.receivableOptions[0].value
 
     this.serverOptions = this.appSettings.serverOptions
     this.selectedServer = settings.serverName
@@ -384,15 +384,15 @@ export class ConfigureAppComponent implements OnInit {
 
     let newPoW = this.selectedPoWOption
     const newMultiplier = this.selectedMultiplierOption
-    const pendingOption = this.selectedPendingOption
+    const receivableOption = this.selectedReceivableOption
     let minReceive = null
     if (this.util.account.isValidNanoAmount(this.minimumReceive)) {
       minReceive = this.minimumReceive
     }
 
-    // reload pending if threshold changes or if receive priority changes from manual to auto
-    let reloadPending = this.appSettings.settings.minimumReceive !== this.minimumReceive
-      || (pendingOption !== 'manual' && pendingOption !== this.appSettings.settings.pendingOption)
+    // reload receivable if threshold changes or if receive priority changes from manual to auto
+    let reloadReceivable = this.appSettings.settings.minimumReceive !== this.minimumReceive
+      || (receivableOption !== 'manual' && receivableOption !== this.appSettings.settings.receivableOption)
 
     if (this.defaultRepresentative && this.defaultRepresentative.length) {
       const valid = this.util.account.isValidAccount(this.defaultRepresentative)
@@ -420,14 +420,14 @@ export class ConfigureAppComponent implements OnInit {
       if (this.appSettings.settings.powSource === 'clientWebGL' || this.appSettings.settings.powSource === 'clientCPU') {
         // Check if work is ongoing, and cancel it
         if (this.pow.cancelAllPow(false)) {
-          reloadPending = true // force reload balance => re-work pow
+          reloadReceivable = true // force reload balance => re-work pow
         }
       }
     } else if ((newPoW === 'clientWebGL' || newPoW === 'clientCPU') &&
       newMultiplier < this.appSettings.settings.multiplierSource) {
       // Cancel pow and re-work if multiplier is lower than earlier
       if (this.pow.cancelAllPow(false)) {
-        reloadPending = true
+        reloadReceivable = true
       }
     }
 
@@ -440,7 +440,7 @@ export class ConfigureAppComponent implements OnInit {
     ) {
       // if user accept to reset cache
       if (await this.clearWorkCache()) {
-        reloadPending = true // force reload balance => re-work pow
+        reloadReceivable = true // force reload balance => re-work pow
       }
     }
 
@@ -450,7 +450,7 @@ export class ConfigureAppComponent implements OnInit {
       powSource: newPoW,
       multiplierSource: Number(this.selectedMultiplierOption),
       customWorkServer: this.customWorkServer,
-      pendingOption: pendingOption,
+      receivableOption: receivableOption,
       minimumReceive: minReceive,
       defaultRepresentative: this.defaultRepresentative || null,
     }
@@ -461,7 +461,7 @@ export class ConfigureAppComponent implements OnInit {
     if (resaveWallet) {
       this.walletService.saveWalletExport() // If swapping the storage engine, resave the wallet
     }
-    if (reloadPending) {
+    if (reloadReceivable) {
       this.walletService.reloadBalances()
     }
   }

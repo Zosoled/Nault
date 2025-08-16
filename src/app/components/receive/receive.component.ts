@@ -32,9 +32,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   mobileTransactionData: any = null;
 
   selectedAccountAddressBookName = '';
-  pendingAccountModel = '0';
-  pendingBlocks = [];
-  pendingBlocksForSelectedAccount = [];
+  receivableAccountModel = '0';
+  receivableBlocks = [];
+  receivableBlocksForSelectedAccount = [];
   qrCodeUri = null;
   qrCodeImage = null;
   qrAccount = '';
@@ -99,30 +99,30 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     // Update selected account if changed in the sidebar
     this.walletService.wallet.selectedAccount$.subscribe(async acc => {
       if (this.selAccountInit) {
-        this.pendingAccountModel = acc?.id ?? '0'
-        this.onSelectedAccountChange(this.pendingAccountModel)
+        this.receivableAccountModel = acc?.id ?? '0'
+        this.onSelectedAccountChange(this.receivableAccountModel)
       }
       this.selAccountInit = true
     })
 
-    this.walletService.wallet.pendingBlocksUpdate$.subscribe(async receivableBlockUpdate => {
+    this.walletService.wallet.receivableBlocksUpdate$.subscribe(async receivableBlockUpdate => {
       if (receivableBlockUpdate === null) {
         return
       }
 
-      this.updatePendingBlocks()
+      this.updateReceivableBlocks()
     })
 
-    await this.updatePendingBlocks()
+    await this.updateReceivableBlocks()
 
     if (this.walletService.wallet.selectedAccount !== null) {
       // Set the account selected in the sidebar as default
-      this.pendingAccountModel = this.walletService.wallet.selectedAccount.id
-      this.onSelectedAccountChange(this.pendingAccountModel)
+      this.receivableAccountModel = this.walletService.wallet.selectedAccount.id
+      this.onSelectedAccountChange(this.receivableAccountModel)
     } else if (this.accounts.length === 1) {
       // Auto-select account if it is the only account in the wallet
-      this.pendingAccountModel = this.accounts[0].id
-      this.onSelectedAccountChange(this.pendingAccountModel)
+      this.receivableAccountModel = this.accounts[0].id
+      this.onSelectedAccountChange(this.receivableAccountModel)
     }
 
     // Listen as new transactions come in. Ignore the latest transaction that is already present on page load.
@@ -149,25 +149,25 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     }
   }
 
-  async updatePendingBlocks () {
-    this.pendingBlocks =
-      this.walletService.wallet.pendingBlocks
+  async updateReceivableBlocks () {
+    this.receivableBlocks =
+      this.walletService.wallet.receivableBlocks
         .map(
-          (pendingBlock) =>
+          (receivableBlock) =>
             Object.assign(
               {},
-              pendingBlock,
+              receivableBlock,
               {
-                account: pendingBlock.source,
-                destination: pendingBlock.account,
+                account: receivableBlock.source,
+                destination: receivableBlock.account,
                 source: null,
                 addressBookName: (
-                  this.addressBook.getAccountName(pendingBlock.source)
-                  || this.getAccountLabel(pendingBlock.source, null)
+                  this.addressBook.getAccountName(receivableBlock.source)
+                  || this.getAccountLabel(receivableBlock.source, null)
                 ),
                 destinationAddressBookName: (
-                  this.addressBook.getAccountName(pendingBlock.account)
-                  || this.getAccountLabel(pendingBlock.account, this.translocoService.translate('general.account'))
+                  this.addressBook.getAccountName(receivableBlock.account)
+                  || this.getAccountLabel(receivableBlock.account, this.translocoService.translate('general.account'))
                 ),
                 isReceivable: true,
                 local_time_string: '',
@@ -179,24 +179,24 @@ export class ReceiveComponent implements OnInit, OnDestroy {
             a.destinationAddressBookName.localeCompare(b.destinationAddressBookName)
         )
 
-    this.filterPendingBlocksForDestinationAccount(this.pendingAccountModel)
+    this.filterReceivableBlocksForDestinationAccount(this.receivableAccountModel)
   }
 
-  filterPendingBlocksForDestinationAccount (selectedAccountID) {
+  filterReceivableBlocksForDestinationAccount (selectedAccountID) {
     if (selectedAccountID === '0') {
       // Blocks for all accounts
-      this.pendingBlocksForSelectedAccount = [...this.pendingBlocks]
+      this.receivableBlocksForSelectedAccount = [...this.receivableBlocks]
       return
     }
 
     // Blocks for selected account
-    this.pendingBlocksForSelectedAccount =
-      this.pendingBlocks.filter(block => (block.destination === selectedAccountID))
+    this.receivableBlocksForSelectedAccount =
+      this.receivableBlocks.filter(block => (block.destination === selectedAccountID))
 
     if (this.inMerchantModeQR === true) {
-      this.pendingBlocksForSelectedAccount.forEach(
-        (pendingBlock) => {
-          this.onMerchantModeReceiveTransaction(pendingBlock)
+      this.receivableBlocksForSelectedAccount.forEach(
+        (receivableBlock) => {
+          this.onMerchantModeReceiveTransaction(receivableBlock)
         }
       )
     }
@@ -219,10 +219,10 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     return (this.translocoService.translate('general.account') + ' #' + walletAccount.index)
   }
 
-  async getPending () {
-    // clear the list of pending blocks. Updated again with reloadBalances()
-    this.pendingBlocks = []
-    this.pendingBlocksForSelectedAccount = []
+  async getReceivable () {
+    // clear the list of receivable blocks. Updated again with reloadBalances()
+    this.receivableBlocks = []
+    this.receivableBlocksForSelectedAccount = []
     this.loadingIncomingTxList = true
     await this.walletService.reloadBalances()
     this.loadingIncomingTxList = false
@@ -291,7 +291,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     )
 
     this.changeQRAccount(accountID)
-    this.filterPendingBlocksForDestinationAccount(accountID)
+    this.filterReceivableBlocksForDestinationAccount(accountID)
   }
 
   async changeQRAccount (account) {
@@ -374,9 +374,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       this.mobileTransactionMenuModal.hide()
       this.notificationService.removeNotification('success-receive')
       this.notificationService.sendSuccess(this.translocoService.translate('receive.successfully-received-nano'), { identifier: 'success-receive' })
-      // pending has been processed, can be removed from the list
+      // receivable has been processed, can be removed from the list
       // list also updated with reloadBalances but not if called too fast
-      this.walletService.removePendingBlock(receivableBlock.hash)
+      this.walletService.removeReceivableBlock(receivableBlock.hash)
     } else {
       if (!this.walletService.isLedgerWallet()) {
         this.notificationService.sendError(this.translocoService.translate('receive.there-was-a-problem-receiving-the-transaction-try-manually'), { length: 10000 })
@@ -384,7 +384,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     }
 
     receivableBlock.loading = false
-    this.updatePendingBlocks() // update the list
+    this.updateReceivableBlocks() // update the list
   }
 
   copied () {
@@ -425,8 +425,8 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   }
 
   unsetSelectedAccount () {
-    this.pendingAccountModel = '0'
-    this.onSelectedAccountChange(this.pendingAccountModel)
+    this.receivableAccountModel = '0'
+    this.onSelectedAccountChange(this.receivableAccountModel)
   }
 
   getRawAmountWithoutTinyRaws (rawAmountWithTinyRaws) {
@@ -476,7 +476,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
         : this.util.nano.mnanoToRaw(this.amountNano)
 
     this.merchantModeSeenBlockHashes =
-      this.pendingBlocksForSelectedAccount.reduce(
+      this.receivableBlocksForSelectedAccount.reduce(
         (seenHashes, receivableBlock) => {
           seenHashes[receivableBlock.hash] = true
           return seenHashes

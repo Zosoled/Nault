@@ -115,7 +115,7 @@ export class ApiService {
 	}
 
 	async blocksInfo (blocks): Promise<{ blocks: any, error?: string }> {
-		return await this.request('blocks_info', { hashes: blocks, pending: true, receivable: true, source: true }, false)
+		return await this.request('blocks_info', { hashes: blocks, receivable: true, source: true }, false)
 	}
 	async blockInfo (hash): Promise<any> {
 		return await this.request('block_info', { hash: hash }, false)
@@ -168,7 +168,7 @@ export class ApiService {
 		}
 	}
 	async accountInfo (account): Promise<any> {
-		return await this.request('account_info', { account, pending: true, receivable: true, representative: true, weight: true }, false)
+		return await this.request('account_info', { account, receivable: true, representative: true, weight: true }, false)
 	}
 	async receivable (account, count): Promise<any> {
 		return await this.request('receivable', { account, count, source: true, include_only_confirmed: true }, false)
