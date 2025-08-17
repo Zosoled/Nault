@@ -10,10 +10,9 @@ import { AppSettingsService } from '../../services/app-settings.service'
 import { PriceService } from '../../services/price.service'
 import { UtilService } from '../../services/util.service'
 import * as QRCode from 'qrcode'
-import BigNumber from 'bignumber.js'
 import { RepresentativeService } from '../../services/representative.service'
 import { BehaviorSubject } from 'rxjs'
-import { Account, SendBlock, ReceiveBlock, ChangeBlock, Tools } from 'libnemo'
+import { Account, SendBlock, ReceiveBlock, ChangeBlock, Tools, Block } from 'libnemo'
 import { NinjaService } from '../../services/ninja.service'
 import { QrModalService } from '../../services/qr-modal.service'
 import { translate } from '@jsverse/transloco'
@@ -24,16 +23,16 @@ import { translate } from '@jsverse/transloco'
 	styleUrls: ['./account-details.component.css']
 })
 export class AccountDetailsComponent implements OnInit, OnDestroy {
-	nano = 1000000000000000000000000;
+	nano = 1000000000000000000000000n;
 	zeroHash = '0000000000000000000000000000000000000000000000000000000000000000';
 
-	accountHistory: any[] = [];
-	receivableBlocks = [];
-	pageSize = 25;
-	maxPageSize = 200;
+	accountHistory: any[] = []
+	receivableBlocks = []
+	pageSize = 25
+	maxPageSize = 200
 
 	repLabel: any = '';
-	repVotingWeight: BigNumber
+	repVotingWeight: bigint
 	repDonationAddress: any = '';
 
 	addressBookEntry: any = null;
@@ -82,9 +81,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	addressBookMatch = '';
 
 	amount = null;
-	amountRaw: BigNumber = new BigNumber(0);
+	amountRaw: bigint = 0n
 	amountFiat: number | null = null;
-	rawAmount: BigNumber = new BigNumber(0);
+	rawAmount: bigint = 0n
 	fromAccount: any = {};
 	toAccount: any = false;
 	toAccountID = '';
@@ -215,9 +214,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 	clearRemoteVars () {
 		this.amount = null
-		this.amountRaw = new BigNumber(0)
+		this.amountRaw = 0n
 		this.amountFiat = null
-		this.rawAmount = new BigNumber(0)
+		this.rawAmount = 0n
 		this.fromAccount = {}
 		this.toAccount = false
 		this.toAccountID = ''
@@ -252,7 +251,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 			return
 		}
 
-		this.repVotingWeight = new BigNumber(0)
+		this.repVotingWeight = 0n
 		this.repDonationAddress = null
 
 		const knownRepresentative = this.repSvc.getRepresentative(this.account.representative)
@@ -483,7 +482,6 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 					this.receivableBlocks.push({
 						account: transaction.source,
 						amount: transaction.amount,
-						amountRaw: new BigNumber(transaction.amount || 0).mod(this.nano),
 						local_timestamp: transaction.local_timestamp,
 						local_date_string: (transaction.local_timestamp
 							? formatDate(transaction.local_timestamp * 1000, 'MMM d, y', 'en-US')
@@ -503,7 +501,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 						isReceivable: true,
 					})
 
-					receivableBalance = new BigNumber(receivableBalance).plus(transaction.amount).toString(10)
+					receivableBalance = (BigInt(receivableBalance) + BigInt(transaction.amount)).toString()
 				}
 			}
 
@@ -516,15 +514,15 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		// If the account doesnt exist, set the receivable balance manually
 		if (this.account.error) {
 			const receivableRaw = this.receivableBlocks.reduce(
-				(prev: BigNumber, current: any) => prev.plus(new BigNumber(current.amount)),
-				new BigNumber(0)
+				(prev: bigint, current: any) => prev + BigInt(current.amount),
+				0n
 			)
 			this.account.receivable = receivableRaw
 		}
 
 		// Set fiat values?
-		this.account.balanceRaw = new BigNumber(this.account.balance || 0).mod(this.nano)
-		this.account.receivableRaw = new BigNumber(this.account.receivable || 0).mod(this.nano)
+		this.account.balanceRaw = BigInt(this.account.balance || 0)
+		this.account.receivableRaw = BigInt(this.account.receivable || 0)
 		this.account.balanceFiat = this.util.nano.rawToMnano(this.account.balance || 0).times(this.price.price.lastPrice).toNumber()
 		this.account.receivableFiat = this.util.nano.rawToMnano(this.account.receivable || 0).times(this.price.price.lastPrice).toNumber()
 
@@ -779,8 +777,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	// An update to the Nano amount, sync the fiat value
 	syncFiatPrice () {
 		if (!this.validateAmount()) return
-		const rawAmount = new BigNumber(this.amount ?? 0).plus(this.amountRaw)
-		if (rawAmount.lte(0)) {
+		const rawAmount = BigInt(this.amount ?? 0) + this.amountRaw
+		if (rawAmount <= 0n) {
 			this.amountFiat = 0
 			return
 		}
@@ -806,9 +804,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 			return
 		}
 		if (!this.util.string.isNumeric(this.amountFiat)) return
-		const fx = new BigNumber(this.amountFiat).div(this.price.price.lastPrice).toString()
-		const nanoPrice = await Tools.convert(fx, 'mnano', 'nano')
-		this.amount = new BigNumber(nanoPrice).decimalPlaces(0, 3).toNumber()
+		const fx = (this.amountFiat / this.price.price.lastPrice).toString()
+		const nanoPrice: string = await Tools.convert(fx, 'mnano', 'nano')
+		this.amount = Number(nanoPrice).toPrecision(3)
 	}
 
 	searchAddressBook () {
@@ -870,7 +868,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	async setMaxAmount () {
-		this.amountRaw = new BigNumber(this.account?.balance).mod(this.nano) ?? new BigNumber(0)
+		this.amountRaw = BigInt(this.account?.balance || 0)
 		const nanoVal = this.util.nano.rawToNano(this.account?.balance).decimalPlaces(0, 3)
 		this.amount = parseInt(await Tools.convert(nanoVal.toString(), 'nano', 'mnano'))
 		this.syncFiatPrice()
@@ -951,33 +949,31 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		const to = await this.api.accountInfo(this.toAccountID)
 		if (!from) return this.notify.sendError(`From account not found`)
 
-		const bigBalanceFrom = new BigNumber(from.balance || 0)
+		const bigBalanceFrom = BigInt(from.balance || 0)
 
 		this.fromAccount = from
 		this.toAccount = to
 
-		const rawAmount = new BigNumber(await Tools.convert(this.amount, 'nano', 'raw'))
-		this.rawAmount = rawAmount.plus(this.amountRaw)
+		const rawAmount = BigInt(await Tools.convert(this.amount, 'nano', 'raw'))
+		this.rawAmount = rawAmount + this.amountRaw
 
-		if (this.amount < 0 || rawAmount.isLessThan(0)) return this.notify.sendWarning(`Amount is invalid`)
-		if (bigBalanceFrom.minus(rawAmount).isLessThan(0)) return this.notify.sendError(`From account does not have enough XNO`)
+		if (this.amount < 0 || rawAmount < 0n) return this.notify.sendWarning(`Amount is invalid`)
+		if (bigBalanceFrom - rawAmount < 0n) return this.notify.sendError(`From account does not have enough XNO`)
 
 		// Determine a proper raw amount to show in the UI, if a decimal was entered
-		this.amountRaw = this.rawAmount.mod(this.nano)
+		this.amountRaw = this.rawAmount
 
 		// Determine fiat value of the amount
 		this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber()
 
 		const defaultRepresentative = this.settings.settings.defaultRepresentative || this.nanoBlock.getRandomRepresentative()
 		const representative = from.representative || defaultRepresentative
-		const block = new SendBlock(
+		const block = new Block(
 			this.accountID,
 			from.balance,
-			new Account(this.toAccountID).publicKey,
-			this.rawAmount.toFixed(0),
-			representative,
-			from.frontier
-		)
+			from.frontier,
+			representative
+		).send(Account.load(this.toAccountID).publicKey, this.rawAmount)
 		this.blockHash = this.util.uint8.toHex(await block.hash())
 		console.log('Created block', block)
 		console.log('Block hash: ' + this.blockHash)
@@ -1019,20 +1015,18 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		const representative = toAcct.representative || defaultRepresentative
 
 		const srcBlockInfo = await this.api.blocksInfo([receivableHash])
-		const srcAmount = new BigNumber(srcBlockInfo.blocks[receivableHash].amount)
+		const srcAmount = BigInt(srcBlockInfo.blocks[receivableHash].amount)
 		const newBalance = openEquiv
 			? srcAmount
-			: new BigNumber(toAcct.balance).plus(srcAmount)
+			: BigInt(toAcct.balance) + srcAmount
 		const newBalanceDecimal = newBalance.toString(10)
 
 		const block = new ReceiveBlock(
 			this.accountID,
 			toAcct.balance,
-			receivableHash,
-			srcAmount.toFixed(0),
-			representative,
-			previousBlock
-		)
+			previousBlock,
+			representative
+		).receive(receivableHash, srcAmount)
 
 		this.blockHashReceive = this.util.uint8.toHex(await block.hash())
 		console.log('Created block', block)
@@ -1083,15 +1077,15 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 		if (!account || !('frontier' in account)) return this.notify.sendError(`Account must be opened first!`)
 
-		const balance = new BigNumber(account.balance)
+		const balance = BigInt(account.balance)
 		const balanceDecimal = balance.toString(10)
 
-		const block = new ChangeBlock(
+		const block = new Block(
 			this.accountID,
 			balanceDecimal,
-			this.representativeModel,
-			account.frontier
-		)
+			account.frontier,
+			this.representativeModel
+		).change()
 		this.blockHash = this.util.uint8.toHex(await block.hash())
 
 		console.log('Created block', block)
@@ -1146,7 +1140,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	resetRaw () {
-		this.amountRaw = new BigNumber(0)
+		this.amountRaw = 0n
 	}
 
 	// End remote signing methods
