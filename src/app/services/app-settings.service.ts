@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { TranslocoService, getBrowserCultureLang, getBrowserLang } from '@jsverse/transloco'
 
 export type WalletStore = 'localStorage' | 'none'
-export type PoWSource = 'server' | 'clientCPU' | 'clientWebGL' | 'best' | 'custom'
+export type PoWSource = 'client' | 'custom' | 'server'
 export type LedgerConnectionType = 'usb' | 'bluetooth'
 
 interface AppSettings {
@@ -43,7 +43,7 @@ export class AppSettingsService {
 		lockOnClose: 1,
 		lockInactivityMinutes: 30,
 		ledgerReconnect: 'usb',
-		powSource: 'best',
+		powSource: 'server',
 		multiplierSource: 1,
 		customWorkServer: '',
 		receivableOption: 'amount',
@@ -219,7 +219,7 @@ export class AppSettingsService {
 			lockOnClose: 1,
 			lockInactivityMinutes: 30,
 			ledgerReconnect: 'usb',
-			powSource: 'best',
+			powSource: 'server',
 			multiplierSource: 1,
 			customWorkServer: '',
 			receivableOption: 'amount',

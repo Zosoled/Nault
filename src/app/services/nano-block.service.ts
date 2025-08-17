@@ -43,16 +43,20 @@ export class NanoBlockService {
 		public settings: AppSettingsService) { }
 
 	async generateChange (walletAccount, representativeAccount, ledger = false) {
-		const toAcct = await this.api.accountInfo(walletAccount.id);
-		if (!toAcct) throw new Error(`Account must have an open block first`);
+		const toAcct = await this.api.accountInfo(walletAccount.id)
+		if (!toAcct) throw new Error(`Account must have an open block first`)
 
-		const walletAccountPublicKey = this.util.account.getAccountPublicKey(walletAccount.id);
+		const walletAccountPublicKey = this.util.account.getAccountPublicKey(walletAccount.id)
 
-		await this.validateAccount(toAcct, walletAccountPublicKey);
+		await this.validateAccount(toAcct, walletAccountPublicKey)
 
-		const balance = new BigNumber(toAcct.balance);
-		const balanceDecimal = balance.toString(10);
-		const link = this.zeroHash;
+		const walletAccountPublicKey = this.util.account.getAccountPublicKey(walletAccount.id)
+
+		await this.validateAccount(toAcct, walletAccountPublicKey)
+
+		const balance = new BigNumber(toAcct.balance)
+		const balanceDecimal = balance.toString(10)
+		const link = this.zeroHash
 		const blockData = {
 			type: 'state',
 			account: walletAccount.id,
@@ -62,7 +66,7 @@ export class NanoBlockService {
 			link: link,
 			signature: null,
 			work: null,
-		};
+		}
 
 		if (ledger) {
 			const ledgerBlock = {
@@ -193,17 +197,17 @@ export class NanoBlockService {
 	// }
 
 	async generateSend (walletAccount, toAccountID, rawAmount, ledger = false) {
-		const fromAccount = await this.api.accountInfo(walletAccount.id);
-		if (!fromAccount) throw new Error(`Unable to get account information for ${walletAccount.id}`);
+		const fromAccount = await this.api.accountInfo(walletAccount.id)
+		if (!fromAccount) throw new Error(`Unable to get account information for ${walletAccount.id}`)
 
-		const walletAccountPublicKey = this.util.account.getAccountPublicKey(walletAccount.id);
+		const walletAccountPublicKey = this.util.account.getAccountPublicKey(walletAccount.id)
 
-		await this.validateAccount(fromAccount, walletAccountPublicKey);
+		await this.validateAccount(fromAccount, walletAccountPublicKey)
 
-		const remaining = new BigNumber(fromAccount.balance).minus(rawAmount);
-		const remainingDecimal = remaining.toString(10);
+		const remaining = new BigNumber(fromAccount.balance).minus(rawAmount)
+		const remainingDecimal = remaining.toString(10)
 
-		const representative = fromAccount.representative || (this.settings.settings.defaultRepresentative || this.getRandomRepresentative());
+		const representative = fromAccount.representative || (this.settings.settings.defaultRepresentative || this.getRandomRepresentative())
 		const blockData = {
 			type: 'state',
 			account: walletAccount.id,
@@ -256,26 +260,26 @@ export class NanoBlockService {
 	}
 
 	async generateReceive (walletAccount, sourceBlock, ledger = false) {
-		const toAcct = await this.api.accountInfo(walletAccount.id);
-		const walletAccountPublicKey = this.util.account.getAccountPublicKey(walletAccount.id);
+		const toAcct = await this.api.accountInfo(walletAccount.id)
+		const walletAccountPublicKey = this.util.account.getAccountPublicKey(walletAccount.id)
 
-		await this.validateAccount(toAcct, walletAccountPublicKey);
+		await this.validateAccount(toAcct, walletAccountPublicKey)
 
-		let workBlock = null;
+		let workBlock = null
 
-		const openEquiv = !toAcct || !toAcct.frontier;
+		const openEquiv = !toAcct || !toAcct.frontier
 
-		const previousBlock = toAcct.frontier || this.zeroHash;
-		const representative = toAcct.representative || (this.settings.settings.defaultRepresentative || this.getRandomRepresentative());
+		const previousBlock = toAcct.frontier || this.zeroHash
+		const representative = toAcct.representative || (this.settings.settings.defaultRepresentative || this.getRandomRepresentative())
 
-		const srcBlockInfo = await this.api.blocksInfo([sourceBlock]);
-		const srcAmount = new BigNumber(srcBlockInfo.blocks[sourceBlock].amount);
+		const srcBlockInfo = await this.api.blocksInfo([sourceBlock])
+		const srcAmount = new BigNumber(srcBlockInfo.blocks[sourceBlock].amount)
 		const newBalance = openEquiv
 			? srcAmount
-			: new BigNumber(toAcct.balance).plus(srcAmount);
-		const newBalanceDecimal = newBalance.toString(10);
-		let newBalancePadded = newBalance.toString(16);
-		while (newBalancePadded.length < 32) newBalancePadded = '0' + newBalancePadded; // Left pad with 0's
+			: new BigNumber(toAcct.balance).plus(srcAmount)
+		const newBalanceDecimal = newBalance.toString(10)
+		let newBalancePadded = newBalance.toString(16)
+		while (newBalancePadded.length < 32) newBalancePadded = '0' + newBalancePadded // Left pad with 0's
 		const blockData = {
 			type: 'state',
 			account: walletAccount.id,
@@ -285,7 +289,7 @@ export class NanoBlockService {
 			link: sourceBlock,
 			signature: null,
 			work: null
-		};
+		}
 
 		// We have everything we need, we need to obtain a signature
 		if (ledger) {
@@ -413,7 +417,10 @@ export class NanoBlockService {
 				this.notifications.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 })
 			}
 
-			block.work = await this.workPool.getWork(workBlock, multiplier)
+			const difficulty = (type === TxType.receive || type === TxType.open)
+				? 1 / 64
+				: multiplier
+			block.work = await this.workPool.getWork(workBlock, difficulty)
 			this.notifications.removeNotification('pow')
 			this.workPool.removeFromCache(workBlock)
 		}
@@ -421,29 +428,29 @@ export class NanoBlockService {
 	}
 
 	async validateAccount (accountInfo, accountPublicKey) {
-		if (!accountInfo) return;
+		if (!accountInfo) return
 
 		if (!accountInfo.frontier || accountInfo.frontier === this.zeroHash) {
 			if (accountInfo.balance && accountInfo.balance !== '0') {
-				throw new Error(`Frontier not set, but existing account balance is nonzero`);
+				throw new Error(`Frontier not set, but existing account balance is nonzero`)
 			}
 
 			if (accountInfo.representative) {
-				throw new Error(`Frontier not set, but existing account representative is set`);
+				throw new Error(`Frontier not set, but existing account representative is set`)
 			}
-			return;
+			return
 		}
-		const blockResponse = await this.api.blocksInfo([accountInfo.frontier]);
-		const blockData = blockResponse.blocks[accountInfo.frontier];
-		if (!blockData) throw new Error(`Unable to load frontier block data`);
-		blockData.contents = JSON.parse(blockData.contents);
+		const blockResponse = await this.api.blocksInfo([accountInfo.frontier])
+		const blockData = blockResponse.blocks[accountInfo.frontier]
+		if (!blockData) throw new Error(`Unable to load frontier block data`)
+		blockData.contents = JSON.parse(blockData.contents)
 
 		if (accountInfo.balance !== blockData.contents.balance || accountInfo.representative !== blockData.contents.representative) {
 			throw new Error(`Frontier block data doesn't match account info`)
 		}
 
 		if (blockData.contents.type !== 'state') {
-			throw new Error(`Frontier block wasn't a state block, which shouldn't be possible`);
+			throw new Error(`Frontier block wasn't a state block, which shouldn't be possible`)
 		}
 		if (this.util.hex.fromUint8(this.util.nano.hashStateBlock(blockData.contents)) !== accountInfo.frontier) {
 			throw new Error(`Frontier hash didn't match block data`)
@@ -454,17 +461,17 @@ export class NanoBlockService {
 				nanocurrencyWebTools.verifyBlock(
 					this.util.account.getAccountPublicKey(this.epochV2SignerAccount),
 					blockData.contents
-				);
+				)
 
 			if (isEpochV2BlockSignatureValid !== true) {
-				throw new Error(`Node provided an untrusted frontier block that is an unsupported epoch`);
+				throw new Error(`Node provided an untrusted frontier block that is an unsupported epoch`)
 			}
 		} else {
 			const isFrontierBlockSignatureValid =
-				nanocurrencyWebTools.verifyBlock(accountPublicKey, blockData.contents);
+				nanocurrencyWebTools.verifyBlock(accountPublicKey, blockData.contents)
 
 			if (isFrontierBlockSignatureValid !== true) {
-				throw new Error(`Node provided an untrusted frontier block that was signed by someone else`);
+				throw new Error(`Node provided an untrusted frontier block that was signed by someone else`)
 			}
 		}
 	}

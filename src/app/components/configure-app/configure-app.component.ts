@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs'
 import { TranslocoService } from '@jsverse/transloco'
 import { WalletService } from '../../services/wallet.service'
 import { NotificationService } from '../../services/notification.service'
-import { AppSettingsService } from '../../services/app-settings.service'
+import { AppSettingsService, PoWSource } from '../../services/app-settings.service'
 import { PriceService } from '../../services/price.service'
 import { PowService } from '../../services/pow.service'
 import { WorkPoolService } from '../../services/work-pool.service'
@@ -38,10 +38,10 @@ export class ConfigureAppComponent implements OnInit {
 	selectedIdenticonOption
 	inactivityOptions
 	selectedInactivityMinutes
-	powOptions
+	powOptions: { name: string, value: PoWSource }[]
 	selectedPoWOption
 	multiplierOptions
-	selectedMultiplierOption
+	selectedMultiplierOption: number
 	receivableOptions
 	selectedReceivableOption
 
@@ -143,22 +143,14 @@ export class ConfigureAppComponent implements OnInit {
 		this.selectedInactivityMinutes = this.inactivityOptions[4].values
 
 		this.powOptions = [
-			{ name: this.translocoService.translate('configure-app.pow-options.best-option-available'), value: 'best' },
-			{ name: this.translocoService.translate('configure-app.pow-options.client-side-gpu-webgl'), value: 'clientWebGL' },
-			{ name: this.translocoService.translate('configure-app.pow-options.client-side-cpu-slowest'), value: 'clientCPU' },
 			{ name: this.translocoService.translate('configure-app.pow-options.external-selected-server'), value: 'server' },
 			{ name: this.translocoService.translate('configure-app.pow-options.external-custom-server'), value: 'custom' },
+			{ name: this.translocoService.translate('configure-app.pow-options.internal-client'), value: 'client' },
 		]
 		this.selectedPoWOption = this.powOptions[0].value
 
 		this.multiplierOptions = [
-			{ name: this.translocoService.translate('configure-app.multiplier-options.default-1x-or-1-64x'), value: 1 },
-			{ name: '2x', value: 2 },
-			{ name: '4x', value: 4 },
-			{ name: '8x', value: 8 },
-			{ name: '16x', value: 16 },
-			{ name: '32x', value: 32 },
-			{ name: '64x', value: 64 },
+			{ name: this.translocoService.translate('configure-app.multiplier-options.default-1x-or-1-64x'), value: 1 }
 		]
 		this.selectedMultiplierOption = this.multiplierOptions[0].value
 
@@ -170,37 +162,37 @@ export class ConfigureAppComponent implements OnInit {
 		this.selectedReceivableOption = this.receivableOptions[0].value
 	}
 
-	serverOptions = [];
-	selectedServer = null;
+	serverOptions = []
+	selectedServer = null
 
-	defaultRepresentative = null;
-	representativeResults$ = new BehaviorSubject([]);
-	showRepresentatives = false;
-	representativeListMatch = '';
-	repStatus = null;
-	representativeList = [];
+	defaultRepresentative = null
+	representativeResults$ = new BehaviorSubject([])
+	showRepresentatives = false
+	representativeListMatch = ''
+	repStatus = null
+	representativeList = []
 
-	serverAPI = null;
-	serverAPIUpdated = null;
-	serverWS = null;
-	serverAuth = null;
-	minimumReceive = null;
+	serverAPI = null
+	serverAPIUpdated = null
+	serverWS = null
+	serverAuth = null
+	minimumReceive = null
 
-	nodeBlockCount = null;
-	nodeUnchecked = null;
-	nodeCemented = null;
-	nodeUncemented = null;
-	peersStakeReq = null;
-	peersStakeTotal = null;
-	nodeVendor = null;
-	nodeNetwork = null;
-	statsRefreshEnabled = true;
-	shouldRandom = null;
+	nodeBlockCount = null
+	nodeUnchecked = null
+	nodeCemented = null
+	nodeUncemented = null
+	peersStakeReq = null
+	peersStakeTotal = null
+	nodeVendor = null
+	nodeNetwork = null
+	statsRefreshEnabled = true
+	shouldRandom = null
 
-	customWorkServer = '';
+	customWorkServer = ''
 
-	showServerValues = () => this.selectedServer && this.selectedServer !== 'random' && this.selectedServer !== 'offline';
-	showStatValues = () => this.selectedServer && this.selectedServer !== 'offline';
+	showServerValues = () => this.selectedServer && this.selectedServer !== 'random' && this.selectedServer !== 'offline'
+	showStatValues = () => this.selectedServer && this.selectedServer !== 'offline'
 	showServerConfigs = () => this.selectedServer && this.selectedServer === 'custom';
 
 	async ngOnInit () {
@@ -404,27 +396,18 @@ export class ConfigureAppComponent implements OnInit {
 		}
 
 		if (this.appSettings.settings.powSource !== newPoW) {
-			if (newPoW === 'clientWebGL' && !this.pow.hasWebGLSupport()) {
-				this.notifications.sendWarning(this.translocoService.translate('configure-app.webgl-support-not-available-set-pow-to-best'))
-				newPoW = 'best'
-			}
-			if (newPoW === 'clientCPU' && !this.pow.hasWorkerSupport()) {
-				this.notifications.sendWarning(this.translocoService.translate('configure-app.cpu-worker-support-not-available-set-pow-to-best'))
-				newPoW = 'best'
-			}
 			// reset multiplier when not using it to avoid user mistake
-			if (newPoW !== 'clientWebGL' && newPoW !== 'clientCPU' && newPoW !== 'custom') {
+			if (newPoW !== 'client' && newPoW !== 'custom') {
 				this.selectedMultiplierOption = this.multiplierOptions[0].value
 			}
 			// Cancel ongoing PoW if the old method was local PoW
-			if (this.appSettings.settings.powSource === 'clientWebGL' || this.appSettings.settings.powSource === 'clientCPU') {
+			if (this.appSettings.settings.powSource === 'client') {
 				// Check if work is ongoing, and cancel it
 				if (this.pow.cancelAllPow(false)) {
 					reloadReceivable = true // force reload balance => re-work pow
 				}
 			}
-		} else if ((newPoW === 'clientWebGL' || newPoW === 'clientCPU') &&
-			newMultiplier < this.appSettings.settings.multiplierSource) {
+		} else if (newPoW === 'client' && newMultiplier < this.appSettings.settings.multiplierSource) {
 			// Cancel pow and re-work if multiplier is lower than earlier
 			if (this.pow.cancelAllPow(false)) {
 				reloadReceivable = true
@@ -432,12 +415,7 @@ export class ConfigureAppComponent implements OnInit {
 		}
 
 		// reset work cache so that the new PoW will be used but only if larger than before
-		if (
-			newMultiplier > this.appSettings.settings.multiplierSource &&
-			newMultiplier > 1 &&
-			((newPoW === 'clientWebGL' && this.pow.hasWebGLSupport()) ||
-				(newPoW === 'clientCPU' && this.pow.hasWorkerSupport()))
-		) {
+		if (newPoW === 'client' && newMultiplier > this.appSettings.settings.multiplierSource) {
 			// if user accept to reset cache
 			if (await this.clearWorkCache()) {
 				reloadReceivable = true // force reload balance => re-work pow
@@ -582,7 +560,7 @@ export class ConfigureAppComponent implements OnInit {
 	}
 
 	getRemotePoWOptionName () {
-		const optionName = 'External - Selected Server'
+		const optionName = this.translocoService.translate('configure-app.pow-options.external-selected-server')
 
 		if ((this.selectedServer === 'random') || (this.selectedServer === 'offline')) {
 			return optionName

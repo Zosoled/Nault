@@ -366,29 +366,29 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 		}
 		receivableBlock.loading = true
 
-		let createdReceiveBlockHash = null;
-		let hasShownErrorNotification = false;
+		let createdReceiveBlockHash = null
+		let hasShownErrorNotification = false
 
 		try {
 			createdReceiveBlockHash =
-				await this.nanoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet());
+				await this.nanoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet())
 		} catch (err) {
-			this.notificationService.sendError('Error receiving transaction: ' + err.message);
-			hasShownErrorNotification = true;
+			this.notificationService.sendError('Error receiving transaction: ' + err.message)
+			hasShownErrorNotification = true
 		}
 
 		if (createdReceiveBlockHash != null) {
-			receivableBlock.received = true;
-			this.mobileTransactionMenuModal.hide();
-			this.notificationService.removeNotification('success-receive');
-			this.notificationService.sendSuccess(this.translocoService.translate('receive.successfully-received-nano'), { identifier: 'success-receive' });
+			receivableBlock.received = true
+			this.mobileTransactionMenuModal.hide()
+			this.notificationService.removeNotification('success-receive')
+			this.notificationService.sendSuccess(this.translocoService.translate('receive.successfully-received-nano'), { identifier: 'success-receive' })
 			// receivable has been processed, can be removed from the list
 			// list also updated with reloadBalances but not if called too fast
-			this.walletService.removeReceivableBlock(receivableBlock.hash);
+			this.walletService.removeReceivableBlock(receivableBlock.hash)
 		} else {
 			if (hasShownErrorNotification === false) {
 				if (!this.walletService.isLedgerWallet()) {
-					this.notificationService.sendError(this.translocoService.translate('receive.there-was-a-problem-receiving-the-transaction-try-manually'), { length: 10000 });
+					this.notificationService.sendError(this.translocoService.translate('receive.there-was-a-problem-receiving-the-transaction-try-manually'), { length: 10000 })
 				}
 			}
 		}

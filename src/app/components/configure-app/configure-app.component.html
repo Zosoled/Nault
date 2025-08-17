@@ -237,14 +237,13 @@
 											href="https://docs.nault.cc/2021/02/13/custom-work-server.html"
 											target="_blank"
 											rel="noopener noreferrer"
-										>{{ 'configure-app.this-has-to-be-a-valid-work.2-link-work' | transloco
-											}}</a> {{ 'configure-app.this-has-to-be-a-valid-work.3' | transloco }}
+										>{{ 'configure-app.this-has-to-be-a-valid-work.2-link-work' | transloco }}</a> {{ 'configure-app.this-has-to-be-a-valid-work.3' | transloco }}
 									</span>
 								</div>
 							</div>
 							<div
 								class="uk-margin"
-								*ngIf="selectedPoWOption === 'clientWebGL' || selectedPoWOption === 'clientCPU' || selectedPoWOption === 'custom'"
+								*ngIf="selectedPoWOption === 'client' || selectedPoWOption === 'custom'"
 							>
 								<label class="uk-form-label">{{ 'configure-app.pow-multiplier' | transloco }} <span
 										uk-icon="icon: info;"
@@ -371,8 +370,7 @@
 											style="z-index: 15000"
 										>
 											<ul class="uk-nav uk-nav-default">
-												<li class="uk-nav-header">{{ 'representative-search.representative-list-results' | transloco }}
-												</li>
+												<li class="uk-nav-header">{{ 'representative-search.representative-list-results' | transloco }}</li>
 												<li class="uk-nav-divider"></li>
 												<li *ngFor="let rep of representativeResults$ | async">
 													<a (click)="selectRepresentative(rep.id)">

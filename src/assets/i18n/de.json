@@ -196,19 +196,16 @@
 		},
 		"node-stats": "Node-Statistiken",
 		"note-since-this-server-only-notifies-about-new-transactions": "Hinweis: Da dieser Server nur über neue Transaktionen benachrichtigt, funktionieren die meisten Wallet-Funktionen auch ohne ihn einwandfrei.",
-		"optional-increased-work-for-transaction-priority-during": "Optionale erhöhte Arbeit für Transaktionspriorität während Netzwerksättigung. Überschreibt sowohl die Standard-SENDEN 1x als auch die EMPFANGEN 1/64x Schwierigkeiten.",
+		"optional-increased-work-for-transaction-priority-during": "Veraltet seit V22.0",
 		"receivable-options": {
 			"automatic-largest-amount-first": "Automatisch - Größter Betrag zuerst",
 			"automatic-oldest-transaction-first": "Automatisch - Älteste Transaktion zuerst",
 			"manual": "Manuell"
 		},
-		"pow-multiplier": "PoW-Multiplikator",
 		"pow-options": {
-			"best-option-available": "Beste verfügbare Option",
-			"client-side-cpu-slowest": "Client-seitig - CPU (Langsamste)",
-			"client-side-gpu-webgl": "Client-seitig - GPU/WebGL",
-			"external-custom-server": "Extern - Benutzerdefinierter Server",
-			"external-selected-server": "Extern - Ausgewählter Server"
+			"external-custom-server": "Extern - benutzerdefinierte Arbeitserver verwenden",
+			"external-selected-server": "Extern - Verwenden Sie den ausgewählten Knoten",
+			"internal-client": "Intern - benutze mein Gerät"
 		},
 		"pow-source": "PoW-Quelle",
 		"random-server": "Zufälliger Server",

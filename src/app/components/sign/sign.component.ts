@@ -75,10 +75,7 @@ export class SignComponent implements OnInit {
 	finalSignature: string = null;
 	// With v21 the 1x is the old 8x and max will be 8x due to the webgl threshold is max ffffffff00000000
 	thresholds = [
-		{ name: '1x', value: 1 },
-		{ name: '2x', value: 2 },
-		{ name: '4x', value: 4 },
-		{ name: '8x', value: 8 }
+		{ name: '1x', value: 1 }
 	];
 	selectedThreshold = this.thresholds[0].value;
 	selectedThresholdOld = this.selectedThreshold;
@@ -468,7 +465,10 @@ export class SignComponent implements OnInit {
 			const workBlock = this.txType === TxType.open
 				? new Account(this.toAccountID).publicKey
 				: this.currentBlock.previous
-			this.workPool.addWorkToCache(workBlock, this.selectedThreshold)
+			const difficulty = (this.txType === TxType.receive || this.txType === TxType.open)
+				? 1 / 64
+				: this.selectedThreshold
+			this.workPool.addWorkToCache(workBlock, difficulty)
 		}
 	}
 
@@ -583,7 +583,10 @@ export class SignComponent implements OnInit {
 					this.notificationService.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 })
 				}
 
-				const tempWork = await this.workPool.getWork(workBlock, this.selectedThreshold)
+				const difficulty = (this.txType === TxType.receive || this.txType === TxType.open)
+					? 1 / 64
+					: this.selectedThreshold
+				const tempWork = await this.workPool.getWork(workBlock, difficulty)
 				if (tempWork.length === 16) {
 					block.work = tempWork
 				}

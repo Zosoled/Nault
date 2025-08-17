@@ -904,37 +904,37 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
 		receivableBlock.loading = true
 
-		let createdReceiveBlockHash = null;
-		let hasShownErrorNotification = false;
+		let createdReceiveBlockHash = null
+		let hasShownErrorNotification = false
 
 		try {
 			createdReceiveBlockHash =
 				await this.nanoBlock.generateReceive(this.walletAccount, sourceBlock, this.wallet.isLedgerWallet())
 		} catch (err) {
-			this.notifications.sendError('Error receiving transaction: ' + err.message);
-			hasShownErrorNotification = true;
+			this.notify.sendError('Error receiving transaction: ' + err.message)
+			hasShownErrorNotification = true
 		}
 
 		if (createdReceiveBlockHash != null) {
-			receivableBlock.received = true;
-			this.mobileTransactionMenuModal.hide();
-			this.notifications.removeNotification('success-receive');
-			this.notifications.sendSuccess(`Successfully received nano!`, { identifier: 'success-receive' });
-			// clear the list of pending blocks. Updated again with reloadBalances()
-			this.wallet.clearPendingBlocks();
+			receivableBlock.received = true
+			this.mobileTransactionMenuModal.hide()
+			this.notify.removeNotification('success-receive')
+			this.notify.sendSuccess(`Successfully received nano!`, { identifier: 'success-receive' })
+			// clear the list of receivable blocks. Updated again with reloadBalances()
+			this.wallet.clearReceivableBlocks()
 		} else {
 			if (hasShownErrorNotification === false) {
 				if (!this.wallet.isLedgerWallet()) {
-					this.notifications.sendError(`Error receiving transaction, please try again`, { length: 10000 });
+					this.notify.sendError(`Error receiving transaction, please try again`, { length: 10000 })
 				}
 			}
 		}
 
-		receivableBlock.loading = false;
+		receivableBlock.loading = false
 
-		await this.wallet.reloadBalances();
+		await this.wallet.reloadBalances()
 
-		this.loadAccountDetailsThrottled({});
+		this.loadAccountDetailsThrottled({})
 	}
 
 	async generateSend () {

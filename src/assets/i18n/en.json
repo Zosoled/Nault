@@ -196,7 +196,7 @@
 		},
 		"node-stats": "Node Stats",
 		"note-since-this-server-only-notifies-about-new-transactions": "Note: Since this server only notifies about new transactions, most of the wallet functions fine without it.",
-		"optional-increased-work-for-transaction-priority-during": "Optional increased work for transaction priority during network saturation. Overrides both default SEND 1x and RECEIVE 1/64x difficulties.",
+		"optional-increased-work-for-transaction-priority-during": "Deprecated since v22.0",
 		"receivable-options": {
 			"automatic-largest-amount-first": "Automatic - Largest Amount First",
 			"automatic-oldest-transaction-first": "Automatic - Oldest Transaction First",
@@ -204,11 +204,9 @@
 		},
 		"pow-multiplier": "PoW Multiplier",
 		"pow-options": {
-			"best-option-available": "Best Option Available",
-			"client-side-cpu-slowest": "Client-side - CPU (Slowest)",
-			"client-side-gpu-webgl": "Client-side - GPU/WebGL",
-			"external-custom-server": "External - Custom Server",
-			"external-selected-server": "External - Selected Server"
+			"external-custom-server": "External - Use custom work server",
+			"external-selected-server": "External - Use selected node",
+			"internal-client": "Internal - Use my device"
 		},
 		"pow-source": "PoW Source",
 		"random-server": "Random Server",
@@ -228,18 +226,18 @@
 		"this-has-to-be-a-valid-authorization-header": "This has to be a valid Authorization header.",
 		"this-has-to-be-a-valid-rpc": {
 			"1": "This has to be a valid",
-			"3": "or an API compliant with it.",
-			"2-link-rpc": "nano RPC endpoint"
+			"2-link-rpc": "nano RPC endpoint",
+			"3": "or an API compliant with it."
 		},
 		"this-has-to-be-a-valid-websocket": {
 			"1": "This has to be a valid",
-			"3": "or a WebSocket API compliant with it.",
-			"2-link-websocket": "Nano Node Websocket"
+			"2-link-websocket": "Nano Node Websocket",
+			"3": "or a WebSocket API compliant with it."
 		},
 		"this-has-to-be-a-valid-work": {
 			"1": "This has to be a valid",
-			"3": "endpoint or an API compliant with it. If your server on localhost does not work, try the desktop app instead.",
-			"2-link-work": "Nano Work Server"
+			"2-link-work": "Nano Work Server",
+			"3": "endpoint or an API compliant with it. If your server on localhost does not work, try the desktop app instead."
 		},
 		"this-representative-will-be-used-for-any-new-account": "This representative will be used for any new account",
 		"this-server-is-used-for-rpc-communication-with-the-nano-node": "This server is used for RPC communication with the nano node",
@@ -252,7 +250,6 @@
 		"update-wallet-settings": "Update Wallet Settings",
 		"use-if-the-api-requires-authentication": "Use if the API requires authentication",
 		"wallet-settings": "Wallet Settings",
-		"webgl-support-not-available-set-pow-to-best": "WebGL support not available, set PoW to Best",
 		"websocket-server": "WebSocket Server",
 		"work-server": "Work Server",
 		"you-are-about-to-delete-all-locally-cached-proof-of-work": "You are about to delete all locally cached Proof of Work values.",
