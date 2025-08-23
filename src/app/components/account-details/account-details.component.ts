@@ -12,7 +12,7 @@ import { UtilService } from '../../services/util.service'
 import * as QRCode from 'qrcode'
 import { RepresentativeService } from '../../services/representative.service'
 import { BehaviorSubject } from 'rxjs'
-import { Account, SendBlock, ReceiveBlock, ChangeBlock, Tools, Block } from 'libnemo'
+import { Account, Block, Tools } from 'libnemo'
 import { NinjaService } from '../../services/ninja.service'
 import { QrModalService } from '../../services/qr-modal.service'
 import { translate } from '@jsverse/transloco'
@@ -974,7 +974,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 			from.frontier,
 			representative
 		).send(Account.load(this.toAccountID).publicKey, this.rawAmount)
-		this.blockHash = this.util.uint8.toHex(await block.hash())
+		this.blockHash = block.hash
 		console.log('Created block', block)
 		console.log('Block hash: ' + this.blockHash)
 
@@ -992,7 +992,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		}
 
 		// Nano signing standard
-		this.qrString = `nanosign:{"block":${block.json()},"previous":${JSON.stringify(blockDataPrevious)}}`
+		this.qrString = `nanosign:{"block":${block.toJSON()},"previous":${JSON.stringify(blockDataPrevious)}}`
 		const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 })
 		this.qrCodeImageBlock = qrCode
 	}
@@ -1021,14 +1021,14 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 			: BigInt(toAcct.balance) + srcAmount
 		const newBalanceDecimal = newBalance.toString(10)
 
-		const block = new ReceiveBlock(
+		const block = new Block(
 			this.accountID,
 			toAcct.balance,
 			previousBlock,
 			representative
 		).receive(receivableHash, srcAmount)
 
-		this.blockHashReceive = this.util.uint8.toHex(await block.hash())
+		this.blockHashReceive = block.hash
 		console.log('Created block', block)
 		console.log('Block hash: ' + this.blockHashReceive)
 
@@ -1051,12 +1051,12 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		let qrData
 		if (blockDataPrevious) {
 			qrData = {
-				block: block.json(),
+				block: block.toJSON(),
 				previous: blockDataPrevious
 			}
 		} else {
 			qrData = {
-				block: block.json()
+				block: block.toJSON()
 			}
 		}
 
@@ -1068,7 +1068,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	async generateChange () {
-		if (!this.util.account.isValidAccount(this.representativeModel)) return this.notify.sendError(`Not a valid representative account`)
+		if (!this.util.account.isValidAccount(this.representativeModel)) {
+			return this.notify.sendError(`Not a valid representative account`)
+		}
 		this.qrCodeImageBlock = null
 		this.blockHash = null
 		this.qrString = null
@@ -1083,10 +1085,9 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		const block = new Block(
 			this.accountID,
 			balanceDecimal,
-			account.frontier,
-			this.representativeModel
-		).change()
-		this.blockHash = this.util.uint8.toHex(await block.hash())
+			account.frontier
+		).change(this.representativeModel)
+		this.blockHash = block.hash
 
 		console.log('Created block', block)
 		console.log('Block hash: ' + this.blockHash)
@@ -1105,7 +1106,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 		}
 
 		// Nano signing standard
-		this.qrString = 'nanosign:{"block":' + JSON.stringify(block.json()) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}'
+		this.qrString = 'nanosign:{"block":' + JSON.stringify(block.toJSON()) + ',"previous":' + JSON.stringify(blockDataPrevious) + '}'
 		const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 })
 		this.qrCodeImageBlock = qrCode
 	}
