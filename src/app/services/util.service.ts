@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core'
-import * as blake from 'blakejs'
-import { BigNumber } from 'bignumber.js'
-import * as nanocurrency from 'nanocurrency'
-import { Account } from 'libnemo'
+import { Account, Blake2b } from 'libnemo'
 
 const nacl = window['nacl']
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006'
@@ -273,32 +270,17 @@ function mnemonicToSeedSync (mnemonic, password = null) {
 /** Account Functions **/
 function generateAccountSecretKeyBytes (seedBytes, accountIndex) {
 	const accountBytes = hexToUint8(decToHex(accountIndex, 4))
-	const context = blake.blake2bInit(32)
-	blake.blake2bUpdate(context, seedBytes)
-	blake.blake2bUpdate(context, accountBytes)
-	const newKey = blake.blake2bFinal(context)
-
+	const newKey = new Blake2b(32).update(seedBytes).update(accountBytes).digest()
 	return newKey
 }
 
 function getAccountChecksum (pubkey) {
-	const context = blake.blake2bInit(5)
-	blake.blake2bUpdate(context, pubkey)
-	const out = blake.blake2bFinal(context)
+	const out = new Blake2b(5).update(pubkey).digest()
 	return out.reverse()
 }
 
 function generateAccountKeyPair (accountSecretKeyBytes, expanded = false) {
 	return nacl.sign.keyPair.fromSecretKey(accountSecretKeyBytes, expanded)
-}
-
-function getPublicAccountID (accountPublicKeyBytes, prefix = 'nano') {
-	const accountHex = util.uint8.toHex(accountPublicKeyBytes)
-	const keyBytes = util.uint4.toUint8(util.hex.toUint4(accountHex)) // For some reason here we go from u, to hex, to 4, to 8??
-	const checksum = util.uint5.toString(util.uint4.toUint5(util.uint8.toUint4(blake.blake2b(keyBytes, null, 5).reverse())))
-	const account = util.uint5.toString(util.uint4.toUint5(util.hex.toUint4(`0${accountHex}`)))
-
-	return `${prefix}_${account}${checksum}`
 }
 
 function isValidAccount (account: string): boolean {

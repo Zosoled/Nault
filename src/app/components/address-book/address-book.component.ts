@@ -7,7 +7,6 @@ import { UtilService } from '../../services/util.service'
 import { QrModalService } from '../../services/qr-modal.service'
 import { Router } from '@angular/router'
 import * as QRCode from 'qrcode'
-import { BigNumber } from 'bignumber.js'
 import { ApiService } from '../../services/api.service'
 import { PriceService } from '../../services/price.service'
 import { AppSettingsService } from '../../services/app-settings.service'
@@ -94,13 +93,13 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
 						this.totalTrackedBalanceFiat = this.totalTrackedBalanceFiat - this.accounts[entry.account].balanceFiat
 						this.totalTrackedReceivable = this.totalTrackedReceivable.minus(this.accounts[entry.account].receivable)
 
-						this.accounts[entry.account].balance = walletAccount.balance
-						this.accounts[entry.account].receivable = walletAccount.receivable
+						this.accounts[entry.account].balance = walletAccount.balanceNano
+						this.accounts[entry.account].receivable = walletAccount.receivableNano
 						this.accounts[entry.account].balanceFiat = walletAccount.balanceFiat
-						this.accounts[entry.account].balanceRaw = walletAccount.balanceRaw
+						this.accounts[entry.account].balanceRaw = walletAccount.balance
 
-						this.totalTrackedBalance = this.totalTrackedBalance.plus(walletAccount.balance)
-						this.totalTrackedBalanceRaw = this.totalTrackedBalanceRaw.plus(walletAccount.balanceRaw)
+						this.totalTrackedBalance = this.totalTrackedBalance.plus(walletAccount.balanceNano)
+						this.totalTrackedBalanceRaw = this.totalTrackedBalanceRaw.plus(walletAccount.balance)
 						this.totalTrackedBalanceFiat = this.totalTrackedBalanceFiat + walletAccount.balanceFiat
 						this.totalTrackedReceivable = this.totalTrackedReceivable.plus(this.accounts[entry.account].receivable)
 					}
@@ -191,10 +190,10 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
 			// If the account exist in the wallet, take the info from there to save on RPC calls
 			const walletAccount = this.walletService.wallet.accounts.find(a => a.id === entry.account)
 			if (walletAccount) {
-				balanceAccount.balance = walletAccount.balance
-				balanceAccount.receivable = walletAccount.receivable
+				balanceAccount.balance = walletAccount.balanceNano
+				balanceAccount.receivable = walletAccount.receivableNano
 				balanceAccount.balanceFiat = walletAccount.balanceFiat
-				balanceAccount.balanceRaw = walletAccount.balanceRaw
+				balanceAccount.balanceRaw = walletAccount.balance
 				// Add balances from RPC data
 			} else {
 				balanceAccount.balance = new BigNumber(apiAccounts.balances[entry.account].balance)

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core'
-import BigNumber from 'bignumber.js'
 import { AddressBookService } from '../../services/address-book.service'
 import { BehaviorSubject } from 'rxjs'
 import { WalletService } from '../../services/wallet.service'
@@ -136,7 +135,7 @@ export class SendComponent implements OnInit {
 
 	async findFirstAccount () {
 		// Load balances before we try to find the right account
-		if (this.walletService.wallet.balance.isZero()) {
+		if (this.walletService.wallet.balanceNano.isZero()) {
 			await this.walletService.reloadBalances()
 		}
 
@@ -446,9 +445,9 @@ export class SendComponent implements OnInit {
 			return
 		}
 
-		this.amountExtraRaw = walletAccount.balanceRaw
+		this.amountExtraRaw = walletAccount.balance
 
-		const nanoBalance = await Tools.convert(walletAccount.balance.toString(), 'raw', 'nano')
+		const nanoBalance = await Tools.convert(walletAccount.balanceNano.toString(), 'raw', 'nano')
 		this.amount = +(new BigNumber(nanoBalance).toFixed(6))
 		this.syncFiatPrice()
 	}

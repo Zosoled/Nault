@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { NotificationService } from '../../services/notification.service'
-import * as CryptoJS from 'crypto-js'
-import { WalletService, WalletType } from '../../services/wallet.service'
+import { WalletService, WalletKeyType } from '../../services/wallet.service'
 import { UtilService } from '../../services/util.service'
 
 @Component({
@@ -53,7 +52,7 @@ export class ImportWalletComponent implements OnInit {
 		// Attempt to decrypt the seed value using the password
 		try {
 			await new Promise(resolve => setTimeout(resolve, 500)) // brute force delay
-			let walletType: WalletType
+			let walletType: WalletKeyType
 			let secret = ''
 			if (this.importData.seed) {
 				secret = this.importData.seed
