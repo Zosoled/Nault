@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { NotificationService } from '../../services/notification.service'
-import { Blake2bWallet } from 'libnemo'
+import { Wallet } from 'libnemo'
 
 @Component({
 	selector: 'app-keygenerator',
@@ -23,8 +23,8 @@ export class KeygeneratorComponent implements OnInit {
 
 	async generate () {
 		// generate random bytes and create seed/mnemonic
-		const wallet = await Blake2bWallet.create('tmp')
-		await wallet.unlock('tmp')
+		const wallet = await Wallet.create('BLAKE2b', '')
+		await wallet.unlock('')
 		this.mnemonic = wallet.mnemonic
 		this.seed = wallet.seed
 		// derive private/public keys using index 0
