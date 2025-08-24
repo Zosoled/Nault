@@ -10,7 +10,7 @@ import { NotificationService } from './notification.service'
 import { AppSettingsService } from './app-settings.service'
 import { PriceService } from './price.service'
 import { LedgerService } from './ledger.service'
-import { Account, Wallet, WalletType } from 'libnemo'
+import { Account, Tools, Wallet, WalletType } from 'libnemo'
 
 export type WalletKeyType = 'seed' | 'ledger' | 'privateKey' | 'expandedKey'
 
@@ -359,8 +359,10 @@ export class WalletService {
 					await this.addWalletAccount(i, false)
 				}))
 			} else return false
-		} else if (walletType === 'privateKey' || walletType === 'expandedKey') {
-			this.wallet.accounts.push(this.createSingleKeyAccount(walletType === 'expandedKey'))
+		} else if (walletType === 'expandedKey') {
+			this.wallet.accounts.push(await Account.load({ privateKey: seed.slice(64, 128) }, 'private'))
+		} else if (walletType === 'privateKey') {
+			this.wallet.accounts.push(await Account.load({ privateKey: seed.slice(0, 64) }, 'private'))
 		} else { // invalid wallet type
 			return false
 		}
@@ -432,11 +434,10 @@ export class WalletService {
 		}
 	}
 
-	async createWalletFromSeed (seed: string) {
+	async createWalletFromSeed (password: string, seed: string) {
 		this.resetWallet()
 
-		this.wallet.seed = seed
-		this.wallet.seedBytes = this.util.hex.toUint8(seed)
+		this.wallet.wallet = await Wallet.load('BLAKE2b', password, seed)
 
 		await this.scanAccounts()
 	}
@@ -451,34 +452,10 @@ export class WalletService {
 
 		// Getting accounts...
 		for (let batchIdx = 0; batchIdx < batchesCount; batchIdx++) {
-			const batchAccounts = {}
+			const batchAccounts = await this.wallet.wallet.accounts(batchIdx, batchIdx + ACCOUNTS_PER_API_REQUEST)
 			const batchAccountsArray = []
-			for (let i = 0; i < ACCOUNTS_PER_API_REQUEST; i++) {
-				const index = batchIdx * ACCOUNTS_PER_API_REQUEST + i
-
-				let accountAddress = ''
-				let accountPublicKey = ''
-
-				if (this.wallet.type === 'seed') {
-					const accountBytes = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, index)
-					const accountKeyPair = this.util.account.generateAccountKeyPair(accountBytes)
-					accountPublicKey = this.util.uint8.toHex(accountKeyPair.publicKey).toUpperCase()
-					accountAddress = Account.load(accountKeyPair.publicKey).address
-
-				} else if (this.wallet.type === 'ledger') {
-					const account: any = await this.ledgerService.getLedgerAccount(index)
-					accountAddress = account.address.replace('xrb_', 'nano_')
-					accountPublicKey = account.publicKey.toUpperCase()
-
-				} else {
-					return false
-				}
-
-				batchAccounts[accountAddress] = {
-					index: index,
-					publicKey: accountPublicKey,
-				}
-				batchAccountsArray.push(accountAddress)
+			for (let i = batchIdx; i < batchIdx + ACCOUNTS_PER_API_REQUEST; i++) {
+				batchAccountsArray.push(batchAccounts[i].address)
 			}
 
 			// Checking frontiers...
@@ -512,15 +489,11 @@ export class WalletService {
 		this.reloadBalances()
 	}
 
-	createNewWallet (seed: string) {
+	async createNewWallet (password: string) {
 		this.resetWallet()
-
-		this.wallet.seedBytes = this.util.hex.toUint8(seed)
-		this.wallet.seed = seed
-
+		this.wallet.wallet = await Wallet.create('BLAKE2b', password)
 		this.addWalletAccount()
-
-		return this.wallet.seed
+		return this.wallet.wallet.seed
 	}
 
 	async createLedgerWallet () {
@@ -536,41 +509,16 @@ export class WalletService {
 	async createWalletFromSingleKey (key: string, expanded: boolean) {
 		this.resetWallet()
 
-		this.wallet.type = expanded
-			? 'expandedKey'
-			: 'privateKey'
-		this.wallet.seed = key
-		this.wallet.seedBytes = this.util.hex.toUint8(key)
-
-		this.wallet.accounts.push(this.createSingleKeyAccount(expanded))
+		this.wallet.type = expanded ? 'expandedKey' : 'privateKey'
+		const keyData = expanded ? key.slice(64, 128) : key.slice(0, 64)
+		const account = await Account.load({ privateKey: keyData }, 'private')
+		this.wallet.accounts.push(account)
 		await this.reloadBalances()
 		this.saveWalletExport()
 	}
 
 	async createLedgerAccount (index) {
-		const account: any = await this.ledgerService.getLedgerAccount(index)
-
-		const accountID = account.address
-		const nanoAccountID = accountID.replace('xrb_', 'nano_')
-		const addressBookName = this.addressBook.getAccountName(nanoAccountID)
-
-		const newAccount: WalletAccount = {
-			id: nanoAccountID,
-			frontier: null,
-			secret: null,
-			keyPair: null,
-			balanceNano: new BigNumber(0),
-			receivableNano: new BigNumber(0),
-			balance: new BigNumber(0),
-			receivable: new BigNumber(0),
-			balanceFiat: 0,
-			receivableFiat: 0,
-			index: index,
-			addressBookName,
-			receivePow: false,
-		}
-
-		return newAccount
+		return await this.wallet.wallet.account(index)
 	}
 
 	createKeyedAccount (index, accountBytes, accountKeyPair) {
@@ -582,10 +530,8 @@ export class WalletService {
 			frontier: null,
 			secret: accountBytes,
 			keyPair: accountKeyPair,
-			balanceNano: new BigNumber(0),
-			receivableNano: new BigNumber(0),
-			balance: new BigNumber(0),
-			receivable: new BigNumber(0),
+			balance: 0n,
+			receivable: 0n,
 			balanceFiat: 0,
 			receivableFiat: 0,
 			index: index,
@@ -597,15 +543,7 @@ export class WalletService {
 	}
 
 	async createSeedAccount (index) {
-		const accountBytes = this.util.account.generateAccountSecretKeyBytes(this.wallet.seedBytes, index)
-		const accountKeyPair = this.util.account.generateAccountKeyPair(accountBytes)
-		return this.createKeyedAccount(index, accountBytes, accountKeyPair)
-	}
-
-	createSingleKeyAccount (expanded: boolean) {
-		const accountBytes = this.wallet.seedBytes
-		const accountKeyPair = this.util.account.generateAccountKeyPair(accountBytes, expanded)
-		return this.createKeyedAccount(0, accountBytes, accountKeyPair)
+		return await this.wallet.wallet.account(index)
 	}
 
 	/**
@@ -616,16 +554,11 @@ export class WalletService {
 			this.websocket.unsubscribeAccounts(this.wallet.accounts.map(a => a.id)) // Unsubscribe from old accounts
 		}
 		this.wallet.type = 'seed'
-		this.wallet.password = ''
 		this.wallet.locked = false
 		this.wallet.locked$.next(false)
-		this.wallet.seed = ''
-		this.wallet.seedBytes = null
 		this.wallet.accounts = []
-		this.wallet.balanceNano = new BigNumber(0)
-		this.wallet.receivableNano = new BigNumber(0)
-		this.wallet.balance = new BigNumber(0)
-		this.wallet.receivable = new BigNumber(0)
+		this.wallet.balance = 0n
+		this.wallet.receivable = 0n
 		this.wallet.balanceFiat = 0
 		this.wallet.receivableFiat = 0
 		this.wallet.hasReceivable = false
@@ -639,7 +572,7 @@ export class WalletService {
 		switch (this.wallet.type) {
 			case 'privateKey':
 			case 'expandedKey':
-			case 'seed': return !!this.wallet.seed
+			case 'seed': return !!this.wallet.wallet
 			case 'ledger': return true
 		}
 	}
@@ -674,19 +607,17 @@ export class WalletService {
 		const fiatPrice = this.price.price.lastPrice
 
 		this.wallet.accounts.forEach(account => {
-			account.balanceFiat = this.util.nano.rawToMnano(account.balanceNano).times(fiatPrice).toNumber()
-			account.receivableFiat = this.util.nano.rawToMnano(account.receivableNano).times(fiatPrice).toNumber()
+			account.balanceFiat = parseInt(Tools.convert(account.balance, 'raw', 'nano')) * fiatPrice
+			account.receivableFiat = parseInt(Tools.convert(account.receivable, 'raw', 'nano')) * fiatPrice
 		})
 
-		this.wallet.balanceFiat = this.util.nano.rawToMnano(this.wallet.balanceNano).times(fiatPrice).toNumber()
-		this.wallet.receivableFiat = this.util.nano.rawToMnano(this.wallet.receivableNano).times(fiatPrice).toNumber()
+		this.wallet.balanceFiat = parseInt(Tools.convert(this.wallet.balance, 'raw', 'nano')) * fiatPrice
+		this.wallet.receivableFiat = parseInt(Tools.convert(this.wallet.receivable, 'raw', 'nano')) * fiatPrice
 	}
 
 	resetBalances () {
-		this.wallet.balanceNano = new BigNumber(0)
-		this.wallet.receivableNano = new BigNumber(0)
-		this.wallet.balance = new BigNumber(0)
-		this.wallet.receivable = new BigNumber(0)
+		this.wallet.balance = 0n
+		this.wallet.receivable = 0n
 		this.wallet.balanceFiat = 0
 		this.wallet.receivableFiat = 0
 		this.wallet.hasReceivable = false
@@ -708,9 +639,9 @@ export class WalletService {
 		// }
 		// const frontierBlocks = await this.api.blocksInfo(allFrontiers.map(f => f.frontier));
 
-		let walletBalance = new BigNumber(0)
-		let walletReceivableInclUnconfirmed = new BigNumber(0)
-		let walletReceivableAboveThresholdConfirmed = new BigNumber(0)
+		let walletBalance = 0n
+		let walletReceivableInclUnconfirmed = 0n
+		let walletReceivableAboveThresholdConfirmed = 0n
 
 		if (!accounts) {
 			this.resetBalances()
@@ -728,12 +659,10 @@ export class WalletService {
 
 			if (!walletAccount) continue
 
-			walletAccount.balanceNano = new BigNumber(accounts.balances[accountID].balance || 0)
-			const accountBalanceReceivableInclUnconfirmed = new BigNumber(accounts.balances[accountID].receivable || 0)
+			walletAccount.balanceNano = accounts.balances[accountID].balance ?? 0n
+			const accountBalanceReceivableInclUnconfirmed = accounts.balances[accountID].receivable ?? 0n
 
-			walletAccount.balance = new BigNumber(walletAccount.balanceNano).mod(this.nano)
-
-			walletAccount.balanceFiat = this.util.nano.rawToMnano(walletAccount.balanceNano).times(fiatPrice).toNumber()
+			walletAccount.balanceFiat = parseInt(Tools.convert(walletAccount.balance, 'raw', 'nano')) * fiatPrice
 
 			const walletAccountFrontier = frontiers.frontiers?.[accountID]
 			const walletAccountFrontierIsValidHash = this.util.nano.isValidHash(walletAccountFrontier)
@@ -744,11 +673,11 @@ export class WalletService {
 					: null
 			)
 
-			walletBalance = walletBalance.plus(walletAccount.balanceNano)
-			walletReceivableInclUnconfirmed = walletReceivableInclUnconfirmed.plus(accountBalanceReceivableInclUnconfirmed)
+			walletBalance += walletAccount.balance
+			walletReceivableInclUnconfirmed += accountBalanceReceivableInclUnconfirmed
 		}
 
-		if (walletReceivableInclUnconfirmed.gt(0)) {
+		if (walletReceivableInclUnconfirmed > 0n) {
 			let receivable
 
 			if (this.appSettings.settings.minimumReceive) {
@@ -767,7 +696,7 @@ export class WalletService {
 					const walletAccount = this.wallet.accounts.find(a => a.id === block)
 
 					if (receivable.blocks[block]) {
-						let accountReceivable = new BigNumber(0)
+						let accountReceivable = 0n
 
 						for (const hash in receivable.blocks[block]) {
 							if (!receivable.blocks[block].hasOwnProperty(hash)) {
@@ -783,20 +712,19 @@ export class WalletService {
 								)
 
 							if (isNewBlock === true) {
-								accountReceivable = accountReceivable.plus(receivable.blocks[block][hash].amount)
-								walletReceivableAboveThresholdConfirmed = walletReceivableAboveThresholdConfirmed.plus(receivable.blocks[block][hash].amount)
+								accountReceivable += receivable.blocks[block][hash].amount
+								walletReceivableAboveThresholdConfirmed += receivable.blocks[block][hash].amount
 							}
 						}
 
-						walletAccount.receivableNano = accountReceivable
-						walletAccount.receivable = accountReceivable.mod(this.nano)
+						walletAccount.receivable = accountReceivable
 						walletAccount.receivableFiat = this.util.nano.rawToMnano(accountReceivable).times(fiatPrice).toNumber()
 
 						// If there is a receivable, it means we want to add to work cache as receive-threshold
-						if (walletAccount.receivableNano.gt(0)) {
+						if (walletAccount.receivableNano > 0n) {
 							console.log('Adding single receivable account within limit to work cache')
 							// Use frontier or public key if open block
-							const hash = walletAccount.frontier || new Account(walletAccount.id).publicKey
+							const hash = walletAccount.frontier || walletAccount.publicKey
 							// Technically should be 1/64 multiplier here but since we don't know if the receivable will be received before
 							// a send or change block is made it's safer to use 1x PoW threshold to be sure the cache will work.
 							// On the other hand, it may be more efficient to use 1/64 and simply let the work cache rework
@@ -807,8 +735,7 @@ export class WalletService {
 							walletAccount.receivePow = false
 						}
 					} else {
-						walletAccount.receivableNano = new BigNumber(0)
-						walletAccount.receivable = new BigNumber(0)
+						walletAccount.receivable = 0n
 						walletAccount.receivableFiat = 0
 						walletAccount.receivePow = false
 					}
@@ -820,8 +747,7 @@ export class WalletService {
 				if (!accounts.balances.hasOwnProperty(accountID)) continue
 				const walletAccount = this.wallet.accounts.find(a => a.id === accountID)
 				if (!walletAccount) continue
-				walletAccount.receivableNano = new BigNumber(0)
-				walletAccount.receivable = new BigNumber(0)
+				walletAccount.receivable = 0n
 				walletAccount.receivableFiat = 0
 				walletAccount.receivePow = false
 			}
@@ -830,21 +756,18 @@ export class WalletService {
 		// Make sure any frontiers are in the work pool
 		// If they have no frontier, we want to use their pub key?
 		const hashes = this.wallet.accounts.filter(account => (account.receivePow === false)).
-			map(account => account.frontier || new Account(account.id).publicKey)
+			map(account => account.frontier || account.publicKey)
 		console.log('Adding non-receivable frontiers to work cache')
 		hashes.forEach(hash => this.workPool.addWorkToCache(hash, 1)) // use high pow here since we don't know what tx type will be next
 
-		this.wallet.balanceNano = walletBalance
-		this.wallet.receivableNano = walletReceivableAboveThresholdConfirmed
-
-		this.wallet.balance = new BigNumber(walletBalance).mod(this.nano)
-		this.wallet.receivable = new BigNumber(walletReceivableAboveThresholdConfirmed).mod(this.nano)
+		this.wallet.balance = walletBalance
+		this.wallet.receivable = walletReceivableAboveThresholdConfirmed
 
 		this.wallet.balanceFiat = this.util.nano.rawToMnano(walletBalance).times(fiatPrice).toNumber()
 		this.wallet.receivableFiat = this.util.nano.rawToMnano(walletReceivableAboveThresholdConfirmed).times(fiatPrice).toNumber()
 
 		// eslint-disable-next-line
-		this.wallet.hasReceivable = walletReceivableAboveThresholdConfirmed.gt(0)
+		this.wallet.hasReceivable = walletReceivableAboveThresholdConfirmed > 0n
 
 		this.wallet.updatingBalance = false
 		this.wallet.balanceInitialized = true
@@ -856,29 +779,13 @@ export class WalletService {
 	}
 
 	async loadWalletAccount (accountIndex, accountID) {
-		const index = accountIndex
+		const account = await this.wallet.wallet.account(accountIndex)
 		const addressBookName = this.addressBook.getAccountName(accountID)
 
-		const newAccount: WalletAccount = {
-			id: accountID,
-			frontier: null,
-			secret: null,
-			keyPair: null,
-			balanceNano: new BigNumber(0),
-			receivableNano: new BigNumber(0),
-			balance: new BigNumber(0),
-			receivable: new BigNumber(0),
-			balanceFiat: 0,
-			receivableFiat: 0,
-			index: index,
-			addressBookName,
-			receivePow: false,
-		}
-
-		this.wallet.accounts.push(newAccount)
+		this.wallet.accounts.push(account)
 		this.websocket.subscribeAccounts([accountID])
 
-		return newAccount
+		return account
 	}
 
 	async addWalletAccount (accountIndex: number | null = null, reloadBalances: boolean = true) {
@@ -891,7 +798,7 @@ export class WalletService {
 			while (this.wallet.accounts.find(a => a.index === index)) index++
 		}
 
-		let newAccount: WalletAccount | null
+		let newAccount: Account | null
 
 		if (this.isSingleKeyWallet()) {
 			throw new Error(`Wallet consists of a single private key.`)
@@ -976,9 +883,9 @@ export class WalletService {
 	}
 
 	sortByAmount (a, b) {
-		const x = new BigNumber(a.amount)
-		const y = new BigNumber(b.amount)
-		return y.comparedTo(x)
+		const x = BigInt(a.amount)
+		const y = BigInt(b.amount)
+		return x > y ? a : b
 	}
 
 	async processReceivableBlocks () {
@@ -1053,24 +960,17 @@ export class WalletService {
 		localStorage.removeItem(this.storeKey)
 	}
 
-	generateWalletExport () {
+	async generateWalletExport () {
 		const data: any = {
 			type: this.wallet.type,
 			accounts: this.wallet.accounts.map(a => ({ id: a.id, index: a.index })),
 			selectedAccountId: this.wallet.selectedAccount?.id ?? null,
+			locked: true
 		}
 
-		if (this.wallet.type === 'ledger') {
-		} else {
-			// Forcefully encrypt the seed so an unlocked wallet is never saved
-			if (!this.wallet.locked) {
-				const encryptedSeed = CryptoJS.AES.encrypt(this.wallet.seed, this.wallet.password || '')
-				data.seed = encryptedSeed.toString()
-			} else {
-				data.seed = this.wallet.seed
-			}
-			data.locked = true
-		}
+		const backup = await Wallet.backup()
+		const walletData = backup.find(v => v.id === this.wallet.wallet.id)
+		data.seed = walletData
 
 		return data
 	}
