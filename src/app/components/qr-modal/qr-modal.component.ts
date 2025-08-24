@@ -4,7 +4,7 @@ import { NotificationService } from '../../services/notification.service'
 import { BarcodeFormat } from '@zxing/library'
 import { BehaviorSubject } from 'rxjs'
 import { UtilService } from '../../services/util.service'
-import { Blake2bWallet } from 'libnemo'
+import { Wallet } from 'libnemo'
 
 export type QRType = 'account' | 'hash' | 'mnemonic' | 'generic'
 
@@ -59,7 +59,7 @@ export class QrModalComponent implements OnInit {
 			content = resultString
 		} else if (/ /.test(resultString)) {
 			try {
-				await Blake2bWallet.fromMnemonic('tmp', resultString)
+				await Wallet.load('BLAKE2b', '', resultString)
 				type = 'mnemonic'
 				content = resultString
 			} catch (err) { }
