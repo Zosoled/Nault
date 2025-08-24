@@ -7,7 +7,7 @@ import { UtilService, TxType } from '../../services/util.service'
 import { WorkPoolService } from '../../services/work-pool.service'
 import { AppSettingsService } from '../../services/app-settings.service'
 import { NanoBlockService } from '../../services/nano-block.service'
-import { Account, Block, Wallet } from 'libnemo'
+import { Account, Block, Tools, Wallet } from 'libnemo'
 import { Router } from '@angular/router'
 
 const INDEX_MAX = 4294967295 // seed index
@@ -246,8 +246,8 @@ export class SweeperComponent implements OnInit {
 			const data = await this.api.process(block.toJSON(), TxType.send)
 			if (data.hash) {
 				const blockInfo = await this.api.blockInfo(data.hash)
-				const nanoAmountSent = this.util.nano.rawToMnano(blockInfo?.amount) ?? 0
-				this.totalSwept = this.util.big.add(this.totalSwept, nanoAmountSent)
+				const nanoAmountSent = blockInfo?.amount ?? 0n
+				this.totalSwept += nanoAmountSent
 
 				this.notificationService.sendInfo(
 					`Account ${account.address} was swept and ${'Ӿ' + nanoAmountSent.toString(10)} transferred to ${this.destinationAccount}`,
@@ -272,7 +272,7 @@ export class SweeperComponent implements OnInit {
 		this.blocks = blocks
 		this.keys = keys
 		this.keyCount = keyCount
-		this.adjustedBalance = this.util.big.add(this.adjustedBalance, blocks[key].amount)
+		this.adjustedBalance += blocks[key].amount
 
 		// generate local work
 		try {
@@ -345,7 +345,7 @@ export class SweeperComponent implements OnInit {
 		// check for receivable first
 		let data = null
 		if (this.appSettings.settings.minimumReceive) {
-			const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive).toString(10)
+			const minAmount = Tools.convert(this.appSettings.settings.minimumReceive, 'mnano', 'raw')
 			if (this.appSettings.settings.receivableOption === 'amount') {
 				data = await this.api.receivableLimitSorted(address, this.maxIncoming, minAmount)
 			} else {
