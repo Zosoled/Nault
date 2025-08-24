@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { BehaviorSubject } from 'rxjs'
-import BigNumber from 'bignumber.js'
 import hermes from 'hermes-channel'
 import * as QRCode from 'qrcode'
-import { Account, Bip44Wallet, Blake2bWallet } from 'libnemo'
+import { Account, Tools, Wallet } from 'libnemo'
 import { AddressBookService } from '../../services/address-book.service'
 import { WalletService } from '../../services/wallet.service'
 import { NotificationService } from '../../services/notification.service'
@@ -36,13 +35,13 @@ export class SignComponent implements OnInit {
 	showAddressBook = false;
 	addressBookMatch = '';
 	amount = null;
-	rawAmount: BigNumber = new BigNumber(0);
+	rawAmount: bigint = 0n;
 	amountFiat: number | null = null;
 	fromAccountID: any = '';
-	fromAccountBalance: BigNumber = null;
+	fromAccountBalance: bigint = null;
 	fromAddressBook = '';
 	toAccountID = '';
-	toAccountBalance: BigNumber = null;
+	toAccountBalance: bigint = null;
 	toAddressBook = '';
 	repAddressBook = '';
 	toAccountStatus = null;
@@ -255,43 +254,46 @@ export class SignComponent implements OnInit {
 			// check if both new block and previous block hashes matches (balances has not been tampered with) and have valid parameters
 			if (this.previousBlock && this.verifyBlock(this.currentBlock) && this.verifyBlock(this.previousBlock)) {
 				// it's a send block
-				if (new BigNumber(this.previousBlock.balance).gt(new BigNumber(this.currentBlock.balance))) {
+				if (BigInt(this.previousBlock.balance) > BigInt(this.currentBlock.balance)) {
 					this.txType = TxType.send
 					this.txTypeMessage = 'send'
-					this.rawAmount = new BigNumber(this.previousBlock.balance).minus(new BigNumber(this.currentBlock.balance))
+					this.rawAmount = BigInt(this.previousBlock.balance) - BigInt(this.currentBlock.balance)
 					this.fromAccountID = this.currentBlock.account
-					this.toAccountID = this.util.account.getPublicAccountID(this.util.hex.toUint8(this.currentBlock.link))
-					this.fromAccountBalance = new BigNumber(this.previousBlock.balance)
+					this.toAccountID = Account.load(this.currentBlock.link).publicKey
+					this.fromAccountBalance = BigInt(this.previousBlock.balance)
 					// sending to itself
 					if (this.fromAccountID === this.toAccountID) {
 						this.toAccountBalance = this.fromAccountBalance
 					}
-				} else if (new BigNumber(this.previousBlock.balance).eq(new BigNumber(this.currentBlock.balance)) &&
-					this.previousBlock.representative !== this.currentBlock.representative && this.currentBlock.link === this.nullBlock) {
+				} else if (BigInt(this.previousBlock.balance) === BigInt(this.currentBlock.balance)
+					&& this.previousBlock.representative !== this.currentBlock.representative
+					&& this.currentBlock.link === this.nullBlock
+				) {
 					// it's a change block
 					this.txType = TxType.change
 					this.txTypeMessage = 'change the representative'
-					this.rawAmount = new BigNumber(0)
+					this.rawAmount = 0n
 					this.fromAccountID = this.currentBlock.account
 					this.toAccountID = this.currentBlock.account
-					this.fromAccountBalance = new BigNumber(this.currentBlock.balance)
-					this.toAccountBalance = new BigNumber(this.currentBlock.balance)
-				} else if (new BigNumber(this.previousBlock.balance).lt(
-					new BigNumber(this.currentBlock.balance)) && this.currentBlock.previous !== this.nullBlock) {
+					this.fromAccountBalance = BigInt(this.currentBlock.balance)
+					this.toAccountBalance = BigInt(this.currentBlock.balance)
+				} else if (BigInt(this.previousBlock.balance) < BigInt(this.currentBlock.balance)
+					&& this.currentBlock.previous !== this.nullBlock
+				) {
 					// it's a receive block
 					this.txType = TxType.receive
 					this.txTypeMessage = 'receive'
-					this.rawAmount = new BigNumber(this.currentBlock.balance).minus(new BigNumber(this.previousBlock.balance))
+					this.rawAmount = BigInt(this.currentBlock.balance) - BigInt(this.previousBlock.balance)
 
 					shouldGetFromAccount = true
 
 					this.toAccountID = this.currentBlock.account
-					this.toAccountBalance = new BigNumber(this.previousBlock.balance)
+					this.toAccountBalance = BigInt(this.previousBlock.balance)
 				} else {
 					return this.notificationService.sendError(`Meaningless block. The balance and representative are unchanged!`, { length: 0 })
 				}
 
-				this.amount = this.util.nano.rawToMnano(this.rawAmount).toString(10)
+				this.amount = Tools.convert(this.rawAmount, 'raw', 'mnano')
 
 				this.prepareTransaction()
 			} else if (!this.previousBlock && this.verifyBlock(this.currentBlock)) {
@@ -300,17 +302,17 @@ export class SignComponent implements OnInit {
 				if (this.currentBlock.previous === this.nullBlock) {
 					this.txType = TxType.open
 					this.txTypeMessage = 'receive'
-					this.rawAmount = new BigNumber(this.currentBlock.balance)
+					this.rawAmount = BigInt(this.currentBlock.balance)
 
 					shouldGetFromAccount = true
 
 					this.toAccountID = this.currentBlock.account
-					this.toAccountBalance = new BigNumber(0)
+					this.toAccountBalance = 0n
 				} else {
 					return this.notificationService.sendError(`Only OPEN block is currently supported when previous block is missing`, { length: 0 })
 				}
 
-				this.amount = this.util.nano.rawToMnano(this.rawAmount).toString(10)
+				this.amount = Tools.convert(this.rawAmount, 'raw', 'mnano')
 				this.prepareTransaction()
 			} else {
 				return
@@ -450,7 +452,7 @@ export class SignComponent implements OnInit {
 		// multiplier has changed, clear the cache and recalculate
 		if (this.selectedThreshold !== this.selectedThresholdOld) {
 			const workBlock = this.txType === TxType.open
-				? new Account(this.toAccountID).publicKey
+				? Account.load(this.toAccountID).publicKey
 				: this.currentBlock.previous
 			this.workPool.removeFromCache(workBlock)
 			console.log('PoW multiplier changed: Clearing cache')
@@ -463,7 +465,7 @@ export class SignComponent implements OnInit {
 		if (this.toAccountID) {
 			console.log('Precomputing work...')
 			const workBlock = this.txType === TxType.open
-				? new Account(this.toAccountID).publicKey
+				? Account.load(this.toAccountID).publicKey
 				: this.currentBlock.previous
 			const difficulty = (this.txType === TxType.receive || this.txType === TxType.open)
 				? 1 / 64
@@ -475,7 +477,7 @@ export class SignComponent implements OnInit {
 	async prepareTransaction () {
 		// Determine fiat value of the amount (if not offline mode)
 		if (this.settings.settings.serverAPI) {
-			this.amountFiat = this.util.nano.rawToMnano(this.rawAmount).times(this.price.price.lastPrice).toNumber()
+			this.amountFiat = parseInt(Tools.convert(this.rawAmount, 'raw', 'mnano')) * this.price.price.lastPrice
 		}
 
 		this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID)
@@ -577,7 +579,7 @@ export class SignComponent implements OnInit {
 			if (this.shouldGenWork) {
 				// For open blocks which don't have a frontier, use the public key of the account
 				const workBlock = this.txType === TxType.open
-					? new Account(this.multisigAccount).publicKey
+					? Account.load(this.multisigAccount).publicKey
 					: block.previous
 				if (!this.workPool.workExists(workBlock)) {
 					this.notificationService.sendInfo(`Generating Proof of Work...`, { identifier: 'pow', length: 0 })
@@ -638,7 +640,7 @@ export class SignComponent implements OnInit {
 	async confirmBlock () {
 		this.confirmingTransaction = true
 		const workBlock = this.txType === TxType.open
-			? new Account(this.toAccountID).publicKey
+			? Account.load(this.toAccountID).publicKey
 			: this.currentBlock.previous
 		if (this.shouldGenWork) {
 			// For open blocks which don't have a frontier, use the public key of the account
@@ -725,7 +727,7 @@ export class SignComponent implements OnInit {
 		if (privKey !== null) {
 			// Match given block account with with private key
 			const pubKey = this.util.account.generateAccountKeyPair(this.util.hex.toUint8(privKey), this.privateKeyExpanded).publicKey
-			const address = this.util.account.getPublicAccountID(pubKey)
+			const address = Account.load(pubKey).address
 			if (address === this.signatureAccount) {
 				this.validPrivkey = true
 				this.privateKey = privKey
@@ -773,8 +775,8 @@ export class SignComponent implements OnInit {
 
 		// input is mnemonic
 		if (keyType === 'mnemonic') {
-			const blakeWallet = await Blake2bWallet.fromMnemonic('tmp', input)
-			await blakeWallet.unlock('tmp')
+			const blakeWallet = await Wallet.load('BLAKE2b', '', input)
+			await blakeWallet.unlock('')
 			seed = blakeWallet.seed
 			// seed must be 64 or the nano wallet can't be created.
 			// This is the reason 12-words can't be used because the seed would be 32 in length
@@ -799,10 +801,10 @@ export class SignComponent implements OnInit {
 			if (keyType === 'bip39_seed') {
 				bip39Seed = input
 			} else {
-				const bip39 = await Bip44Wallet.fromSeed('', seed)
+				const bip39 = await Wallet.load('BIP-44', '', seed)
 				bip39Seed = bip39.seed
 			}
-			const wallet = await Bip44Wallet.fromSeed('', bip39Seed)
+			const wallet = await Wallet.load('BIP-44', '', bip39Seed)
 			const accounts = await wallet.accounts(index)
 			privKey2 = accounts[0].privateKey
 		}
@@ -810,8 +812,8 @@ export class SignComponent implements OnInit {
 		// Match given block account with any of the private keys extracted
 		const pubKey1 = this.util.account.generateAccountKeyPair(this.util.hex.toUint8(privKey1), this.privateKeyExpanded).publicKey
 		const pubKey2 = this.util.account.generateAccountKeyPair(this.util.hex.toUint8(privKey2), this.privateKeyExpanded).publicKey
-		const address1 = this.util.account.getPublicAccountID(pubKey1)
-		const address2 = this.util.account.getPublicAccountID(pubKey2)
+		const address1 = Account.load(pubKey1).address
+		const address2 = Account.load(pubKey2).address
 
 		if (address1 === this.signatureAccount || address2 === this.signatureAccount) {
 			if (address1 === this.signatureAccount) {
@@ -843,7 +845,7 @@ export class SignComponent implements OnInit {
 		}
 		// validate mnemonic
 		try {
-			await Blake2bWallet.fromMnemonic('tmp', key)
+			await Wallet.load('BLAKE2b', '', key)
 			return 'mnemonic'
 		} catch (err) {
 			return null
@@ -1156,7 +1158,7 @@ export class SignComponent implements OnInit {
 
 		if (result?.stage === 0) {
 			console.log('Started multisig using block hash: ' + this.blockHash)
-			const account = await Account.fromPrivateKey(this.privateKey)
+			const account = await Account.load(this.privateKey, 'private')
 			// Combine output with public key
 			const output = this.activeStep + ':' + this.util.hex.fromUint8(result.outbuf.subarray(33)) +
 				account.publicKey
