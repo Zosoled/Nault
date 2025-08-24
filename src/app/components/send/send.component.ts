@@ -1,22 +1,20 @@
+import { HttpClient } from '@angular/common/http'
 import { Component, OnInit } from '@angular/core'
-import { AddressBookService } from '../../services/address-book.service'
+import { ActivatedRoute } from '@angular/router'
+import { TranslocoService } from '@jsverse/transloco'
+import { Tools } from 'libnemo'
 import { BehaviorSubject } from 'rxjs'
+import { AddressBookService } from '../../services/address-book.service'
 import { WalletService } from '../../services/wallet.service'
 import { NotificationService } from '../../services/notification.service'
 import { ApiService } from '../../services/api.service'
 import { UtilService } from '../../services/util.service'
 import { WorkPoolService } from '../../services/work-pool.service'
 import { AppSettingsService } from '../../services/app-settings.service'
-import { ActivatedRoute } from '@angular/router'
 import { PriceService } from '../../services/price.service'
 import { NanoBlockService } from '../../services/nano-block.service'
 import { QrModalService } from '../../services/qr-modal.service'
 import { environment } from '../../../environments/environment'
-import { TranslocoService } from '@jsverse/transloco'
-import { HttpClient } from '@angular/common/http'
-import { Tools } from 'libnemo'
-
-const nacl = window['nacl']
 
 @Component({
 	selector: 'app-send',
@@ -33,9 +31,9 @@ export class SendComponent implements OnInit {
 	addressBookMatch = '';
 
 	amount = null;
-	amountExtraRaw = new BigNumber(0);
+	amountExtraRaw: bigint = 0n
 	amountFiat: number | null = null;
-	rawAmount: BigNumber = new BigNumber(0);
+	rawAmount: bigint = 0n
 	fromAccount: any = {};
 	fromAccountID: any = '';
 	fromAddressBook = '';
@@ -109,19 +107,10 @@ export class SendComponent implements OnInit {
 
 	updateQueries (params) {
 		if (params && params.amount && !isNaN(params.amount)) {
-			const amountAsRaw =
-				new BigNumber(
-					this.util.nano.mnanoToRaw(
-						new BigNumber(params.amount)
-					)
-				)
+			const amountAsRaw = BigInt(Tools.convert(params.amount, 'mnano', 'raw'))
+			this.amountExtraRaw = amountAsRaw % BigInt(this.nano)
 
-			this.amountExtraRaw = amountAsRaw.mod(this.nano).decimalPlaces(0, 3)
-
-			this.amount =
-				this.util.nano.rawToMnano(
-					amountAsRaw.minus(this.amountExtraRaw)
-				).toNumber()
+			this.amount = Number(Tools.convert(amountAsRaw - this.amountExtraRaw, 'raw', 'mnano'))
 
 			this.syncFiatPrice()
 		}
@@ -135,7 +124,7 @@ export class SendComponent implements OnInit {
 
 	async findFirstAccount () {
 		// Load balances before we try to find the right account
-		if (this.walletService.wallet.balanceNano.isZero()) {
+		if (this.walletService.wallet.balance === 0n) {
 			await this.walletService.reloadBalances()
 		}
 
@@ -163,8 +152,8 @@ export class SendComponent implements OnInit {
 
 		console.log(`sendTransaction() this.amount: ${this.amount}`)
 		console.log(typeof this.amount)
-		const rawAmount = new BigNumber(await Tools.convert(this.amount, 'nano', 'raw')).plus(this.amountExtraRaw)
-		if (rawAmount.lte(0)) {
+		const rawAmount = BigInt(await Tools.convert(this.amount, 'nano', 'raw')) + this.amountExtraRaw
+		if (rawAmount < 0n) {
 			this.amountFiat = null
 			return
 		}
@@ -175,10 +164,10 @@ export class SendComponent implements OnInit {
 			: 100
 
 		// Determine fiat value of the amount
-		const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice)
-			.times(precision).decimalPlaces(0, 3).dividedBy(precision).toNumber()
+		const fiatAmount = (parseFloat(Tools.convert(rawAmount, 'raw', 'mnano'))
+			* this.price.price.lastPrice).toFixed(3)
 
-		this.amountFiat = fiatAmount
+		this.amountFiat = Number(fiatAmount)
 	}
 
 	// An update to the fiat amount, sync the nano value based on currently selected denomination
@@ -352,29 +341,27 @@ export class SendComponent implements OnInit {
 			return this.notificationService.sendError(`From account not found`)
 		}
 
-		const bigBalanceFrom = new BigNumber(from.balance || 0)
-		const bigBalanceTo = new BigNumber(to.balance || 0)
+		const bigBalanceFrom = BigInt(from.balance ?? 0n)
+		const bigBalanceTo = BigInt(to.balance ?? 0n)
 
 		this.fromAccount = from
 		this.toAccount = to
 
-		const rawAmount = new BigNumber(await Tools.convert(this.amount, 'nano', 'raw'))
-		this.rawAmount = rawAmount.plus(this.amountExtraRaw)
+		const rawAmount = BigInt(await Tools.convert(this.amount, 'nano', 'raw'))
+		this.rawAmount = rawAmount + this.amountExtraRaw
 
-		const nanoAmount = this.rawAmount.div(this.nano)
-
-		if (this.amount < 0 || rawAmount.isLessThan(0)) {
+		if (this.amount < 0 || rawAmount < 0n) {
 			return this.notificationService.sendWarning(`Amount is invalid`)
 		}
-		if (bigBalanceFrom.minus(rawAmount).isLessThan(0)) {
+		if (bigBalanceFrom - rawAmount < 0n) {
 			return this.notificationService.sendError(`From account does not have enough XNO`)
 		}
 
 		// Determine a proper raw amount to show in the UI, if a decimal was entered
-		this.amountExtraRaw = this.rawAmount.mod(this.nano)
+		this.amountExtraRaw = this.rawAmount % BigInt(this.nano)
 
 		// Determine fiat value of the amount
-		this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber()
+		this.amountFiat = parseFloat(Tools.convert(rawAmount, 'raw', 'mnano')) * this.price.price.lastPrice
 
 		this.fromAddressBook = (
 			this.addressBookService.getAccountName(this.fromAccountID)
@@ -393,6 +380,7 @@ export class SendComponent implements OnInit {
 	}
 
 	async confirmTransaction () {
+		const wallet = this.walletService.wallet.wallet
 		const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.fromAccountID)
 		if (!walletAccount) {
 			throw new Error(`Unable to find sending account in wallet`)
@@ -410,7 +398,7 @@ export class SendComponent implements OnInit {
 		try {
 			const destinationID = this.getDestinationID()
 
-			const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,
+			const newHash = await this.nanoBlock.generateSend(wallet, walletAccount, destinationID,
 				this.rawAmount, this.walletService.isLedgerWallet())
 
 			if (newHash) {
@@ -419,7 +407,7 @@ export class SendComponent implements OnInit {
 				this.activePanel = 'send'
 				this.amount = null
 				this.amountFiat = null
-				this.resetRaw()
+				this.amountExtraRaw = 0n
 				this.toAccountID = ''
 				this.toOwnAccountID = ''
 				this.toAccountStatus = null
@@ -447,13 +435,9 @@ export class SendComponent implements OnInit {
 
 		this.amountExtraRaw = walletAccount.balance
 
-		const nanoBalance = await Tools.convert(walletAccount.balanceNano.toString(), 'raw', 'nano')
-		this.amount = +(new BigNumber(nanoBalance).toFixed(6))
+		const nanoBalance = Tools.convert(walletAccount.balance, 'raw', 'nano')
+		this.amount = parseFloat(nanoBalance).toFixed(6)
 		this.syncFiatPrice()
-	}
-
-	resetRaw () {
-		this.amountExtraRaw = new BigNumber(0)
 	}
 
 	// open qr reader modal
