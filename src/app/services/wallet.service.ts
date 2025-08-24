@@ -607,12 +607,12 @@ export class WalletService {
 		const fiatPrice = this.price.price.lastPrice
 
 		this.wallet.accounts.forEach(account => {
-			account.balanceFiat = parseInt(Tools.convert(account.balance, 'raw', 'nano')) * fiatPrice
-			account.receivableFiat = parseInt(Tools.convert(account.receivable, 'raw', 'nano')) * fiatPrice
+			account.balanceFiat = parseFloat(Tools.convert(account.balance, 'raw', 'nano')) * fiatPrice
+			account.receivableFiat = parseFloat(Tools.convert(account.receivable, 'raw', 'nano')) * fiatPrice
 		})
 
-		this.wallet.balanceFiat = parseInt(Tools.convert(this.wallet.balance, 'raw', 'nano')) * fiatPrice
-		this.wallet.receivableFiat = parseInt(Tools.convert(this.wallet.receivable, 'raw', 'nano')) * fiatPrice
+		this.wallet.balanceFiat = parseFloat(Tools.convert(this.wallet.balance, 'raw', 'nano')) * fiatPrice
+		this.wallet.receivableFiat = parseFloat(Tools.convert(this.wallet.receivable, 'raw', 'nano')) * fiatPrice
 	}
 
 	resetBalances () {
@@ -662,7 +662,7 @@ export class WalletService {
 			walletAccount.balanceNano = accounts.balances[accountID].balance ?? 0n
 			const accountBalanceReceivableInclUnconfirmed = accounts.balances[accountID].receivable ?? 0n
 
-			walletAccount.balanceFiat = parseInt(Tools.convert(walletAccount.balance, 'raw', 'nano')) * fiatPrice
+			walletAccount.balanceFiat = parseFloat(Tools.convert(walletAccount.balance, 'raw', 'nano')) * fiatPrice
 
 			const walletAccountFrontier = frontiers.frontiers?.[accountID]
 			const walletAccountFrontierIsValidHash = this.util.nano.isValidHash(walletAccountFrontier)
