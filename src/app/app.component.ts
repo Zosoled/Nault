@@ -11,10 +11,10 @@ import {Router} from '@angular/router';
 import {SwUpdate} from '@angular/service-worker';
 import {RepresentativeService} from './services/representative.service';
 import {NodeService} from './services/node.service';
-import { DesktopService, LedgerService } from './services';
-import { environment } from 'environments/environment';
-import { DeeplinkService } from './services/deeplink.service';
-import { TranslocoService } from '@ngneat/transloco';
+import {DesktopService, LedgerService} from './services';
+import {environment} from 'environments/environment';
+import {DeeplinkService} from './services/deeplink.service';
+import {TranslocoService} from '@ngneat/transloco';
 
 
 @Component({
@@ -24,7 +24,7 @@ import { TranslocoService } from '@ngneat/transloco';
 })
 export class AppComponent implements OnInit {
 
-  constructor(
+  constructor (
     public walletService: WalletService,
     private addressBook: AddressBookService,
     public settings: AppSettingsService,
@@ -42,10 +42,10 @@ export class AppComponent implements OnInit {
     private renderer: Renderer2,
     private deeplinkService: DeeplinkService,
     private translate: TranslocoService) {
-      router.events.subscribe(() => {
-        this.closeNav();
-      });
-    }
+    router.events.subscribe(() => {
+      this.closeNav();
+    });
+  }
 
   @ViewChild('selectButton') selectButton: ElementRef;
   @ViewChild('accountsDropdown') accountsDropdown: ElementRef;
@@ -70,16 +70,16 @@ export class AppComponent implements OnInit {
     this.onWindowResize(e.target);
   }
 
-  @HostListener('document:mousedown', ['$event']) onGlobalClick(event): void {
+  @HostListener('document:mousedown', ['$event']) onGlobalClick (event): void {
     if (
-            ( this.selectButton.nativeElement.contains(event.target) === false )
-          && ( this.accountsDropdown.nativeElement.contains(event.target) === false )
-      ) {
-        this.showAccountsDropdown = false;
+      (this.selectButton.nativeElement.contains(event.target) === false)
+      && (this.accountsDropdown.nativeElement.contains(event.target) === false)
+    ) {
+      this.showAccountsDropdown = false;
     }
   }
 
-  async ngOnInit() {
+  async ngOnInit () {
     this.onWindowResize(window);
     this.settings.loadAppSettings();
 
@@ -105,9 +105,9 @@ export class AppComponent implements OnInit {
     // Navigate to accounts page if there is wallet, but only if coming from home. On desktop app the path ends with index.html
     if (this.walletService.isConfigured() && (window.location.pathname === '/' || window.location.pathname.endsWith('index.html'))) {
       if (this.wallet.selectedAccountId) {
-        this.router.navigate([`account/${this.wallet.selectedAccountId}`], { queryParams: {'compact': 1}, replaceUrl: true });
+        this.router.navigate([`account/${this.wallet.selectedAccountId}`], {queryParams: {'compact': 1}, replaceUrl: true});
       } else {
-        this.router.navigate(['accounts'], { replaceUrl: true });
+        this.router.navigate(['accounts'], {replaceUrl: true});
       }
     }
 
@@ -119,7 +119,7 @@ export class AppComponent implements OnInit {
 
     await this.walletService.reloadBalances();
 
-    // Workaround fix for github pages when Nault is refreshed (or externally linked) and there is a subpath for example to the send screen.
+    // Workaround fix for github pages when Gnault is refreshed (or externally linked) and there is a subpath for example to the send screen.
     // This data is saved from the 404.html page
     const path = localStorage.getItem('path');
 
@@ -133,14 +133,14 @@ export class AppComponent implements OnInit {
       if (search && search.length) {
         const queryParams = {};
         const urlSearch = new URLSearchParams(search);
-        urlSearch.forEach(function(value, key) {
+        urlSearch.forEach(function (value, key) {
           queryParams[key] = value;
         });
-        this.router.navigate([path], { queryParams: queryParams, replaceUrl: true });
+        this.router.navigate([path], {queryParams: queryParams, replaceUrl: true});
       } else if (fragment && fragment.length) {
-        this.router.navigate([path], { fragment: fragment, replaceUrl: true });
+        this.router.navigate([path], {fragment: fragment, replaceUrl: true});
       } else {
-        this.router.navigate([path], { replaceUrl: true });
+        this.router.navigate([path], {replaceUrl: true});
       }
     }
 
@@ -151,24 +151,24 @@ export class AppComponent implements OnInit {
     // If the wallet is locked and there is a pending balance, show a warning to unlock the wallet
     // (if not receive priority is set to manual)
     if (this.wallet.locked && this.walletService.hasPendingTransactions() && this.settings.settings.pendingOption !== 'manual') {
-      this.notifications.sendWarning(`New incoming transaction(s) - Unlock the wallet to receive`, { length: 10000, identifier: 'pending-locked' });
+      this.notifications.sendWarning(`New incoming transaction(s) - Unlock the wallet to receive`, {length: 10000, identifier: 'pending-locked'});
     } else if (this.walletService.hasPendingTransactions() && this.settings.settings.pendingOption === 'manual') {
-      this.notifications.sendWarning(`Incoming transaction(s) found - Set to be received manually`, { length: 10000, identifier: 'pending-locked' });
+      this.notifications.sendWarning(`Incoming transaction(s) found - Set to be received manually`, {length: 10000, identifier: 'pending-locked'});
     }
 
     // When the page closes, determine if we should lock the wallet
-    window.addEventListener('beforeunload',  (e) => {
+    window.addEventListener('beforeunload', (e) => {
       if (this.wallet.locked) return; // Already locked, nothing to worry about
       this.walletService.lockWallet();
     });
-    window.addEventListener('unload',  (e) => {
+    window.addEventListener('unload', (e) => {
       if (this.wallet.locked) return; // Already locked, nothing to worry about
       this.walletService.lockWallet();
     });
 
     // handle deeplinks
     this.desktop.on('deeplink', (e, deeplink) => {
-      if (!this.deeplinkService.navigate(deeplink)) this.notifications.sendWarning('This URI has an invalid address.', { length: 5000 });
+      if (!this.deeplinkService.navigate(deeplink)) this.notifications.sendWarning('This URI has an invalid address.', {length: 5000});
     });
     this.desktop.send('deeplink-ready');
 
@@ -177,14 +177,14 @@ export class AppComponent implements OnInit {
       console.log(`SW update available. Current: ${event.current.hash}. New: ${event.available.hash}`);
       this.notifications.sendInfo(
         'An update was installed in the background and will be applied on next launch. <a href="#" (click)="applySwUpdate()">Apply immediately</a>',
-        { length: 10000 }
+        {length: 10000}
       );
     });
 
     // Notify user after service worker was updated
     this.updates.activated.subscribe((event) => {
       console.log(`SW update successful. Current: ${event.current.hash}`);
-      this.notifications.sendSuccess('Nault was updated successfully.');
+      this.notifications.sendSuccess('Gnault was updated successfully.');
     });
 
     // Check how long the wallet has been inactive, and lock it if it's been too long
@@ -204,11 +204,11 @@ export class AppComponent implements OnInit {
       if (!this.settings.settings.serverAPI) return;
       await this.updateFiatPrices();
     } catch (err) {
-      this.notifications.sendWarning(`There was an issue retrieving latest nano price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
+      this.notifications.sendWarning(`There was an issue retrieving latest nano price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, {length: 0, identifier: `price-adblock`});
     }
   }
 
-  onWindowResize(windowObject) {
+  onWindowResize (windowObject) {
     this.innerWidth = windowObject.innerWidth;
     this.innerHeight = windowObject.innerHeight;
 
@@ -225,7 +225,7 @@ export class AppComponent implements OnInit {
     This is important as it looks through saved data using hardcoded xrb_ prefixes
     (Your wallet, address book, rep list, etc) and updates them to nano_ prefix for v19 RPC
    */
-  async patchXrbToNanoPrefixData() {
+  async patchXrbToNanoPrefixData () {
     // If wallet is version 2, data has already been patched.  Otherwise, patch all data
     if (this.settings.settings.walletVersion >= 2) return;
 
@@ -236,16 +236,16 @@ export class AppComponent implements OnInit {
     this.settings.setAppSetting('walletVersion', 2); // Update wallet version so we do not patch in the future.
   }
 
-  applySwUpdate() {
+  applySwUpdate () {
     this.updates.activateUpdate();
   }
 
-  toggleNav() {
+  toggleNav () {
     this.navExpanded = !this.navExpanded;
     this.onNavExpandedChange();
   }
 
-  closeNav() {
+  closeNav () {
     if (this.navExpanded === false) {
       return;
     }
@@ -254,24 +254,24 @@ export class AppComponent implements OnInit {
     this.onNavExpandedChange();
   }
 
-  onNavExpandedChange() {
+  onNavExpandedChange () {
     this.navAnimating = true;
-    setTimeout(() => { this.navAnimating = false; }, 350);
+    setTimeout(() => {this.navAnimating = false;}, 350);
   }
 
-  toggleLightMode() {
+  toggleLightMode () {
     if (this.canToggleLightMode === false) {
       return;
     }
 
     this.canToggleLightMode = false;
-    setTimeout(() => { this.canToggleLightMode = true; }, 300);
+    setTimeout(() => {this.canToggleLightMode = true;}, 300);
 
     this.settings.setAppSetting('lightModeEnabled', !this.settings.settings.lightModeEnabled);
     this.updateAppTheme();
   }
 
-  updateAppTheme() {
+  updateAppTheme () {
     if (this.settings.settings.lightModeEnabled) {
       this.renderer.addClass(document.body, 'light-mode');
       this.renderer.removeClass(document.body, 'dark-mode');
@@ -281,7 +281,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  toggleAccountsDropdown() {
+  toggleAccountsDropdown () {
     if (this.showAccountsDropdown === true) {
       this.showAccountsDropdown = false;
       return;
@@ -291,7 +291,7 @@ export class AppComponent implements OnInit {
     this.accountsDropdown.nativeElement.scrollTop = 0;
   }
 
-  selectAccount(account) {
+  selectAccount (account) {
     // note: account is null when user is switching to 'Total Balance'
     this.wallet.selectedAccountId = account ? account.id : null;
     this.wallet.selectedAccount = account;
@@ -300,12 +300,12 @@ export class AppComponent implements OnInit {
     this.walletService.saveWalletExport();
   }
 
-  performSearch() {
+  performSearch () {
     const searchData = this.searchData.trim();
     if (!searchData.length) return;
 
     const isValidNanoAccount = (
-        ( searchData.startsWith('xrb_') || searchData.startsWith('nano_') )
+      (searchData.startsWith('xrb_') || searchData.startsWith('nano_'))
       && this.util.account.isValidAccount(searchData)
     );
 
@@ -327,11 +327,11 @@ export class AppComponent implements OnInit {
     this.notifications.sendWarning(`Invalid nano address or block hash! Please double check your input`);
   }
 
-  updateIdleTime() {
+  updateIdleTime () {
     this.inactiveSeconds = 0; // Action has happened, reset the inactivity timer
   }
 
-  retryConnection() {
+  retryConnection () {
     if (!this.settings.settings.serverAPI) {
       this.notifications.sendInfo(`Wallet server settings is set to offline mode. Please change server first!`);
       return;
@@ -340,7 +340,7 @@ export class AppComponent implements OnInit {
     this.notifications.sendInfo(`Attempting to reconnect to nano node`);
   }
 
-  async updateFiatPrices() {
+  async updateFiatPrices () {
     const displayCurrency = this.settings.getAppSetting(`displayCurrency`) || 'USD';
     await this.price.getPrice(displayCurrency);
     this.walletService.reloadFiatBalances();

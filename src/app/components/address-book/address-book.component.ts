@@ -4,7 +4,7 @@ import {WalletService} from '../../services/wallet.service';
 import {NotificationService} from '../../services/notification.service';
 import {ModalService} from '../../services/modal.service';
 import {UtilService} from '../../services/util.service';
-import { QrModalService } from '../../services/qr-modal.service';
+import {QrModalService} from '../../services/qr-modal.service';
 import {Router} from '@angular/router';
 import * as QRCode from 'qrcode';
 import {BigNumber} from 'bignumber.js';
@@ -56,7 +56,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
   loadingBalances = false;
   numberOfTrackedBalance = 0;
 
-  constructor(
+  constructor (
     private addressBookService: AddressBookService,
     private walletService: WalletService,
     public notificationService: NotificationService,
@@ -69,7 +69,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     public appSettings: AppSettingsService,
     private translocoService: TranslocoService) { }
 
-  async ngOnInit() {
+  async ngOnInit () {
     this.addressBookService.loadAddressBook();
     // Keep price up to date with the service
     this.priceSub = this.price.lastPrice$.subscribe(event => {
@@ -110,7 +110,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updateTrackedBalances();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy () {
     if (this.priceSub) {
       this.priceSub.unsubscribe();
     }
@@ -119,7 +119,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit () {
     // Listen for reordering events
     document.getElementById('address-book-sortable').addEventListener('moved', (e) => {
       const element = e.target as HTMLDivElement;
@@ -133,11 +133,11 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  sleep(ms) {
+  sleep (ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async updateTrackedBalances(refresh= false) {
+  async updateTrackedBalances (refresh = false) {
     if (refresh && !this.statsRefreshEnabled) return;
     this.statsRefreshEnabled = false;
     if (this.timeoutIdAllowingRefresh != null) {
@@ -146,7 +146,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     this.timeoutIdAllowingRefresh = setTimeout(() => this.statsRefreshEnabled = true, 5000);
     this.loadingBalances = true;
 
-     // Inform html that at least one entry is tracked
+    // Inform html that at least one entry is tracked
     this.numberOfTrackedBalance = 0;
     for (const entry of this.addressBookService.addressBook) {
       if (entry.trackBalance) {
@@ -193,7 +193,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
         balanceAccount.pending = walletAccount.pending;
         balanceAccount.balanceFiat = walletAccount.balanceFiat;
         balanceAccount.balanceRaw = walletAccount.balanceRaw;
-      // Add balances from RPC data
+        // Add balances from RPC data
       } else {
         balanceAccount.balance = new BigNumber(apiAccounts.balances[entry.account].balance);
         balanceAccount.balanceFiat = this.util.nano.rawToMnano(balanceAccount.balance).times(this.fiatPrice).toNumber();
@@ -243,7 +243,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadingBalances = false;
   }
 
-  addEntry() {
+  addEntry () {
     this.previousAddressName = '';
     this.newTrackBalance = false;
     this.newTrackTransactions = false;
@@ -251,7 +251,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     this.activePanel = 1;
   }
 
-  editEntry(addressBook) {
+  editEntry (addressBook) {
     this.newAddressAccount = addressBook.account;
     this.previousAddressName = addressBook.name;
     this.newAddressName = addressBook.name;
@@ -264,7 +264,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 150);
   }
 
-  async saveNewAddress() {
+  async saveNewAddress () {
     if (!this.newAddressAccount || !this.newAddressName) {
       return this.notificationService.sendError(this.translocoService.translate('address-book.account-and-name-are-required'));
     }
@@ -277,11 +277,11 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     this.newAddressName = this.newAddressName.trim().replace(/ +/g, ' ');
 
     const regexp = new RegExp('^(Account|' + this.translocoService.translate('general.account') + ') #\\d+$', 'g');
-    if ( regexp.test(this.newAddressName) === true ) {
+    if (regexp.test(this.newAddressName) === true) {
       return this.notificationService.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-wallet-accounts-without-a-label'));
     }
 
-    if ( this.newAddressName.startsWith('@') === true ) {
+    if (this.newAddressName.startsWith('@') === true) {
       return this.notificationService.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-decentralized-aliases'));
     }
 
@@ -289,7 +289,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     this.newAddressAccount = this.newAddressAccount.replace(/ /g, '').replace('xrb_', 'nano_');
 
     // If the name has been changed, make sure no other entries are using that name
-    if ( (this.newAddressName !== this.previousAddressName) && this.addressBookService.nameExists(this.newAddressName) ) {
+    if ((this.newAddressName !== this.previousAddressName) && this.addressBookService.nameExists(this.newAddressName)) {
       return this.notificationService.sendError(this.translocoService.translate('address-book.this-name-is-already-in-use-please-use-a-unique-name'));
     }
 
@@ -325,34 +325,34 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
       this.updateTrackedBalances();
       this.cancelNewAddress();
     } catch (err) {
-      this.notificationService.sendError(this.translocoService.translate('address-book.unable-to-save-entry', { message: err.message }));
+      this.notificationService.sendError(this.translocoService.translate('address-book.unable-to-save-entry', {message: err.message}));
     }
   }
 
-  cancelNewAddress() {
+  cancelNewAddress () {
     this.newAddressName = '';
     this.newAddressAccount = '';
     this.activePanel = 0;
   }
 
-  copied() {
+  copied () {
     this.notificationService.removeNotification('success-copied');
-    this.notificationService.sendSuccess(this.translocoService.translate('address-book.account-address-copied-to-clipboard'), { identifier: 'success-copied' });
+    this.notificationService.sendSuccess(this.translocoService.translate('address-book.account-address-copied-to-clipboard'), {identifier: 'success-copied'});
   }
 
-  async deleteAddress(account) {
+  async deleteAddress (account) {
     try {
       this.addressBookService.deleteAddress(account);
       this.notificationService.sendSuccess(this.translocoService.translate('address-book.successfully-deleted-address-book-entry'));
       this.walletService.untrackAddress(account);
       this.updateTrackedBalances();
     } catch (err) {
-      this.notificationService.sendError(this.translocoService.translate('address-book.unable-to-delete-entry', { message: err.message }));
+      this.notificationService.sendError(this.translocoService.translate('address-book.unable-to-delete-entry', {message: err.message}));
     }
   }
 
   // open qr reader modal
-  openQR(reference, type) {
+  openQR (reference, type) {
     const qrResult = this.qrModalService.openQR(reference, type);
     qrResult.then((data) => {
       switch (data.reference) {
@@ -360,13 +360,13 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
           this.newAddressAccount = data.content;
           break;
       }
-    }, () => {}
+    }, () => { }
     );
   }
 
   // converts a Unicode string to a string in which
   // each 16-bit unit occupies only one byte
-  toBinary(string) {
+  toBinary (string) {
     const codeUnits = new Uint16Array(string.length);
     for (let i = 0; i < codeUnits.length; i++) {
       codeUnits[i] = string.charCodeAt(i);
@@ -374,10 +374,10 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     return String.fromCharCode(...new Uint8Array(codeUnits.buffer));
   }
 
-  async exportAddressBook() {
+  async exportAddressBook () {
     const exportData = this.addressBookService.addressBook;
     const base64Data = btoa(this.toBinary(JSON.stringify(exportData)));
-    const exportUrl = `https://nault.cc/import-address-book#${base64Data}`;
+    const exportUrl = `https://gnault.cc/import-address-book#${base64Data}`;
     this.addressBookQRExportUrl = exportUrl;
     this.addressBookShowFileExport = true;
 
@@ -387,8 +387,8 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  exportAddressBookToFile() {
-    const fileName = `Nault-AddressBook.json`;
+  exportAddressBookToFile () {
+    const fileName = `Gnault-AddressBook.json`;
 
     const exportData = this.addressBookService.addressBook;
     this.triggerFileDownload(fileName, exportData);
@@ -396,7 +396,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     this.notificationService.sendSuccess(this.translocoService.translate('address-book.address-book-export-downloaded'));
   }
 
-  importFromFile(files) {
+  importFromFile (files) {
     if (!files.length) {
       return;
     }
@@ -408,11 +408,11 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
       try {
         const importData = JSON.parse(fileData);
         if (!importData.length || (!importData[0].account && !importData[0].address)) {
-          return this.notificationService.sendError(this.translocoService.translate('address-book.bad-import-data-make-sure-you-selected-a-nault-address-book'));
+          return this.notificationService.sendError(this.translocoService.translate('address-book.bad-import-data-make-sure-you-selected-a-gnault-address-book'));
         }
 
         const encoded = btoa(this.toBinary(JSON.stringify(importData)));
-        this.router.navigate(['import-address-book'], { fragment: encoded });
+        this.router.navigate(['import-address-book'], {fragment: encoded});
       } catch (err) {
         this.notificationService.sendError(this.translocoService.translate('address-book.unable-to-parse-import-data-make-sure-you-selected-the-right'));
       }
@@ -421,8 +421,8 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     reader.readAsText(file);
   }
 
-  triggerFileDownload(fileName, exportData) {
-    const blob = new Blob([JSON.stringify(exportData)], { type: 'application/json' });
+  triggerFileDownload (fileName, exportData) {
+    const blob = new Blob([JSON.stringify(exportData)], {type: 'application/json'});
 
     // Check for iOS, which is weird with saving files
     const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
@@ -437,7 +437,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     elem.download = fileName;
     document.body.appendChild(elem);
     elem.click();
-    setTimeout(function() {
+    setTimeout(function () {
       document.body.removeChild(elem);
       window.URL.revokeObjectURL(objUrl);
     }, 200);

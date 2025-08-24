@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { NotificationService } from 'app/services/notification.service';
+import {Component, OnInit} from '@angular/core';
+import {NotificationService} from 'app/services/notification.service';
 
 interface InstallEvent extends Event {
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed', platform: string }>;
-  prompt(): void;
+  userChoice: Promise<{outcome: 'accepted' | 'dismissed', platform: string;}>;
+  prompt (): void;
 }
 
 @Component({
@@ -18,11 +18,11 @@ export class InstallWidgetComponent implements OnInit {
   platform = this.getPlatform();
   promotablePlatforms = ['Android', 'iOS', 'iPadOS', 'Chrome OS'];
 
-  constructor(
+  constructor (
     private notifications: NotificationService,
   ) { }
 
-  ngOnInit() {
+  ngOnInit () {
     if (!this.isPromotable()) {
       return;
     }
@@ -44,7 +44,7 @@ export class InstallWidgetComponent implements OnInit {
     }
   }
 
-  install() {
+  install () {
     if (!this.installEvent) {
       return;
     }
@@ -52,17 +52,17 @@ export class InstallWidgetComponent implements OnInit {
     this.installEvent.prompt();
     this.installEvent.userChoice.then((result) => {
       if (result.outcome === 'accepted') {
-        this.notifications.sendSuccess('Nault was successfully installed to the device.');
+        this.notifications.sendSuccess('Gnault was successfully installed to the device.');
         this.dismiss();
       }
     });
   }
 
-  dismiss() {
+  dismiss () {
     this.showInstallPromotion = false;
   }
 
-  getPlatform() {
+  getPlatform () {
     const platform = window.navigator.platform;
     const userAgent = window.navigator.userAgent;
 
@@ -83,21 +83,21 @@ export class InstallWidgetComponent implements OnInit {
     }
   }
 
-  isIosInstallable() {
+  isIosInstallable () {
     if (!this.isPromotable() || this.isInstalled()) {
       return false;
     }
     return this.platform === 'iOS' || this.platform === 'iPadOS' && 'standalone' in window.navigator;
   }
 
-  isPromotable() {
+  isPromotable () {
     if (this.isInstalled()) {
       return false;
     }
     return this.promotablePlatforms.includes(this.platform);
   }
 
-  isInstalled() {
+  isInstalled () {
     return window.matchMedia('(display-mode: standalone)').matches // Chrome & Edge
       || (window.navigator as any).standalone === true // Safari
       || window.navigator.userAgent.includes('Electron'); // Electron

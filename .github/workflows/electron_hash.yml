@@ -91,12 +91,12 @@ jobs:
       - name: Create Hashes
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          openssl sha1 desktop-app/build/*.${{ matrix.app_ext }}       | tee -a desktop-app/build/${{ matrix.artifact_name }} 
-          openssl md5 desktop-app/build/*.${{ matrix.app_ext }}        | tee -a desktop-app/build/${{ matrix.artifact_name }} 
-          openssl sha256 desktop-app/build/*.${{ matrix.app_ext }}     | tee -a desktop-app/build/${{ matrix.artifact_name }} 
-          openssl sha512 desktop-app/build/*.${{ matrix.app_ext }}     | tee -a desktop-app/build/${{ matrix.artifact_name }} 
-          openssl sha3-512 desktop-app/build/*.${{ matrix.app_ext }}   | tee -a desktop-app/build/${{ matrix.artifact_name }} 
-          openssl blake2b512 desktop-app/build/*.${{ matrix.app_ext }} | tee -a desktop-app/build/${{ matrix.artifact_name }} 
+          openssl sha1 desktop-app/build/*.${{ matrix.app_ext }}       | tee -a desktop-app/build/${{ matrix.artifact_name }}
+          openssl md5 desktop-app/build/*.${{ matrix.app_ext }}        | tee -a desktop-app/build/${{ matrix.artifact_name }}
+          openssl sha256 desktop-app/build/*.${{ matrix.app_ext }}     | tee -a desktop-app/build/${{ matrix.artifact_name }}
+          openssl sha512 desktop-app/build/*.${{ matrix.app_ext }}     | tee -a desktop-app/build/${{ matrix.artifact_name }}
+          openssl sha3-512 desktop-app/build/*.${{ matrix.app_ext }}   | tee -a desktop-app/build/${{ matrix.artifact_name }}
+          openssl blake2b512 desktop-app/build/*.${{ matrix.app_ext }} | tee -a desktop-app/build/${{ matrix.artifact_name }}
         shell: bash
 
       - name: Rename file paths in .yml (Linux)
@@ -126,8 +126,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.pre_build.outputs.output1 }} # This pulls ID from the Release Drafter step
-          asset_path: desktop-app/build/Nault-${{ needs.pre_build.outputs.output2 }}.${{ matrix.app_ext }}
-          asset_name: Nault-${{ needs.pre_build.outputs.output2 }}-Linux.${{ matrix.app_ext }}
+          asset_path: desktop-app/build/Gnault-${{ needs.pre_build.outputs.output2 }}.${{ matrix.app_ext }}
+          asset_name: Gnault-${{ needs.pre_build.outputs.output2 }}-Linux.${{ matrix.app_ext }}
           asset_content_type: application/octet-stream
 
       - name: Upload Binaries Mac
@@ -137,8 +137,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.pre_build.outputs.output1 }} # This pulls ID from the Release Drafter step
-          asset_path: desktop-app/build/Nault-${{ needs.pre_build.outputs.output2 }}.${{ matrix.app_ext }}
-          asset_name: Nault-${{ needs.pre_build.outputs.output2 }}-Mac.${{ matrix.app_ext }}
+          asset_path: desktop-app/build/Gnault-${{ needs.pre_build.outputs.output2 }}.${{ matrix.app_ext }}
+          asset_name: Gnault-${{ needs.pre_build.outputs.output2 }}-Mac.${{ matrix.app_ext }}
           asset_content_type: application/octet-stream
 
       - name: Upload Binaries Windows
@@ -148,8 +148,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.pre_build.outputs.output1 }} # This pulls ID from the Release Drafter step
-          asset_path: desktop-app/build/Nault Setup ${{ needs.pre_build.outputs.output2 }}.${{ matrix.app_ext }}
-          asset_name: Nault-Setup-${{ needs.pre_build.outputs.output2 }}-Windows.${{ matrix.app_ext }}
+          asset_path: desktop-app/build/Gnault Setup ${{ needs.pre_build.outputs.output2 }}.${{ matrix.app_ext }}
+          asset_name: Gnault-Setup-${{ needs.pre_build.outputs.output2 }}-Windows.${{ matrix.app_ext }}
           asset_content_type: application/octet-stream
 
       - name: Upload Checksums

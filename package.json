@@ -1,9 +1,9 @@
 {
-  "name": "nault",
-  "version": "1.18.3",
-  "license": "MIT",
+  "name": "gnault",
+  "version": "0.0.1",
+  "license": "(GPL-3.O-or-later AND MIT)",
   "description": "Wallet for interacting with nano",
-  "author": "The Nano Community / Andrew Steele",
+  "author": "Chris Duncan <chris@zoso.dev>",
   "main": "desktop-app/dist/desktop-app.js",
   "scripts": {
     "ng": "ng",
@@ -118,10 +118,10 @@
     "worker-loader": "^3.0.8"
   },
   "build": {
-    "appId": "cc.nault",
+    "appId": "cc.gnault",
     "buildVersion": "1.0.0",
-    "productName": "Nault",
-    "copyright": "Copyright © 2020 The Nano Community / Andrew Steele",
+    "productName": "Gnault",
+    "copyright": "Copyright © 2020-2025 Chris Duncan, The Nano Community, Andrew Steele",
     "directories": {
       "output": "desktop-app/build",
       "buildResources": "desktop-app/assets",

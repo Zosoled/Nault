@@ -1,10 +1,10 @@
 import 'babel-polyfill';
 
-import { app, BrowserWindow, shell, Menu, screen, dialog, ipcMain } from 'electron';
-import { autoUpdater } from 'electron-updater';
+import {app, BrowserWindow, shell, Menu, screen, dialog, ipcMain} from 'electron';
+import {autoUpdater} from 'electron-updater';
 import * as url from 'url';
 import * as path from 'path';
-import { initialize } from './lib/ledger';
+import {initialize} from './lib/ledger';
 import * as settings from 'electron-settings';
 const log = require('electron-log');
 // Don't want errors to display when checking for update
@@ -17,29 +17,29 @@ const nano_schemes = ['nano', 'nanorep', 'nanoseed', 'nanokey', 'nanosign', 'nan
 
 /**
  * By default, the logger writes logs to the following locations:
-  on Linux: ~/.config/nault/logs/{process type}.log
-  on macOS: ~/Library/Logs/nault/{process type}.log
-  on Windows: %USERPROFILE%\AppData\Roaming\nault\logs\{process type}.log
+  on Linux: ~/.config/gnault/logs/{process type}.log
+  on macOS: ~/Library/Logs/gnault/{process type}.log
+  on Windows: %USERPROFILE%\AppData\Roaming\gnault\logs\{process type}.log
 
   error, warn, info, verbose, debug, silly
  * */
 
- // determine log location
+// determine log location
 let logLocation = 'Unknown';
 switch (process.platform) {
   case 'win32':
-    logLocation = '%USERPROFILE%\\AppData\\Roaming\\nault\\logs\\main.log';
+    logLocation = '%USERPROFILE%\\AppData\\Roaming\\gnault\\logs\\main.log';
     break;
   case 'linux':
-    logLocation = '~/.config/nault/logs/main.log';
+    logLocation = '~/.config/gnault/logs/main.log';
     break;
   case 'darwin':
-    logLocation = '~/Library/Logs/nault/main.log';
+    logLocation = '~/Library/Logs/gnault/main.log';
     break;
 }
 
 // Keep track of window size and position
-function windowStateKeeper() {
+function windowStateKeeper () {
   let window, windowState;
   let newWidth = 1000;
   let newHeight = 600;
@@ -48,9 +48,9 @@ function windowStateKeeper() {
     const dimensions = mainScreen.size;
     newWidth = Math.max(newWidth, Math.round(dimensions.width * 0.8));
     newHeight = Math.max(newHeight, Math.round(dimensions.height * 0.85));
-  } catch {log.warn('Could not calculate default screen size')}
+  } catch {log.warn('Could not calculate default screen size');}
 
-  async function setBounds() {
+  async function setBounds () {
     // Restore from appConfig
     if (settings.hasSync(`windowState.${'main'}`)) {
       windowState = settings.getSync(`windowState.${'main'}`);
@@ -64,7 +64,7 @@ function windowStateKeeper() {
       height: newHeight,
     };
   }
-  function saveState() {
+  function saveState () {
     if (saveTimeout !== null) {
       clearTimeout(saveTimeout);
     }
@@ -79,14 +79,14 @@ function windowStateKeeper() {
       100
     );
   }
-  function track(win) {
+  function track (win) {
     window = win;
     ['resize', 'move'].forEach(event => {
       win.on(event, saveState);
     });
   }
   setBounds();
-  return({
+  return ({
     x: windowState.x,
     y: windowState.y,
     width: windowState.width,
@@ -97,7 +97,7 @@ function windowStateKeeper() {
 }
 
 class AppUpdater {
-  constructor() {
+  constructor () {
     // We want the user to proactively download the install
     autoUpdater.autoDownload = false;
     autoUpdater.logger = log;
@@ -108,9 +108,9 @@ class AppUpdater {
         type: 'info',
         buttons: ['Update', 'Ask Later'],
         title: 'New Version',
-        message: 'An update for Nault is available!',
+        message: 'An update for Gnault is available!',
         detail: 'Do you want to download and install it?'
-      }
+      };
 
       isDownloading = true;
       dialog.showMessageBox(dialogOpts).then((returnValue) => {
@@ -120,16 +120,16 @@ class AppUpdater {
         } else {
           isDownloading = false;
         }
-      })
-    })
+      });
+    });
 
     autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
       autoUpdater.quitAndInstall(true, true);
-    })
+    });
 
     autoUpdater.on('download-progress', (progressObj) => {
       sendStatusToWindow(progressObj);
-    })
+    });
 
     autoUpdater.on('error', message => {
       log.error('There was a problem updating the application');
@@ -139,18 +139,18 @@ class AppUpdater {
       if (!showUpdateErrors) {
         return;
       }
-      mainWindow.setTitle(`Nault - ${autoUpdater.currentVersion}`); // reset title
+      mainWindow.setTitle(`Gnault - ${autoUpdater.currentVersion}`); // reset title
       showUpdateErrors = false; // disable errors
       const dialogOpts = {
         type: 'error',
         buttons: ['OK'],
         title: 'Update Error',
-        message: 'Something went wrong while downloading Nault.',
+        message: 'Something went wrong while downloading Gnault.',
         detail: `You will be notified again on next start.\nMore details in the log at: ${logLocation}`
-      }
+      };
 
-      dialog.showMessageBox(dialogOpts).then((returnValue) => {})
-    })
+      dialog.showMessageBox(dialogOpts).then((returnValue) => { });
+    });
   }
 }
 new AppUpdater();
@@ -202,13 +202,13 @@ function createWindow () {
   });
 
   // Detect link clicks to new windows and open them in the default browser
-  mainWindow.webContents.on('new-window', function(e, externalurl) {
+  mainWindow.webContents.on('new-window', function (e, externalurl) {
     e.preventDefault();
     shell.openExternal(externalurl);
   });
 
   mainWindow.webContents.on('did-finish-load', function () {
-    mainWindow.setTitle(`Nault - ${autoUpdater.currentVersion}`);
+    mainWindow.setTitle(`Gnault - ${autoUpdater.currentVersion}`);
   });
 
   const menuTemplate = getApplicationMenu();
@@ -217,7 +217,7 @@ function createWindow () {
   Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
 }
 
-function sendStatusToWindow(progressObj) {
+function sendStatusToWindow (progressObj) {
   let log_message = "Download speed: " + progressObj.bytesPerSecond;
   log_message = log_message + ' - Downloaded ' + Math.round(progressObj.percent) + '%';
   log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
@@ -226,7 +226,7 @@ function sendStatusToWindow(progressObj) {
   // sending message to ipcRenderer can be done as well but not sure where and how to display it
   // using the title bar instead
   // mainWindow.webContents.send('downloading', Math.round(progressObj.percent));
-  mainWindow.setTitle(`Nault - ${autoUpdater.currentVersion} - Downloading Update: ${Math.round(progressObj.percent)} %`);
+  mainWindow.setTitle(`Gnault - ${autoUpdater.currentVersion} - Downloading Update: ${Math.round(progressObj.percent)} %`);
 }
 
 // run only one app
@@ -249,7 +249,7 @@ if (!appLock) {
     checkForUpdates();
   });
 
-  // Refocus the window if the user attempts to open Nault while it is already open
+  // Refocus the window if the user attempts to open Gnault while it is already open
   app.on('second-instance', (event, argv, workingDirectory) => {
     if (mainWindow) {
 
@@ -295,12 +295,12 @@ if (!appLock) {
   });
 }
 
-function checkForUpdates() {
+function checkForUpdates () {
   autoUpdater.checkForUpdates();
 }
 
 // Build up the menu bar options based on platform
-function getApplicationMenu() {
+function getApplicationMenu () {
   const template: any = [
     {
       label: 'Edit',
@@ -341,29 +341,29 @@ function getApplicationMenu() {
       role: 'help',
       submenu: [
         {
-          label: 'Nault Help Docs',
-          click () { loadExternal('https://docs.nault.cc/'); }
+          label: 'Original Nault Help Docs',
+          click () {loadExternal('https://docs.nault.cc/');}
         },
         {
           label: 'Reddit (r/nanocurrency)',
-          click () { loadExternal('https://www.reddit.com/r/nanocurrency'); }
+          click () {loadExternal('https://www.reddit.com/r/nanocurrency');}
         },
         {
-          label: 'Discord (#nault)',
-          click () { loadExternal('https://discord.nanocenter.org/'); }
+          label: 'Discord',
+          click () {loadExternal('https://chat.nano.org/');}
         },
         {type: 'separator'},
         {
           label: 'View GitHub',
-          click () { loadExternal('https://github.com/Nault/Nault'); }
+          click () {loadExternal('https://github.com/Zosoled/Gnault');}
         },
         {
           label: 'Submit a bug report',
-          click () { loadExternal('https://github.com/Nault/Nault/issues/new'); }
+          click () {loadExternal('https://github.com/Zosoled/Gnault/issues/new');}
         },
         {
           label: 'Release notes',
-          click () { loadExternal('https://github.com/Nault/Nault/releases'); }
+          click () {loadExternal('https://github.com/Zosoled/Gnault/releases');}
         },
         {type: 'separator'},
         {
@@ -378,7 +378,7 @@ function getApplicationMenu() {
 
   if (process.platform === 'darwin') {
     template.unshift({
-      label: 'Nault',
+      label: 'Gnault',
       submenu: [
         {role: 'about'},
         {type: 'separator'},
@@ -424,13 +424,13 @@ function getApplicationMenu() {
   return template;
 }
 
-function loadExternal(externalurl: string) {
+function loadExternal (externalurl: string) {
   shell.openExternal(externalurl);
 }
 
 let deeplinkReady = false;
 ipcMain.once('deeplink-ready', () => deeplinkReady = true);
-function handleDeeplink(deeplink: string) {
+function handleDeeplink (deeplink: string) {
   if (!deeplinkReady) {
     ipcMain.once('deeplink-ready', (e) => {
       mainWindow.webContents.send('deeplink', deeplink);
@@ -440,7 +440,7 @@ function handleDeeplink(deeplink: string) {
   }
 }
 
-function findDeeplink(argv: string[]) {
+function findDeeplink (argv: string[]) {
   const nano_scheme = new RegExp(`^(${nano_schemes.join('|')}):.+$`, 'g');
   return argv.find((s) => nano_scheme.test(s));
 }

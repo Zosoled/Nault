@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {WalletService} from '../../services/wallet.service';
 import {NotificationService} from '../../services/notification.service';
 import {ApiService} from '../../services/api.service';
@@ -36,20 +36,20 @@ export class ManageWalletComponent implements OnInit {
   beyondCsvLimit = false;
   exportingCsv = false;
   orderOptions = [
-    { name: 'Newest Transactions First', value: false },
-    { name: 'Oldest Transactions First', value: true },
+    {name: 'Newest Transactions First', value: false},
+    {name: 'Oldest Transactions First', value: true},
   ];
   selectedOrder = this.orderOptions[0].value;
   exportEnabled = true;
 
-  constructor(
+  constructor (
     public walletService: WalletService,
     public notifications: NotificationService,
     private api: ApiService,
     private util: UtilService,
     public settings: AppSettingsService) { }
 
-  async ngOnInit() {
+  async ngOnInit () {
     this.wallet = this.walletService.wallet;
 
     // Update selected account if changed in the sidebar
@@ -66,7 +66,7 @@ export class ManageWalletComponent implements OnInit {
     }
   }
 
-  async changePassword() {
+  async changePassword () {
     if (this.newPassword !== this.confirmPassword) {
       return this.notifications.sendError(`Passwords do not match`);
     }
@@ -91,7 +91,7 @@ export class ManageWalletComponent implements OnInit {
     this.showQRExport = false;
   }
 
-  async exportWallet() {
+  async exportWallet () {
     if (this.walletService.isLocked()) {
       const wasUnlocked = await this.walletService.requestWalletUnlock();
 
@@ -102,29 +102,29 @@ export class ManageWalletComponent implements OnInit {
 
     const exportUrl = this.walletService.generateExportUrl();
     this.QRExportUrl = exportUrl;
-    this.QRExportImg = await QRCode.toDataURL(exportUrl, { errorCorrectionLevel: 'M', scale: 8 });
+    this.QRExportImg = await QRCode.toDataURL(exportUrl, {errorCorrectionLevel: 'M', scale: 8});
     this.showQRExport = true;
   }
 
-  copied() {
+  copied () {
     this.notifications.removeNotification('success-copied');
-    this.notifications.sendSuccess(`Wallet seed copied to clipboard!`, { identifier: 'success-copied' });
+    this.notifications.sendSuccess(`Wallet seed copied to clipboard!`, {identifier: 'success-copied'});
   }
 
-  seedMnemonic() {
-    if (this.wallet && this.wallet.seed ) {
+  seedMnemonic () {
+    if (this.wallet && this.wallet.seed) {
       return bip.entropyToMnemonic(this.wallet.seed);
     }
   }
 
-  triggerFileDownload(fileName, exportData, type) {
+  triggerFileDownload (fileName, exportData, type) {
     let blob;
     // first line, include columns for spreadsheet
     let csvFile = 'account,type,amount,hash,height,time\n';
 
     switch (type) {
       case 'json':
-        blob = new Blob([JSON.stringify(exportData)], { type: 'application/json' });
+        blob = new Blob([JSON.stringify(exportData)], {type: 'application/json'});
         break;
       case 'csv':
         // comma-separated attributes for each row
@@ -148,7 +148,7 @@ export class ManageWalletComponent implements OnInit {
         for (let i = 0; i < exportData.length; i++) {
           csvFile += processRow(exportData[i]);
         }
-        blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+        blob = new Blob([csvFile], {type: 'text/csv;charset=utf-8;'});
         break;
     }
 
@@ -172,13 +172,13 @@ export class ManageWalletComponent implements OnInit {
     elem.download = fileName;
     document.body.appendChild(elem);
     elem.click();
-    setTimeout(function() {
+    setTimeout(function () {
       document.body.removeChild(elem);
       window.URL.revokeObjectURL(objUrl);
     }, 200);
   }
 
-  async exportToFile() {
+  async exportToFile () {
     if (this.walletService.isLocked()) {
       const wasUnlocked = await this.walletService.requestWalletUnlock();
 
@@ -187,18 +187,18 @@ export class ManageWalletComponent implements OnInit {
       }
     }
 
-    const fileName = `Nault-Wallet.json`;
+    const fileName = `Gnault-Wallet.json`;
     const exportData = this.walletService.generateExportData();
     this.triggerFileDownload(fileName, exportData, 'json');
 
     this.notifications.sendSuccess(`Wallet export downloaded!`);
   }
 
-  csvCountChange(count) {
+  csvCountChange (count) {
     if (this.util.string.isNumeric(count) && count % 1 === 0 || count === '') {
       // only allow beyond limit if using a custom server
       if (this.settings.settings.serverName !== 'custom' &&
-      (parseInt(count, 10) > this.transactionHistoryLimit || count === '' || count === '0')) {
+        (parseInt(count, 10) > this.transactionHistoryLimit || count === '' || count === '0')) {
         this.invalidCsvCount = true;
         this.beyondCsvLimit = true;
       } else {
@@ -215,7 +215,7 @@ export class ManageWalletComponent implements OnInit {
     }
   }
 
-  csvOffsetChange(offset) {
+  csvOffsetChange (offset) {
     if (this.util.string.isNumeric(offset) && offset % 1 === 0 || offset === '') {
       if (parseInt(offset, 10) < 0) {
         this.invalidCsvOffset = true;
@@ -227,11 +227,11 @@ export class ManageWalletComponent implements OnInit {
     }
   }
 
-  csvInit() {
+  csvInit () {
     this.csvExportStarted = true;
   }
 
-  async exportToCsv() {
+  async exportToCsv () {
     // disable export for a period to reduce RPC calls
     if (!this.exportEnabled) return;
     this.exportEnabled = false;
@@ -239,7 +239,7 @@ export class ManageWalletComponent implements OnInit {
 
     if (this.invalidCsvCount) {
       if (this.beyondCsvLimit) {
-        return this.notifications.sendWarning(`To export transactions above the limit, please use a custom Nault server`);
+        return this.notifications.sendWarning(`To export transactions above the limit, please use a custom Gnault server`);
       } else {
         return this.notifications.sendWarning(`Invalid limit`);
       }
@@ -258,8 +258,10 @@ export class ManageWalletComponent implements OnInit {
     const csvData = [];
     if (history && history.history && history.history.length > 0) {
       history.history.forEach(a => {
-        csvData.push({'account': a.account, 'type': a.type, 'amount': this.util.nano.rawToMnano(a.amount).toString(10),
-        'hash': a.hash, 'height': a.height, 'time': formatDate(a.local_timestamp * 1000, 'y-MM-d HH:mm:ss', 'en-US')});
+        csvData.push({
+          'account': a.account, 'type': a.type, 'amount': this.util.nano.rawToMnano(a.amount).toString(10),
+          'hash': a.hash, 'height': a.height, 'time': formatDate(a.local_timestamp * 1000, 'y-MM-d HH:mm:ss', 'en-US')
+        });
       });
     }
 

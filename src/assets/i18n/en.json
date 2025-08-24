@@ -66,7 +66,7 @@
     "address-book-import": "Address Book Import",
     "address-book-too-large-for-a-qr-code": "Address book too large for a QR code.",
     "back-to-address-book": "Back to address book",
-    "bad-import-data-make-sure-you-selected-a-nault-address-book": "Bad import data, make sure you selected a Nault Address Book export",
+    "bad-import-data-make-sure-you-selected-a-gnault-address-book": "Bad import data, make sure you selected a Gnault Address Book export",
     "edit-entry": "Edit Entry",
     "exchange-deposit-address-main-trading-account-etc": "Exchange Deposit Address, Main Trading Account, etc.",
     "export-address-book": "Export Address Book",
@@ -145,7 +145,7 @@
     "change-where-your-wallet-is-stored-if-you-select-none-your": "Change where your wallet is stored. If you select none, your wallet is reset every time you reload.",
     "change-which-server-is-used-to-communicate-with-the-nano": "Change which server is used to communicate with the nano network",
     "clear-all-data": {
-      "1": "You are about to delete all data stored in Nault, which includes all locally stored data about your currently configured wallet, all entries from your address and representative books, and any other cached data. All settings will be reset to default.",
+      "1": "You are about to delete all data stored in Gnault, which includes all locally stored data about your currently configured wallet, all entries from your address and representative books, and any other cached data. All settings will be reset to default.",
       "successfully-deleted-locally-stored-data-and-reset-the": "Successfully deleted locally stored data and reset the settings!"
     },
     "clear-work-cache": "Clear Work Cache",
@@ -153,7 +153,7 @@
     "component": {
       "wallet-storage": "Wallet Storage"
     },
-    "configure-nault": "Configure Nault",
+    "configure-gnault": "Configure Gnault",
     "cpu-worker-support-not-available-set-pow-to-best": "CPU Worker support not available, set PoW to Best",
     "currencies": {
       "none": "None"
@@ -259,7 +259,7 @@
     "work-server": "Work Server",
     "you-are-about-to-delete-all-locally-cached-proof-of-work": "You are about to delete all locally cached Proof of Work values.",
     "you-are-about-to-delete-all-locally-stored-data-about-your": "You are about to delete all locally stored data about your currently configured wallet.",
-    "you-are-about-to-disable-storage-of-all-wallet-data-which": "You are about to disable storage of all wallet data, which means there will be no wallet configured next time you use Nault."
+    "you-are-about-to-disable-storage-of-all-wallet-data-which": "You are about to disable storage of all wallet data, which means there will be no wallet configured next time you use Gnault."
   },
   "configure-wallet": {
     "new-wallet": {
@@ -356,11 +356,11 @@
       "1": "Support for Ledger Nano S / Nano X hardware wallets",
       "2": "Ability to create multi-signature addresses where multiple private keys are required to access and transfer the funds",
       "3": "Ability to sign transactions remotely, allowing you to conduct transactions securely without ever allowing your secret keys to leave your offline device",
-      "nault-includes": "Nault includes several options for enhanced security:",
+      "gnault-includes": "Gnault includes several options for enhanced security:",
       "title": "Advanced Security Features"
     },
     "any-device-anywhere": {
-      "1": "Nault is a web application that can be used on most desktop and handheld devices.",
+      "1": "Gnault is a web application that can be used on most desktop and handheld devices.",
       "2": {
         "1": "You may also use the desktop application for Windows, Linux or Mac. It is available for download",
         "2-link-github-releases": "from the GitHub releases page",
@@ -376,7 +376,7 @@
     "any-node-always-available": {
       "1": {
         "1": "Even if the official",
-        "2-link-nault": "nault.cc",
+        "2-link-gnault": "gnault.cc",
         "3": "domain would become inaccessible, you would still be able to use the",
         "4-link-github-releases": "desktop application",
         "5": "or",
@@ -384,7 +384,7 @@
         "7": "."
       },
       "2": {
-        "1": "In Nault there is no single source of truth. All information is provided by the server that's set in app settings. That also means there is no single point of failure – you may choose any public or self-hosted",
+        "1": "In Gnault there is no single source of truth. All information is provided by the server that's set in app settings. That also means there is no single point of failure – you may choose any public or self-hosted",
         "2-link-nano-node": "nano node",
         "3": "as the server."
       },
@@ -398,14 +398,14 @@
         "2-link-orv": "ORV consensus",
         "3": ", which allows users to be in control of how much voting power representatives have on the network."
       },
-      "2": "Nault will automatically check the status of your representatives and provide recommendations to ensure security and censorship resistance for all network participants.",
+      "2": "Gnault will automatically check the status of your representatives and provide recommendations to ensure security and censorship resistance for all network participants.",
       "title": "Secure the Nano Network"
     },
     "view-my-accounts": "View My Accounts",
     "welcome-back-it-looks-like-your-wallet-is-already-configured": "Welcome back! It looks like your wallet is already configured.",
     "your-keys-your-coins": {
       "1": "You are solely responsible for the security of your funds.",
-      "2": "Secret keys that you use in Nault are temporarily stored on your device, encrypted by the password that you choose.",
+      "2": "Secret keys that you use in Gnault are temporarily stored on your device, encrypted by the password that you choose.",
       "3": "No sensitive data is ever sent across the internet.",
       "title": "Your Keys, Your Coins"
     }

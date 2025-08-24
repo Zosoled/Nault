@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import BigNumber from 'bignumber.js';
 import {AddressBookService} from '../../services/address-book.service';
 import {BehaviorSubject} from 'rxjs';
@@ -11,10 +11,10 @@ import {AppSettingsService} from '../../services/app-settings.service';
 import {ActivatedRoute} from '@angular/router';
 import {PriceService} from '../../services/price.service';
 import {NanoBlockService} from '../../services/nano-block.service';
-import { QrModalService } from '../../services/qr-modal.service';
-import { environment } from 'environments/environment';
-import { TranslocoService } from '@ngneat/transloco';
-import { HttpClient } from '@angular/common/http';
+import {QrModalService} from '../../services/qr-modal.service';
+import {environment} from 'environments/environment';
+import {TranslocoService} from '@ngneat/transloco';
+import {HttpClient} from '@angular/common/http';
 import * as nanocurrency from 'nanocurrency';
 
 const nacl = window['nacl'];
@@ -36,18 +36,18 @@ export class SendComponent implements OnInit {
     fullText: '',
     name: '',
     domain: '',
-  }
+  };
 
   aliasLookup = {
     ...this.ALIAS_LOOKUP_DEFAULT_STATE,
-  }
+  };
   aliasLookupInProgress = {
     ...this.ALIAS_LOOKUP_DEFAULT_STATE,
-  }
+  };
   aliasLookupLatestSuccessful = {
     ...this.ALIAS_LOOKUP_DEFAULT_STATE,
     address: '',
-  }
+  };
   aliasResults$ = new BehaviorSubject([]);
   addressBookResults$ = new BehaviorSubject([]);
   isDestinationAccountAlias = false;
@@ -56,15 +56,15 @@ export class SendComponent implements OnInit {
   addressAliasMatch = '';
 
   amounts = [
-    { name: 'XNO', shortName: 'XNO', value: 'mnano' },
-    { name: 'knano', shortName: 'knano', value: 'knano' },
-    { name: 'nano', shortName: 'nano', value: 'nano' },
+    {name: 'XNO', shortName: 'XNO', value: 'mnano'},
+    {name: 'knano', shortName: 'knano', value: 'knano'},
+    {name: 'nano', shortName: 'nano', value: 'nano'},
   ];
   selectedAmount = this.amounts[0];
 
   amount = null;
   amountExtraRaw = new BigNumber(0);
-  amountFiat: number|null = null;
+  amountFiat: number | null = null;
   rawAmount: BigNumber = new BigNumber(0);
   fromAccount: any = {};
   fromAccountID: any = '';
@@ -79,7 +79,7 @@ export class SendComponent implements OnInit {
   confirmingTransaction = false;
   selAccountInit = false;
 
-  constructor(
+  constructor (
     private route: ActivatedRoute,
     private walletService: WalletService,
     private addressBookService: AddressBookService,
@@ -94,7 +94,7 @@ export class SendComponent implements OnInit {
     private http: HttpClient,
     private translocoService: TranslocoService) { }
 
-  async ngOnInit() {
+  async ngOnInit () {
     const params = this.route.snapshot.queryParams;
 
     this.updateQueries(params);
@@ -135,8 +135,8 @@ export class SendComponent implements OnInit {
     }
   }
 
-  updateQueries(params) {
-    if ( params && params.amount && !isNaN(params.amount) ) {
+  updateQueries (params) {
+    if (params && params.amount && !isNaN(params.amount)) {
       const amountAsRaw =
         new BigNumber(
           this.util.nano.mnanoToRaw(
@@ -162,7 +162,7 @@ export class SendComponent implements OnInit {
     }
   }
 
-  async findFirstAccount() {
+  async findFirstAccount () {
     // Load balances before we try to find the right account
     if (this.walletService.wallet.balance.isZero()) {
       await this.walletService.reloadBalances();
@@ -181,7 +181,7 @@ export class SendComponent implements OnInit {
   }
 
   // An update to the Nano amount, sync the fiat value
-  syncFiatPrice() {
+  syncFiatPrice () {
     if (!this.validateAmount() || Number(this.amount) === 0) {
       this.amountFiat = null;
       return;
@@ -203,7 +203,7 @@ export class SendComponent implements OnInit {
   }
 
   // An update to the fiat amount, sync the nano value based on currently selected denomination
-  syncNanoPrice() {
+  syncNanoPrice () {
     if (!this.amountFiat) {
       this.amount = '';
       return;
@@ -216,7 +216,7 @@ export class SendComponent implements OnInit {
     this.amount = nanoAmount.toNumber();
   }
 
-  onDestinationAddressInput() {
+  onDestinationAddressInput () {
     this.addressAliasMatch = '';
     this.addressBookMatch = '';
 
@@ -235,14 +235,14 @@ export class SendComponent implements OnInit {
         const amountAsRaw = url.searchParams.get('amount');
 
         const amountAsXNO = (
-            amountAsRaw
-          ? nanocurrency.convert(
+          amountAsRaw
+            ? nanocurrency.convert(
               amountAsRaw, {
-                from: nanocurrency.Unit.raw,
-                to: nanocurrency.Unit.NANO
-              }
+              from: nanocurrency.Unit.raw,
+              to: nanocurrency.Unit.NANO
+            }
             ).toString()
-          : null
+            : null
         );
 
         setTimeout(
@@ -258,7 +258,7 @@ export class SendComponent implements OnInit {
     }
   }
 
-  searchAddressBook() {
+  searchAddressBook () {
     this.showAddressBook = true;
     const search = this.toAccountID || '';
     const addressBook = this.addressBookService.addressBook;
@@ -270,15 +270,15 @@ export class SendComponent implements OnInit {
     this.addressBookResults$.next(matches);
   }
 
-  offerLookupIfDestinationIsAlias() {
+  offerLookupIfDestinationIsAlias () {
     const destinationAddress = this.toAccountID || '';
 
     const mayBeAnAlias = (
-        ( destinationAddress.startsWith('@') === true )
-      && ( destinationAddress.includes('.') === true )
-      && ( destinationAddress.endsWith('.') === false )
-      && ( destinationAddress.includes('/') === false )
-      && ( destinationAddress.includes('?') === false )
+      (destinationAddress.startsWith('@') === true)
+      && (destinationAddress.includes('.') === true)
+      && (destinationAddress.endsWith('.') === false)
+      && (destinationAddress.includes('/') === false)
+      && (destinationAddress.includes('?') === false)
     );
 
     if (mayBeAnAlias === false) {
@@ -287,27 +287,27 @@ export class SendComponent implements OnInit {
         ...this.ALIAS_LOOKUP_DEFAULT_STATE,
       };
       this.aliasResults$.next([]);
-      return
+      return;
     }
 
     this.isDestinationAccountAlias = true;
 
     let aliasWithoutFirstSymbol = destinationAddress.slice(1).toLowerCase();
 
-    if (aliasWithoutFirstSymbol.startsWith('_@') === true ) {
+    if (aliasWithoutFirstSymbol.startsWith('_@') === true) {
       aliasWithoutFirstSymbol = aliasWithoutFirstSymbol.slice(2);
     }
 
     const aliasSplitResults = aliasWithoutFirstSymbol.split('@');
 
-    let aliasName = ''
-    let aliasDomain = ''
+    let aliasName = '';
+    let aliasDomain = '';
 
     if (aliasSplitResults.length === 2) {
-      aliasName = aliasSplitResults[0]
-      aliasDomain = aliasSplitResults[1]
+      aliasName = aliasSplitResults[0];
+      aliasDomain = aliasSplitResults[1];
     } else {
-      aliasDomain = aliasSplitResults[0]
+      aliasDomain = aliasSplitResults[0];
     }
 
     this.aliasLookup = {
@@ -316,12 +316,12 @@ export class SendComponent implements OnInit {
       domain: aliasDomain,
     };
 
-    this.aliasResults$.next([{ ...this.aliasLookup }]);
+    this.aliasResults$.next([{...this.aliasLookup}]);
 
     this.toAccountStatus = 1; // Neutral state
   }
 
-  async lookupAlias() {
+  async lookupAlias () {
     if (this.aliasLookup.domain === '') {
       return;
     }
@@ -332,7 +332,7 @@ export class SendComponent implements OnInit {
         await UIkit.modal.confirm(
           `<p class="uk-alert uk-alert-warning"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span>
           <span style="font-size: 18px;">
-          ${ this.translocoService.translate('configure-app.decentralized-aliases-require-external-requests') }
+          ${this.translocoService.translate('configure-app.decentralized-aliases-require-external-requests')}
           </span>`,
           {
             labels: {
@@ -351,19 +351,19 @@ export class SendComponent implements OnInit {
 
     this.toAccountStatus = 1; // Neutral state
 
-    const aliasLookup = { ...this.aliasLookup };
+    const aliasLookup = {...this.aliasLookup};
 
     const aliasFullText = aliasLookup.fullText;
     const aliasDomain = aliasLookup.domain;
 
     const aliasName = (
-        (aliasLookup.name !== '')
-      ? aliasLookup.name
-      : '_'
+      (aliasLookup.name !== '')
+        ? aliasLookup.name
+        : '_'
     );
 
     const lookupUrl =
-      `https://${ aliasDomain }/.well-known/nano-currency.json?names=${ aliasName }`;
+      `https://${aliasDomain}/.well-known/nano-currency.json?names=${aliasName}`;
 
     this.aliasLookupInProgress = {
       ...aliasLookup,
@@ -372,7 +372,7 @@ export class SendComponent implements OnInit {
     await this.http.get<any>(lookupUrl).toPromise()
       .then(res => {
         const isOutdatedRequest = (
-            this.aliasLookupInProgress.fullText
+          this.aliasLookupInProgress.fullText
           !== aliasFullText
         );
 
@@ -386,9 +386,9 @@ export class SendComponent implements OnInit {
 
         try {
           const aliasesInJsonCount = (
-              ( Array.isArray(res.names) === true )
-            ? res.names.length
-            : 0
+            (Array.isArray(res.names) === true)
+              ? res.names.length
+              : 0
           );
 
           if (aliasesInJsonCount === 0) {
@@ -426,7 +426,7 @@ export class SendComponent implements OnInit {
           this.validateDestination();
 
           return;
-        } catch(err) {
+        } catch (err) {
           this.toAccountStatus = 0; // Error state
           this.notificationService.sendWarning(`Unknown error has occurred while trying to lookup ${aliasFullText}`);
           return;
@@ -448,7 +448,7 @@ export class SendComponent implements OnInit {
       });
   }
 
-  selectBookEntry(account) {
+  selectBookEntry (account) {
     this.showAddressBook = false;
     this.toAccountID = account;
     this.isDestinationAccountAlias = false;
@@ -456,11 +456,11 @@ export class SendComponent implements OnInit {
     this.validateDestination();
   }
 
-  setSendDestinationType(newType: string) {
+  setSendDestinationType (newType: string) {
     this.sendDestinationType = newType;
   }
 
-  async validateDestination() {
+  async validateDestination () {
     // The timeout is used to solve a bug where the results get hidden too fast and the click is never registered
     setTimeout(() => this.showAddressBook = false, 400);
 
@@ -468,12 +468,12 @@ export class SendComponent implements OnInit {
     this.toAccountID = this.toAccountID.replace(/ /g, '');
 
     this.addressAliasMatch = (
-        (
-            (this.aliasLookupLatestSuccessful.address !== '')
-          && (this.aliasLookupLatestSuccessful.address === this.toAccountID)
-        )
-      ? this.aliasLookupLatestSuccessful.fullText
-      : null
+      (
+        (this.aliasLookupLatestSuccessful.address !== '')
+        && (this.aliasLookupLatestSuccessful.address === this.toAccountID)
+      )
+        ? this.aliasLookupLatestSuccessful.fullText
+        : null
     );
 
     if (this.isDestinationAccountAlias === true) {
@@ -483,12 +483,12 @@ export class SendComponent implements OnInit {
     }
 
     this.addressBookMatch = (
-        this.addressBookService.getAccountName(this.toAccountID)
+      this.addressBookService.getAccountName(this.toAccountID)
       || this.getAccountLabel(this.toAccountID, null)
     );
 
     if (!this.addressBookMatch && this.toAccountID === environment.donationAddress) {
-      this.addressBookMatch = 'Nault Donations';
+      this.addressBookMatch = 'Gnault Donations';
     }
 
     // const accountInfo = await this.walletService.walletApi.accountInfo(this.toAccountID);
@@ -508,7 +508,7 @@ export class SendComponent implements OnInit {
     }
   }
 
-  getAccountLabel(accountID, defaultLabel) {
+  getAccountLabel (accountID, defaultLabel) {
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id === accountID);
 
     if (walletAccount == null) {
@@ -518,7 +518,7 @@ export class SendComponent implements OnInit {
     return (this.translocoService.translate('general.account') + ' #' + walletAccount.index);
   }
 
-  validateAmount() {
+  validateAmount () {
     if (this.util.account.isValidNanoAmount(this.amount)) {
       this.amountStatus = 1;
       return true;
@@ -528,7 +528,7 @@ export class SendComponent implements OnInit {
     }
   }
 
-  getDestinationID() {
+  getDestinationID () {
     if (this.sendDestinationType === 'external-address') {
       return this.toAccountID;
     }
@@ -549,7 +549,7 @@ export class SendComponent implements OnInit {
     return this.toOwnAccountID;
   }
 
-  async sendTransaction() {
+  async sendTransaction () {
     const destinationID = this.getDestinationID();
     const isValid = this.util.account.isValidAccount(destinationID);
     if (!isValid) {
@@ -598,12 +598,12 @@ export class SendComponent implements OnInit {
     this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber();
 
     this.fromAddressBook = (
-        this.addressBookService.getAccountName(this.fromAccountID)
+      this.addressBookService.getAccountName(this.fromAccountID)
       || this.getAccountLabel(this.fromAccountID, 'Account')
     );
 
     this.toAddressBook = (
-        this.addressBookService.getAccountName(destinationID)
+      this.addressBookService.getAccountName(destinationID)
       || this.getAccountLabel(destinationID, null)
     );
 
@@ -613,7 +613,7 @@ export class SendComponent implements OnInit {
     this.activePanel = 'confirm';
   }
 
-  async confirmTransaction() {
+  async confirmTransaction () {
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.fromAccountID);
     if (!walletAccount) {
       throw new Error(`Unable to find sending account in wallet`);
@@ -636,7 +636,7 @@ export class SendComponent implements OnInit {
 
       if (newHash) {
         this.notificationService.removeNotification('success-send');
-        this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`, { identifier: 'success-send' });
+        this.notificationService.sendSuccess(`Successfully sent ${this.amount} ${this.selectedAmount.shortName}!`, {identifier: 'success-send'});
         this.activePanel = 'send';
         this.amount = null;
         this.amountFiat = null;
@@ -661,7 +661,7 @@ export class SendComponent implements OnInit {
     this.confirmingTransaction = false;
   }
 
-  setMaxAmount() {
+  setMaxAmount () {
     const walletAccount = this.walletService.wallet.accounts.find(a => a.id === this.fromAccountID);
     if (!walletAccount) {
       return;
@@ -675,11 +675,11 @@ export class SendComponent implements OnInit {
     this.syncFiatPrice();
   }
 
-  resetRaw() {
+  resetRaw () {
     this.amountExtraRaw = new BigNumber(0);
   }
 
-  getAmountBaseValue(value) {
+  getAmountBaseValue (value) {
 
     switch (this.selectedAmount.value) {
       default:
@@ -689,7 +689,7 @@ export class SendComponent implements OnInit {
     }
   }
 
-  getAmountValueFromBase(value) {
+  getAmountValueFromBase (value) {
     switch (this.selectedAmount.value) {
       default:
       case 'nano': return this.util.nano.rawToNano(value);
@@ -699,7 +699,7 @@ export class SendComponent implements OnInit {
   }
 
   // open qr reader modal
-  openQR(reference, type) {
+  openQR (reference, type) {
     const qrResult = this.qrModalService.openQR(reference, type);
     qrResult.then((data) => {
       switch (data.reference) {
@@ -708,13 +708,13 @@ export class SendComponent implements OnInit {
           this.validateDestination();
           break;
       }
-    }, () => {}
+    }, () => { }
     );
   }
 
-  copied() {
+  copied () {
     this.notificationService.removeNotification('success-copied');
-    this.notificationService.sendSuccess(`Successfully copied to clipboard!`, { identifier: 'success-copied' });
+    this.notificationService.sendSuccess(`Successfully copied to clipboard!`, {identifier: 'success-copied'});
   }
 
 }
