@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core'
-import { Account, Blake2b } from 'libnemo'
+import { Account, Blake2b, Tools } from 'libnemo'
+import NanoPow from 'nano-pow'
 
 const nacl = window['nacl']
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006'
@@ -44,9 +45,6 @@ export class UtilService {
 	dec = {
 		toHex: decToHex,
 	};
-	big = {
-		add: bigAdd,
-	};
 	string = {
 		isNumeric: isNumeric,
 		mnemonicToSeedSync: mnemonicToSeedSync,
@@ -54,7 +52,6 @@ export class UtilService {
 	account = {
 		generateAccountSecretKeyBytes: generateAccountSecretKeyBytes,
 		generateAccountKeyPair: generateAccountKeyPair,
-		getPublicAccountID: getPublicAccountID,
 		getAccountChecksum: getAccountChecksum,
 		setPrefix: setPrefix,
 		isValidAccount: isValidAccount,
@@ -232,13 +229,6 @@ function decToHex (decValue, bytes = null) {
 	return hex
 }
 
-// BigNumber functions
-function bigAdd (input, value) {
-	const insert = new BigNumber(input)
-	const val = new BigNumber(value)
-	return insert.plus(val).toString(10)
-}
-
 /** String Functions **/
 function stringToUint5 (string) {
 	const letter_list = '13456789abcdefghijkmnopqrstuwxyz'.split('')
@@ -297,7 +287,7 @@ function isValidNanoAmount (val: string) {
 	// numerics and last character is not a dot and number of dots is 0 or 1
 	const isnum = /^-?\d*\.?\d*$/.test(val)
 	if (isnum && String(val).slice(-1) !== '.') {
-		if (val !== '' && mnanoToRaw(val).gte(1) && nanocurrency.checkAmount(mnanoToRaw(val).toString(10))) {
+		if (val !== '' && isValidAmount(val)) {
 			return true
 		} else {
 			return false
@@ -309,7 +299,7 @@ function isValidNanoAmount (val: string) {
 
 // Check if valid raw amount
 function isValidAmount (val: string) {
-	return nanocurrency.checkAmount(val)
+	return BigInt(val) > 0n && BigInt(val) < 0xffffffffffffffffffffffffffffffffn
 }
 
 function setPrefix (account, prefix = 'xrb') {
@@ -327,82 +317,83 @@ const mnano = 1000000000000000000000000000000
 const knano = 1000000000000000000000000000
 const nano = 1000000000000000000000000
 function mnanoToRaw (value) {
-	return new BigNumber(value).times(mnano)
+	return Tools.convert(value, 'mnano', 'raw')
 }
 function knanoToRaw (value) {
-	return new BigNumber(value).times(knano)
+	return Tools.convert(value, 'knano', 'raw')
 }
 function nanoToRaw (value) {
-	return new BigNumber(value).times(nano)
+	return Tools.convert(value, 'nano', 'raw')
 }
 function rawToMnano (value) {
-	return new BigNumber(value).div(mnano)
+	return Tools.convert(value, 'raw', 'mnano')
 }
 function rawToKnano (value) {
-	return new BigNumber(value).div(knano)
+	return Tools.convert(value, 'raw', 'knano')
 }
 function rawToNano (value) {
-	return new BigNumber(value).div(nano)
+	return Tools.convert(value, 'raw', 'nano')
 }
 
 /**
  * Nano functions
  */
 function isValidSeed (val: string) {
-	return nanocurrency.checkSeed(val)
+	return /^[A-F0-9]{64}$/i.test(val)
 }
 
 function isValidHash (val: string) {
-	return nanocurrency.checkHash(val)
+	return /^[A-F0-9]{64}$/i.test(val)
 }
 
 function isValidIndex (val: number) {
-	return nanocurrency.checkIndex(val)
+	return val > 0 && val < 2 ** 32 - 1
 }
 
 function isValidSignature (val: string) {
-	return nanocurrency.checkSignature(val)
+	return /^[A-F0-9]{128}$/i.test(val)
 }
 
 function isValidWork (val: string) {
-	return nanocurrency.checkWork(val)
+	return /^[A-F0-9]{16}$/i.test(val)
 }
 
 function validateWork (blockHash: string, threshold: string, work: string) {
-	return nanocurrency.validateWork({ blockHash: blockHash, threshold: threshold, work: work })
+	return NanoPow.work_validate(work, blockHash, { difficulty: threshold })
 }
 
 function hashStateBlock (block: StateBlock) {
-	const balance = new BigNumber(block.balance)
-	if (balance.isNegative() || balance.isNaN()) {
-		throw new Error(`Negative or NaN balance`)
+	const balance = BigInt(block.balance)
+	if (balance < 0n) {
+		throw new Error(`Negative balance`)
 	}
 	let balancePadded = balance.toString(16)
 	while (balancePadded.length < 32) balancePadded = '0' + balancePadded // Left pad with 0's
-	const context = blake.blake2bInit(32, null)
-	blake.blake2bUpdate(context, hexToUint8(STATE_BLOCK_PREAMBLE))
-	blake.blake2bUpdate(context, hexToUint8(new Account(block.account).publicKey))
-	blake.blake2bUpdate(context, hexToUint8(block.previous))
-	blake.blake2bUpdate(context, hexToUint8(new Account(block.representative).publicKey))
-	blake.blake2bUpdate(context, hexToUint8(balancePadded))
-	blake.blake2bUpdate(context, hexToUint8(block.link))
-	return blake.blake2bFinal(context)
+	return new Blake2b(32)
+		.update(hexToUint8(STATE_BLOCK_PREAMBLE))
+		.update(hexToUint8(Account.load(block.account).publicKey))
+		.update(hexToUint8(block.previous))
+		.update(hexToUint8(Account.load(block.representative).publicKey))
+		.update(hexToUint8(balancePadded))
+		.update(hexToUint8(block.link))
+		.digest()
 }
 
 // Determine new difficulty from base difficulty (hexadecimal string) and a multiplier (float). Returns hex string
 export function difficultyFromMultiplier (multiplier, base_difficulty) {
-	const big64 = new BigNumber(2).pow(64)
-	const big_multiplier = new BigNumber(multiplier)
-	const big_base = new BigNumber(base_difficulty, 16)
-	return big64.minus((big64.minus(big_base).dividedToIntegerBy(big_multiplier))).toString(16)
+	const big64 = 2n ** 64n
+	const big_multiplier = BigInt(multiplier)
+	const big_base = BigInt(`0x${base_difficulty}`)
+	const result = big64 - ((big64 - big_base) / big_multiplier)
+	return result.toString(16)
 }
 
 // Determine new multiplier from base difficulty (hexadecimal string) and target difficulty (hexadecimal string). Returns Number
 export function multiplierFromDifficulty (difficulty, base_difficulty) {
-	const big64 = new BigNumber(2).pow(64)
-	const big_diff = new BigNumber(difficulty, 16)
-	const big_base = new BigNumber(base_difficulty, 16)
-	return big64.minus(big_base).dividedBy(big64.minus(big_diff)).toNumber()
+	const big64 = 2n ** 64n
+	const big_diff = BigInt(`0x${difficulty}`)
+	const big_base = BigInt(`0x${base_difficulty}`)
+	return Number(big64 - big_base) / Number(big64 - big_diff)
 }
 
 // shuffle any array
@@ -467,9 +458,6 @@ const util = {
 	dec: {
 		toHex: decToHex,
 	},
-	big: {
-		add: bigAdd,
-	},
 	string: {
 		isNumeric: isNumeric,
 		mnemonicToSeedSync: mnemonicToSeedSync,
@@ -477,7 +465,6 @@ const util = {
 	account: {
 		generateAccountSecretKeyBytes: generateAccountSecretKeyBytes,
 		generateAccountKeyPair: generateAccountKeyPair,
-		getPublicAccountID: getPublicAccountID,
 		getAccountChecksum: getAccountChecksum,
 		setPrefix: setPrefix,
 		isValidAccount: isValidAccount,
